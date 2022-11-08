@@ -21,7 +21,6 @@ public class GameManager : MonoBehaviour
     GameLogic game;
 
     Transportable _selectedTransportable;
-    Island _selectedIsland;
     Boat _boat;
 
     private void Start()
@@ -29,7 +28,6 @@ public class GameManager : MonoBehaviour
         game = new GameLogic();
         game.GenerateGameObjects();
 
-        _selectedIsland = game.FirstIsland;
         _boat = game.Boat;
         _boat.GoTo(game.FirstIsland, true);
 
@@ -48,49 +46,32 @@ public class GameManager : MonoBehaviour
         {
             game.Undo();
             print(game);
+            _selectedTransportable = null;
         }
     }
 
     public void IslandInteraction(Island island)
     {
-        print(island.Name);
-        if (_selectedIsland != island)
+        //print(island.Name);
+        if (_boat.GetCurrentIsland() != island)
         {
             _selectedTransportable = null;
-            _selectedIsland = island;
-            game.MoveBoatToIsland(_selectedIsland);
-            print("Go to " + _selectedIsland.Name);
+            game.MoveBoatToIsland(island);
         }
         else
         {
             if (_selectedTransportable != null)
             {
-                print("Unload " + _selectedTransportable);
                 game.UnloadFromBoat(_selectedTransportable);
                 _selectedTransportable = null;
             }
         }
     }
 
-    void SelectIsland(Island island)
-    {
-        //Doesn't work properly
-        if (_selectedIsland != null)
-            DeselectIsland(_selectedIsland);
-        _selectedIsland = island;
-        _selectedIsland.Disable();
-    }
-
-    void DeselectIsland(Island island)
-    {
-        _selectedIsland = null;
-        island.Enable();
-    }
-
     public void TransportableInteraction(Transportable transportable)
     {
-        print(transportable);
-        if (_selectedIsland != null && _selectedIsland.CheckIfExists(transportable))
+        //print(transportable);
+        if (_boat.GetCurrentIsland().CheckIfExists(transportable))
         {
             _selectedTransportable = transportable;
             print("Select " + _selectedTransportable);
@@ -100,11 +81,18 @@ public class GameManager : MonoBehaviour
             _selectedTransportable = transportable;
             print("Select " + _selectedTransportable);
         }
+        else
+        {
+            game.MoveBoatToIsland(transportable.Island);
+
+            //_boat.GetCurrentIsland() = transportable.Island;
+            //game.LoadOnBoat(transportable);
+        }
     }
 
     public void BoatInteraction(Boat boat)
     {
-        print("Boat");
+        //print("Boat");
         _boat = boat;
         if (_selectedTransportable != null)
         {

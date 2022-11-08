@@ -25,8 +25,18 @@ public class Transportable
 
     public static bool CheckCompatibility(Transportable a, Transportable b)
     {
-        //Pending implementation
-        Debug.Log("Not implemented");
+        if (a._scripatableObject.name.ToLower() == "fox" && b._scripatableObject.name.ToLower() == "chicken")
+            return false;
+
+        if (a._scripatableObject.name.ToLower() == "chicken" && b._scripatableObject.name.ToLower() == "fox")
+            return false;
+
+        if (a._scripatableObject.name.ToLower() == "chicken" && b._scripatableObject.name.ToLower() == "corn")
+            return false;
+
+        if (a._scripatableObject.name.ToLower() == "corn" && b._scripatableObject.name.ToLower() == "chicken")
+            return false;
+
         return true;
     }
 

@@ -35,6 +35,7 @@ public class IslandBehaviour : MonoBehaviour
     {
         Transform t = new GameObject("Spot").transform;
         t.position = (Vector2)transform.position + 2f * UnityEngine.Random.insideUnitCircle;
+        t.position = t.position - 0.01f * Vector3.forward;
         t.parent = transform;
         return t;
     }
