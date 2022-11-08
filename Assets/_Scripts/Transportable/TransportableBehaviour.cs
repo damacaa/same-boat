@@ -5,8 +5,14 @@ using UnityEngine;
 
 public class TransportableBehaviour : MonoBehaviour
 {
-    Transportable data;
+    [SerializeField]
+    float _speed = 2f;
 
+    Transportable data;
+    bool _walking = false;
+
+    Animator _animator;
+    SpriteRenderer _renderer;
     // Start is called before the first frame update
     void Start()
     {
@@ -16,13 +22,27 @@ public class TransportableBehaviour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (_walking)
+        {
+            float r = Mathf.Sin(_speed * Time.time * 10) * 10f;
+            transform.rotation = Quaternion.Euler(new Vector3(0, 0, r));
+        }
 
+        _renderer.sortingOrder = 1 + (int)Mathf.Abs(100 - Mathf.Min(transform.position.y * 10, 100));
     }
 
-    public void SetUp(Transportable t, Sprite sprite)
+    public void SetUp(Transportable t, TransportableSO scriptableObject)
     {
         data = t;
-        GetComponent<SpriteRenderer>().sprite = sprite;
+
+        if (!TryGetComponent<Animator>(out _animator))
+        {
+            _animator = gameObject.AddComponent<Animator>();
+        }
+        _renderer = gameObject.GetComponent<SpriteRenderer>();
+
+        if (scriptableObject.animatorController != null)
+            _animator.runtimeAnimatorController = scriptableObject.animatorController;
     }
 
     private void OnMouseDown()
@@ -30,32 +50,44 @@ public class TransportableBehaviour : MonoBehaviour
         GameManager.instance.TransportableInteraction(data);
     }
 
-    internal void GoTo(Transform transform, bool instant)
+    Coroutine _movement;
+    internal void GoTo(Transform target, bool instant)
     {
-        this.transform.parent = transform;
         if (instant)
         {
-            this.transform.position = transform.position;
+            StopAllCoroutines();
+            transform.position = target.position;
         }
         else
         {
-            StartCoroutine(MovementCoroutine());
+            if (_walking)
+            {
+                StopCoroutine(_movement);
+                transform.position = transform.parent.position;
+            }
+
+            float duration = Vector2.Distance(transform.position, target.position) / _speed;
+            _movement = StartCoroutine(MovementCoroutine(target, duration));
         }
+        this.transform.parent = target;
     }
 
-    IEnumerator MovementCoroutine(float duration = 0.5f)
+    IEnumerator MovementCoroutine(Transform target, float duration)
     {
         Vector2 pos = transform.position;
+        _walking = true;
 
+        yield return null;
 
         float t = 0;
         while (t < 1)
         {
-            transform.position = Vector2.Lerp(pos, transform.parent.position, t);
+            transform.position = Vector2.Lerp(pos, target.position, t);
             t += Time.deltaTime / duration;
             yield return null;
         }
 
+        _walking = false;
 
         yield return null;
     }

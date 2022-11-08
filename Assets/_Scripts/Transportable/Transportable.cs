@@ -48,7 +48,7 @@ public class Transportable
     internal void AssignGameObject(GameObject g)
     {
         _behaviour = g.GetComponent<TransportableBehaviour>();
-        _behaviour.SetUp(this, _scripatableObject.sprite);
+        _behaviour.SetUp(this, _scripatableObject);
     }
 
     internal void GoTo(Transform transform, bool instant = false)

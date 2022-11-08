@@ -11,8 +11,9 @@ GameObject:
   - component: {fileID: 7502746412398851855}
   - component: {fileID: 7502746412398851854}
   - component: {fileID: 7502746412398851888}
+  - component: {fileID: 3126536034949080034}
+  - component: {fileID: -7014390266010008794}
   - component: {fileID: 7502746412398851889}
-  - component: {fileID: -2728327337769669527}
   m_Layer: 0
   m_Name: Transportable
   m_TagString: Untagged
@@ -73,10 +74,10 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 2
-  m_Sprite: {fileID: 21300000, guid: 3eec2dddf4d080f45aec42bc424352e1, type: 3}
+  m_SortingLayerID: -1521568309
+  m_SortingLayer: 1
+  m_SortingOrder: 0
+  m_Sprite: {fileID: 21300000, guid: cc36586f2717ab94c9793fd619118246, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -113,19 +114,27 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 2.3247585, y: 2.3247585}
   m_EdgeRadius: 0
---- !u!114 &7502746412398851889
-MonoBehaviour:
+--- !u!95 &3126536034949080034
+Animator:
+  serializedVersion: 4
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7502746412398851891}
   m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7a947252d670dd46b819efc19bf9c97, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &-2728327337769669527
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &-7014390266010008794
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -145,10 +154,23 @@ MonoBehaviour:
   m_SelfShadows: 0
   m_ApplyToSortingLayers: 00000000
   m_ShapePath:
-  - {x: -0.5, y: -0.5, z: 0}
-  - {x: -0.5, y: 0.5, z: 0}
-  - {x: 0.5, y: 0.5, z: 0}
-  - {x: 0.5, y: -0.5, z: 0}
-  m_ShapePathHash: 0
+  - {x: -0.7406089, y: -1.1376607, z: 0}
+  - {x: -0.78555816, y: -0.66780114, z: 0}
+  - {x: 0.57579494, y: -0.66030955, z: 0}
+  - {x: 0.5233542, y: -1.1151862, z: 0}
+  m_ShapePathHash: 448577125
   m_Mesh: {fileID: 0}
-  m_InstanceId: 35732
+  m_InstanceId: 40942
+--- !u!114 &7502746412398851889
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7502746412398851891}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7a947252d670dd46b819efc19bf9c97, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _speed: 5

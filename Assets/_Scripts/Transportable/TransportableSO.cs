@@ -10,6 +10,7 @@ public class TransportableSO : ScriptableObject
     public bool isAlive = true;
     public Diet diet = Diet.None;
     public Sprite sprite;
+    public RuntimeAnimatorController animatorController;
 
     public enum Diet
     {
