@@ -17,3 +17,5 @@ MonoBehaviour:
   isAlive: 1
   diet: 2
   sprite: {fileID: 21300000, guid: 3eec2dddf4d080f45aec42bc424352e1, type: 3}
+  idleAnimation: {fileID: 7400000, guid: 47bc35a34a304f94799951a1bf7e0e55, type: 2}
+  animatorController: {fileID: 22100000, guid: bd898b6bd7c78c24b93479ae476972e0, type: 2}
