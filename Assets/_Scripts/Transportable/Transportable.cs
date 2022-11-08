@@ -6,6 +6,8 @@ using UnityEngine;
 public class Transportable
 {
     TransportableBehaviour _behaviour;
+    public TransportableBehaviour Behaviour { get { return _behaviour; } }
+
     TransportableSO _scripatableObject;
 
     Island _currentIsland;
@@ -39,9 +41,9 @@ public class Transportable
         _behaviour.SetUp(this, _scripatableObject.sprite);
     }
 
-    internal void GoTo(Transform transform)
+    internal void GoTo(Transform transform, bool instant = false)
     {
         if (_behaviour)
-            _behaviour.GoTo(transform);
+            _behaviour.GoTo(transform, instant);
     }
 }

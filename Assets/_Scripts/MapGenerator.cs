@@ -41,7 +41,7 @@ public class MapGenerator : MonoBehaviour
         int i = -1;
         foreach (var island in islands)
         {
-            var g = GameObject.Instantiate(_islandPrefab, Vector2.one * 3 * i , Quaternion.identity);
+            var g = GameObject.Instantiate(_islandPrefab, Vector2.one * 3.5f * i , Quaternion.identity);
             island.AssignGameObject(g);
             i += 2;
         }

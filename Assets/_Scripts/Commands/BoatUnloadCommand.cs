@@ -13,7 +13,7 @@ public class BoatUnloadCommand : BoatCommand
     public override void Execute()
     {
         success = _boat.UnloadBoat(_actor);
-        if (success) Debug.Log("Fail!");
+        if (success) Debug.Log("Fail to unload!");
     }
 
     public override void Undo()

@@ -31,6 +31,7 @@ public class GameManager : MonoBehaviour
 
         _selectedIsland = game.FirstIsland;
         _boat = game.Boat;
+        _boat.GoTo(game.FirstIsland, true);
 
         print(game);
     }

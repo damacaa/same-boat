@@ -35,6 +35,7 @@ public class Island
     }
 
     IslandBehaviour _behaviour;
+    public IslandBehaviour Behaviour { get { return _behaviour; } }
 
 
     public Island()
@@ -52,7 +53,10 @@ public class Island
 
     internal Transform FindSpot()
     {
-        return _behaviour.FindSpot();
+        if (_behaviour)
+            return _behaviour.FindSpot();
+
+        return null;
     }
 
     internal bool CheckIfExists(Transportable newTransportable)
@@ -90,7 +94,8 @@ public class Island
 
     internal void Disable()
     {
-        _behaviour.GetComponent<Collider2D>().enabled = false;
+        if (_behaviour)
+            _behaviour.GetComponent<Collider2D>().enabled = false;
     }
 
 

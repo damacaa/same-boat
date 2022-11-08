@@ -13,6 +13,7 @@ public class Boat
     Island _currentIsland;
 
     BoatBehaviour _behaviour;
+    public BoatBehaviour Behaviour { get { return _behaviour; } }
 
     public List<Transportable> Transportables
     {
@@ -29,7 +30,7 @@ public class Boat
 
     public bool LoadBoat(Transportable newTransportable)
     {
-        if (_occupied >= _capacity || !_currentIsland.CheckIfExists(newTransportable))
+        if (_occupied >= _capacity || _currentIsland == null || !_currentIsland.CheckIfExists(newTransportable))
             return false;
 
         _currentIsland.Remove(newTransportable);
@@ -71,10 +72,13 @@ public class Boat
         _behaviour.SetUp(this);
     }
 
-    public void GoTo(Island newIsland)
+    public void GoTo(Island newIsland, bool instant = false)
     {
         if (_currentIsland == newIsland)
             return;
+
+        if (_behaviour)
+            _behaviour.GoTo(newIsland, instant);
 
         _currentIsland = newIsland;
     }
@@ -95,6 +99,8 @@ public class Boat
 
     public bool UnloadBoat(Transportable selectedTransportable)
     {
+        if (_currentIsland == null)
+            return false;
 
         int i = _seats.IndexOf(selectedTransportable);
         if (i == -1)

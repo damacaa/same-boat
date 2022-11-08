@@ -6,6 +6,7 @@ using UnityEngine;
 public class IslandBehaviour : MonoBehaviour
 {
     Transform[] _transportablePositions;
+    Transform _port;
     Island _island;
 
     // Start is called before the first frame update
@@ -36,5 +37,10 @@ public class IslandBehaviour : MonoBehaviour
         t.position = (Vector2)transform.position + 2f * UnityEngine.Random.insideUnitCircle;
         t.parent = transform;
         return t;
+    }
+
+    internal Vector3 GetPortPosition()
+    {
+        return transform.position * 0.25f;
     }
 }

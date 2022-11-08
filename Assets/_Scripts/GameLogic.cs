@@ -47,7 +47,6 @@ public class GameLogic
 
         //Boat
         _boat = new Boat(serializedLevel.boatCapacity);
-        _boat.GoTo(_islands[0]);
 
         //Start game
         //Example();
@@ -99,6 +98,8 @@ public class GameLogic
 
     public void Execute()
     {
+        _fail = CheckFail();
+
         if (!_fail && _currentCommand < _commands.Count)
         {
             _commands[_currentCommand].Execute();
@@ -106,11 +107,7 @@ public class GameLogic
 
             _currentCommand++;
 
-
-            _fail = CheckFail();
-
-            if (!_fail)
-                CheckWin();
+            CheckWin();
         }
     }
 
