@@ -13,7 +13,24 @@ namespace Solver
 
         public static bool CheckFail(List<Transportable> transportables)
         {
-            return false;
+            bool success = true;
+
+            foreach (var a in transportables)
+            {
+                foreach (var b in transportables)
+                {
+                    if(a == null || b == null)
+                    {
+                        continue;
+                    }
+
+                    success = success && a.CheckCompatibility(b);
+                    if (a == b)
+                        break;
+                }
+            }
+
+            return !success;
         }
     }
 
