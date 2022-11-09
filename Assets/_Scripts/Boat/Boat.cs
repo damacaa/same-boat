@@ -136,4 +136,9 @@ public class Boat
     {
         return _currentIsland;
     }
+
+    internal bool IsEmpty()
+    {
+        return _occupied == 0;
+    }
 }
