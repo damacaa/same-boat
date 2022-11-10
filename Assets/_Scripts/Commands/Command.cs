@@ -6,8 +6,8 @@ public abstract class Command
 {
     protected bool _success = true;
     public bool Success { get { return _success; } }
-    public abstract void Execute(bool instant = false);
-    public abstract void Undo(bool instant = false);
+    public abstract float Execute(bool instant = false);
+    public abstract float Undo(bool instant = false);
 
     public IEnumerator ExecuteCoroutine(bool instant = false)
     {

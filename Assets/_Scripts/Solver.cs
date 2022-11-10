@@ -23,7 +23,7 @@ namespace Solver
             while (!game.Win && iter < maxIter)
             {
                 iter++;
-                Debug.Log(iter + ": " + current);
+                //Debug.Log(iter + ": " + current);
 
                 next.previousState = current;
                 current = next;
@@ -51,7 +51,7 @@ namespace Solver
                         next = game.GetCurrentState();
                         if (game.Fail || dict.ContainsKey(next.ToString()))
                         {
-                            game.Undo();
+                            game.Undo(true);
                         }
                         else
                         {
@@ -76,7 +76,7 @@ namespace Solver
                         next = game.GetCurrentState();
                         if (game.Fail || dict.ContainsKey(next.ToString()))
                         {
-                            game.Undo();
+                            game.Undo(true);
                         }
                         else
                         {
@@ -96,7 +96,7 @@ namespace Solver
                             next = game.GetCurrentState();
                             if (game.Fail || dict.ContainsKey(next.ToString()))
                             {
-                                game.Undo();
+                                game.Undo(true);
                             }
                             else
                             {
@@ -109,7 +109,7 @@ namespace Solver
 
                 if (!done)
                 {
-                    game.Undo();
+                    game.Undo(true);
                     current = current.previousState;
                     level--;
                     if(level < 0)

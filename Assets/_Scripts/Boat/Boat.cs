@@ -26,8 +26,9 @@ public class Boat
         _capacity = capacity;
     }
 
-    public bool LoadBoat(Transportable newTransportable, bool instant = false)
+    public bool LoadBoat(Transportable newTransportable, out float animationDuration, bool instant = false)
     {
+        animationDuration = 0;
         if (_occupied >= _capacity || _currentIsland == null || !_currentIsland.CheckIfExists(newTransportable))
             return false;
 
@@ -57,7 +58,7 @@ public class Boat
 
         if (_behaviour)
         {
-            newTransportable.GoTo(_behaviour.GetSeat(pos), instant);
+            newTransportable.GoTo(_behaviour.GetSeat(pos), out animationDuration, instant);
         }
 
         return true;
@@ -78,7 +79,7 @@ public class Boat
 
         if (_behaviour)
         {
-            newTransportable.GoTo(_behaviour.GetSeat(pos), true);
+            newTransportable.GoTo(_behaviour.GetSeat(pos), out float animationDuration, true);
         }
     }
 
@@ -88,10 +89,12 @@ public class Boat
         _behaviour.SetUp(this);
     }
 
-    public void GoTo(Island newIsland, bool instant = false)
+    public void GoTo(Island newIsland, out float animationDuration, bool instant = false)
     {
+        animationDuration = 0;
+
         if (_behaviour)
-            _behaviour.GoTo(newIsland, instant);
+            _behaviour.GoTo(newIsland, out animationDuration, instant);
 
         _currentIsland = newIsland;
     }
@@ -103,17 +106,9 @@ public class Boat
         return _seats.Contains(transportable);
     }
 
-    public void UnloadBoat()
+    public bool UnloadBoat(Transportable selectedTransportable, out float animationDuration, bool instant = false)
     {
-        for (int i = 0; i < _capacity; i++)
-        {
-            if (_seats[i] != null)
-                UnloadBoat(_seats[i]);
-        }
-    }
-
-    public bool UnloadBoat(Transportable selectedTransportable, bool instant = false)
-    {
+        animationDuration = 0;
         if (_currentIsland == null)
             return false;
 
@@ -123,7 +118,7 @@ public class Boat
             return false;
         }
         _seats[i] = null;
-        _currentIsland.Add(selectedTransportable, instant);
+        _currentIsland.Add(selectedTransportable, out animationDuration, instant);
         _occupied--;
         return true;
     }

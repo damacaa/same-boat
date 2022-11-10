@@ -19,6 +19,9 @@ public class GameLogic
     bool _win = false;
     bool _fail = false;
     bool _undone = false;
+    private bool _waitForEnd = true;
+    private bool _busy;
+    float _nextTime = 0;
 
     public bool Win { get { return _win; } }
     public bool Fail { get { return _fail; } }
@@ -43,7 +46,7 @@ public class GameLogic
 
             foreach (var transportableKey in serializedIsland.transportables)
             {
-                islandData.Add(new Transportable(transportableKey));
+                islandData.Add(new Transportable(transportableKey), out float animationDuration, true);
             }
 
             _islands.Add(islandData);
@@ -68,12 +71,12 @@ public class GameLogic
 
             foreach (var transportable in island.Transportables)
             {
-                islandData.Add(new Transportable(transportable));
+                islandData.Add(new Transportable(transportable), out float animationDuration);
             }
 
             if (island == original._boat.GetCurrentIsland())
             {
-                _boat.GoTo(islandData);
+                _boat.GoTo(islandData, out float animationDuration);
             }
 
             _islands.Add(islandData);
@@ -90,17 +93,25 @@ public class GameLogic
 
     public bool Execute(bool instant = false)
     {
+        if (_waitForEnd && (_busy || Time.time < _nextTime))
+        {
+            //instant = true;//Should make current animation skipeable
+            return false;
+        }
+
         if (!_fail && _currentCommand < _commands.Count)
         {
-            _commands[_currentCommand].Execute(instant);
-            Debug.Log(_commands[_currentCommand]);
+            float animationDuration = _commands[_currentCommand].Execute(instant);
+            _nextTime = Time.time + (0.5f * animationDuration);
 
+            //Debug.Log(_commands[_currentCommand]);
 
             _fail = CheckFail();
 
-
             if (!_fail)
+            {
                 CheckWin();
+            }
 
             return _commands[_currentCommand++].Success;
         }
@@ -110,13 +121,20 @@ public class GameLogic
 
     public void Undo(bool instant = false)
     {
+        if (_waitForEnd && (_busy || Time.time < _nextTime))
+        {
+            //instant = true;
+            return;
+        }
+
         if (_currentCommand > 0)
         {
             _undone = true;
             _currentCommand--;
-            _commands[_currentCommand].Undo(instant);
+            float animationDuration = _commands[_currentCommand].Undo(instant);
+            _nextTime = Time.time + (0.5f * animationDuration);
             _fail = false;
-            Debug.Log("Undone: " + _commands[_currentCommand]);
+            //Debug.Log("Undone: " + _commands[_currentCommand]);
         }
     }
 
@@ -238,7 +256,7 @@ public class GameLogic
             if (state.boatTransportables[i] != null)
                 state.boatTransportables[i].Teleport(_boat, i);
         }
-        _boat.GoTo(state.currentIsland, true);
+        _boat.GoTo(state.currentIsland, out float animationDuration, true);
 
         List<Transportable> transportablesToMove = new List<Transportable>();
         List<Island> islandToMoveTo = new List<Island>();
@@ -250,6 +268,21 @@ public class GameLogic
                 transportable.Teleport(island.islandRef);
             }
         }
+    }
+
+    public IEnumerator ShowAllMovesCoroutine()
+    {
+        _busy = true;
+
+        while (_currentCommand < _commands.Count)
+        {
+            yield return new WaitForSeconds(_commands[_currentCommand].Execute());
+            _currentCommand++;
+        }
+
+        _busy = false;
+
+        yield return null;
     }
 }
 

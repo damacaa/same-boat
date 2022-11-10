@@ -56,10 +56,11 @@ public class Transportable
         _behaviour.SetUp(this, _scripatableObject);
     }
 
-    internal void GoTo(Transform transform, bool instant = false)
+    internal void GoTo(Transform transform, out float animationDuration, bool instant = false)
     {
+        animationDuration = 0;
         if (_behaviour)
-            _behaviour.GoTo(transform, instant);
+            _behaviour.GoTo(transform, instant, out animationDuration);
     }
 
     internal void Teleport(Boat boat, int pos)
@@ -73,7 +74,7 @@ public class Transportable
     {
         if (_currentIsland != null)
             _currentIsland.Remove(this);
-        island.Add(this, true);
+        island.Add(this, out float animationDuration, true);
         _currentIsland = island;
     }
 }
