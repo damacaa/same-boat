@@ -56,4 +56,19 @@ public class Transportable
         if (_behaviour)
             _behaviour.GoTo(transform, instant);
     }
+
+    internal void Teleport(Boat boat)
+    {
+        _currentIsland.Remove(this);
+        _currentIsland = null;
+        boat.LoadBoat(this);
+    }
+
+    internal void Teleport(Island island)
+    {
+        if (_currentIsland != null)
+            _currentIsland.Remove(this);
+        island.Add(this);
+        _currentIsland = island;
+    }
 }

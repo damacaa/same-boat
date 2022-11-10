@@ -7,22 +7,22 @@ public class BoatLoadCommand : BoatCommand
     public BoatLoadCommand(Boat boat, Transportable actor)
     {
         _boat = boat;
-        _actor = actor;
+        _trasportable = actor;
     }
 
     public override void Execute()
     {
-        success = _boat.LoadBoat(_actor);
+        success = _boat.LoadBoat(_trasportable);
     }
 
     public override void Undo()
     {
         if (!success) return;
-        _boat.UnloadBoat(_actor);
+        _boat.UnloadBoat(_trasportable);
     }
 
     public override string ToString()
     {
-        return _actor + " loaded, " + (success ? "suceeded" : "failed");
+        return _trasportable + " loaded, " + (success ? "suceeded" : "failed");
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,9 +7,131 @@ namespace Solver
 {
     public class Solver
     {
-        public static void Solve(State initial)
+        public static int Solve(GameLogic game)
         {
+            State current = null;
+            State next = game.GetCurrentState();
 
+            Dictionary<string, State> dict = new Dictionary<string, State>();
+
+            int maxIter = 10000;
+            while (!game.Win && maxIter > 0)
+            {
+                Debug.Log(maxIter + ": " + current);
+
+                current = next;
+                if (game.Win)
+                {
+                    break;
+                }
+
+                dict.TryAdd(current.ToString(), current);
+
+                bool done = false;
+
+                if (current.boatOccupiedSeats < current.boatCapacity)
+                {
+                    for (int i1 = 0; i1 < current.currentIsland.Transportables.Count; i1++)
+                    {
+                        Transportable transportable = current.currentIsland.Transportables[i1];
+
+
+                        if (!game.LoadOnBoat(transportable))
+                        {
+                            continue;
+                        }
+
+                        next = game.GetCurrentState();
+                        if (game.Fail || dict.ContainsKey(next.ToString()))
+                        {
+                            game.Undo();
+                        }
+                        else
+                        {
+                            done = true;
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    for (int i1 = 0; i1 < current.boat.Count; i1++)
+                    {
+                        Transportable transportable = current.boat[i1];
+                        if (transportable == null)
+                            continue;
+
+                        if (!game.UnloadFromBoat(transportable))
+                        {
+                            continue;
+                        }
+
+                        next = game.GetCurrentState();
+                        if (game.Fail || dict.ContainsKey(next.ToString()))
+                        {
+                            game.Undo();
+                        }
+                        else
+                        {
+                            done = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (!done)
+                {
+                    foreach (var island in current.islands)
+                    {
+                        if (island.islandRef != current.currentIsland)
+                        {
+                            game.MoveBoatToIsland(island.islandRef);
+                            next = game.GetCurrentState();
+                            if (game.Fail || dict.ContainsKey(next.ToString()))
+                            {
+                                game.Undo();
+                            }
+                            else
+                            {
+                                done = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                if (!done)
+                {
+                    game.Undo();
+                    current = current.previousState;
+                }
+                else
+                {
+                    next.previousState = current;
+                    next.steps = current.steps + 1;
+                }
+
+                maxIter--;
+            }
+
+            int requiredSteps = 0;
+            while (current.previousState != null)
+            {
+                current = current.previousState;
+                requiredSteps++;
+            }
+
+            //game.SetState(current);
+
+            return requiredSteps;
+        }
+
+        private static bool CheckValidStep(GameLogic game, List<State> closedList)
+        {
+            if (game.Fail)
+                return false;
+
+            return closedList.Contains(game.GetCurrentState());
         }
 
         public static bool CheckFail(List<Transportable> transportables)
@@ -19,7 +142,7 @@ namespace Solver
             {
                 foreach (var b in transportables)
                 {
-                    if(a == null || b == null)
+                    if (a == null || b == null)
                     {
                         continue;
                     }
@@ -34,8 +157,74 @@ namespace Solver
         }
     }
 
-    public class State
+    public class State : IEquatable<State>
     {
+        public class IslandState
+        {
+            public Island islandRef;
+            public Transportable[] transportables;
+            public IslandState(Island island)
+            {
+                this.islandRef = island;
+                transportables = island.Transportables.ToArray();
+            }
+        }
 
+        public State previousState = null;
+        public int steps = 0;
+
+        internal Island currentIsland;
+        public List<IslandState> islands = new List<IslandState>();
+
+        public List<Transportable> boat = new List<Transportable>();
+        public int boatCapacity = 0;
+        public int boatOccupiedSeats = 0;
+
+        public int F { get { return (2 * islands[islands.Count - 1].transportables.Length) - steps; } }
+
+        public void AddIsland(Island island)
+        {
+            islands.Add(new IslandState(island));
+        }
+
+        public bool Equals(State other)
+        {
+            return ToString() == other.ToString();
+        }
+
+        string text = "";
+        public override string ToString()
+        {
+            if (text != "")
+                return text;
+
+            string result = "";
+            foreach (var island in islands)
+            {
+                result += "[ ";
+                foreach (var transportable in island.transportables)
+                {
+                    result += transportable + " ";
+                }
+                result += "] ";
+            }
+
+            result += "< ";
+
+            for (int i = 0; i < boatCapacity; i++)
+            {
+                if (i < boat.Count && boat[i] != null)
+                {
+                    result += "[" + boat[i] + "] ";
+                }
+                else
+                {
+                    result += "[ ] ";
+                }
+            }
+            result += "> (" + currentIsland + ")";
+
+            return result;
+        }
     }
 }

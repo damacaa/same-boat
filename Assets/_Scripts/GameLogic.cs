@@ -16,8 +16,12 @@ public class GameLogic
     List<Command> _commands = new List<Command>();
 
     //Control
+    bool _win = false;
     bool _fail = false;
     bool _undone = false;
+
+    public bool Win { get { return _win; } }
+    public bool Fail { get { return _fail; } }
 
     public Boat Boat { get { return _boat; } }
     public Island FirstIsland { get { return _islands[0]; } }
@@ -31,7 +35,6 @@ public class GameLogic
         serializedLevel.islands[1] = new SerializedInfo.Island();
         serializedLevel.islands[0].transportables = new string[] { "fox", "chicken", "corn" };
         serializedLevel.islands[1].transportables = new string[] { };
-
 
         //Desearialize transportables
         foreach (var serializedIsland in serializedLevel.islands)
@@ -58,20 +61,24 @@ public class GameLogic
         TransportableManager.instace.GenerateSprites(_islands.ToArray());
     }
 
-    public void Execute()
+    public bool Execute()
     {
         if (!_fail && _currentCommand < _commands.Count)
         {
             _commands[_currentCommand].Execute();
             Debug.Log(_commands[_currentCommand]);
-            _currentCommand++;
+
 
             _fail = CheckFail();
 
 
             if (!_fail)
                 CheckWin();
+
+            return _commands[_currentCommand++].Success;
         }
+
+        return false;
     }
 
 
@@ -83,6 +90,7 @@ public class GameLogic
             _currentCommand--;
             _commands[_currentCommand].Undo();
             _fail = false;
+            Debug.Log("Undone: " + _commands[_currentCommand]);
         }
     }
 
@@ -109,16 +117,16 @@ public class GameLogic
 
     void CheckWin()
     {
-        bool win = true;
+        _win = true;
         foreach (var island in _islands)
         {
             if (island != _islands[_islands.Count - 1]) //Last island
             {
-                win = win && island.IsEmpty();
+                _win = _win && island.IsEmpty();
             }
         }
 
-        if (win)
+        if (_win)
             Debug.Log("WIN!");
     }
 
@@ -151,22 +159,22 @@ public class GameLogic
         return result;
     }
 
-    public void LoadOnBoat(Transportable load)
+    public bool LoadOnBoat(Transportable load)
     {
-        AddCommand(new BoatLoadCommand(_boat, load));
+        return AddCommand(new BoatLoadCommand(_boat, load));
     }
 
-    public void UnloadFromBoat(Transportable load)
+    public bool UnloadFromBoat(Transportable load)
     {
-        AddCommand(new BoatUnloadCommand(_boat, load));
+        return AddCommand(new BoatUnloadCommand(_boat, load));
     }
 
-    public void MoveBoatToIsland(Island island)
+    public bool MoveBoatToIsland(Island island)
     {
-        AddCommand(new BoatTravelCommand(_boat, island));
+        return AddCommand(new BoatTravelCommand(_boat, island));
     }
 
-    void AddCommand(Command command)
+    bool AddCommand(Command command)
     {
         if (_undone && _commands.Count > _currentCommand)
             _commands.RemoveRange(_currentCommand, _commands.Count - _currentCommand);
@@ -174,7 +182,52 @@ public class GameLogic
 
         _commands.Add(command);
 
-        Execute();
+        return Execute();
+    }
+
+    public Solver.State GetCurrentState()
+    {
+        Solver.State currentState = new Solver.State();
+        foreach (var island in _islands)
+        {
+            currentState.AddIsland(island);
+        }
+        currentState.currentIsland = _boat.GetCurrentIsland();
+
+        currentState.boat = _boat.Transportables;
+        currentState.boatCapacity = _boat.Capacity;
+        currentState.boatOccupiedSeats = _boat.Occupied;
+
+        return currentState;
+    }
+
+    public void SetState(Solver.State state)
+    {
+
+        foreach (var transportable in state.boat)
+        {
+            transportable.Teleport(_boat);
+        }
+
+        List<Transportable> transportablesToMove = new List<Transportable>();
+        List<Island> islandToMoveTo = new List<Island>();
+
+        foreach (var island in state.islands)
+        {
+            foreach (var transportable in island.transportables)
+            {
+                transportable.Teleport(island.islandRef);
+                //transportablesToMove.Add(transportable);
+                //islandToMoveTo.Add(island);
+            }
+        }
+
+        for (int i = 0; i < transportablesToMove.Count; i++)
+        {
+            transportablesToMove[i].Teleport(islandToMoveTo[i]);
+        }
+
+        //_boat.GoTo(state.currentIsland, true);
     }
 }
 

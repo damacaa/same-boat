@@ -48,6 +48,16 @@ public class GameManager : MonoBehaviour
             print(game);
             _selectedTransportable = null;
         }
+
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            int steps = Solver.Solver.Solve(game);
+            print(steps);
+            for (int i = 0; i < steps; i++)
+            {
+                //game.Undo();
+            }
+        }
     }
 
     public void IslandInteraction(Island island)
@@ -101,4 +111,5 @@ public class GameManager : MonoBehaviour
             _selectedTransportable = null;
         }
     }
+
 }

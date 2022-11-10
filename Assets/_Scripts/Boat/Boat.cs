@@ -21,6 +21,7 @@ public class Boat
     }
 
     public int Capacity { get { return _capacity; } }
+    public int Occupied { get { return _occupied; } }
 
 
     public Boat(int capacity)
@@ -59,7 +60,6 @@ public class Boat
 
         if (_behaviour)
         {
-            Debug.Log("Boat loaded");
             newTransportable.GoTo(_behaviour.GetSeat(pos));
         }
 
