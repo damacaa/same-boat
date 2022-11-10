@@ -39,6 +39,7 @@ public class BoatBehaviour : MonoBehaviour
 
     internal void GoTo(Island newIsland, bool instant)
     {
+        StopAllCoroutines();
         Vector3 destination = newIsland.Behaviour.GetPortPosition();
         if (instant)
         {

@@ -64,12 +64,12 @@ public class Island
         return _transportables.Contains(newTransportable);
     }
 
-    public void Add(Transportable data)
+    public void Add(Transportable data, bool instant = false)
     {
         _transportables.Add(data);
         data.Island = this;
         if (_behaviour)
-            data.GoTo(_behaviour.FindSpot());
+            data.GoTo(_behaviour.FindSpot(), instant);
     }
 
     public void Remove(Transportable data)

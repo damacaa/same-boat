@@ -4,10 +4,22 @@ using UnityEngine;
 
 public abstract class Command
 {
-    protected bool success = true;
-    public bool Success { get { return success; } }
-    public abstract void Execute();
-    public abstract void Undo();
+    protected bool _success = true;
+    public bool Success { get { return _success; } }
+    public abstract void Execute(bool instant = false);
+    public abstract void Undo(bool instant = false);
+
+    public IEnumerator ExecuteCoroutine(bool instant = false)
+    {
+        Execute(instant);
+        yield return null;
+    }
+
+    public IEnumerator UndoCoroutine(bool instant = false)
+    {
+        Undo(instant);
+        yield return null;
+    }
 }
 
 public abstract class BoatCommand : Command

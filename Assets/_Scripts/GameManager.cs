@@ -51,12 +51,11 @@ public class GameManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.S))
         {
+            GameLogic g = new GameLogic(game);
+            //g.MoveBoatToIsland(g.FirstIsland);
+            //var s = game.GetCurrentState();
             int steps = Solver.Solver.Solve(game);
             print(steps);
-            for (int i = 0; i < steps; i++)
-            {
-                //game.Undo();
-            }
         }
     }
 

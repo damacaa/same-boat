@@ -33,6 +33,8 @@ public class TransportableBehaviour : MonoBehaviour
 
     public void SetUp(Transportable t, TransportableSO scriptableObject)
     {
+        print("WTF");
+
         data = t;
 
         if (!TryGetComponent<Animator>(out _animator))
@@ -57,6 +59,7 @@ public class TransportableBehaviour : MonoBehaviour
         {
             StopAllCoroutines();
             transform.position = target.position;
+            _walking = false;
         }
         else
         {

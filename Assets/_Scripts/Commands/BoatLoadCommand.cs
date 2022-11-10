@@ -10,19 +10,19 @@ public class BoatLoadCommand : BoatCommand
         _trasportable = actor;
     }
 
-    public override void Execute()
+    public override void Execute(bool instant = false)
     {
-        success = _boat.LoadBoat(_trasportable);
+        _success = _boat.LoadBoat(_trasportable, instant);
     }
 
-    public override void Undo()
+    public override void Undo(bool instant = false)
     {
-        if (!success) return;
-        _boat.UnloadBoat(_trasportable);
+        if (!_success) return;
+        _boat.UnloadBoat(_trasportable, instant);
     }
 
     public override string ToString()
     {
-        return _trasportable + " loaded, " + (success ? "suceeded" : "failed");
+        return _trasportable + " loaded, " + (_success ? "suceeded" : "failed");
     }
 }

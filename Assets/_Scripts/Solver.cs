@@ -9,16 +9,23 @@ namespace Solver
     {
         public static int Solve(GameLogic game)
         {
+            State initial = game.GetCurrentState();
+
             State current = null;
-            State next = game.GetCurrentState();
+            State next = initial;
 
             Dictionary<string, State> dict = new Dictionary<string, State>();
 
-            int maxIter = 10000;
-            while (!game.Win && maxIter > 0)
-            {
-                Debug.Log(maxIter + ": " + current);
+            int level = 0;
 
+            int iter = 0;
+            int maxIter = 10000;
+            while (!game.Win && iter < maxIter)
+            {
+                iter++;
+                Debug.Log(iter + ": " + current);
+
+                next.previousState = current;
                 current = next;
                 if (game.Win)
                 {
@@ -36,7 +43,7 @@ namespace Solver
                         Transportable transportable = current.currentIsland.Transportables[i1];
 
 
-                        if (!game.LoadOnBoat(transportable))
+                        if (!game.LoadOnBoat(transportable, true))
                         {
                             continue;
                         }
@@ -55,13 +62,13 @@ namespace Solver
                 }
                 else
                 {
-                    for (int i1 = 0; i1 < current.boat.Count; i1++)
+                    for (int i1 = 0; i1 < current.boatTransportables.Count; i1++)
                     {
-                        Transportable transportable = current.boat[i1];
+                        Transportable transportable = current.boatTransportables[i1];
                         if (transportable == null)
                             continue;
 
-                        if (!game.UnloadFromBoat(transportable))
+                        if (!game.UnloadFromBoat(transportable, true))
                         {
                             continue;
                         }
@@ -85,7 +92,7 @@ namespace Solver
                     {
                         if (island.islandRef != current.currentIsland)
                         {
-                            game.MoveBoatToIsland(island.islandRef);
+                            game.MoveBoatToIsland(island.islandRef, true);
                             next = game.GetCurrentState();
                             if (game.Fail || dict.ContainsKey(next.ToString()))
                             {
@@ -104,14 +111,18 @@ namespace Solver
                 {
                     game.Undo();
                     current = current.previousState;
+                    level--;
+                    if(level < 0)
+                    {
+                        Debug.Log("Can't find a solution");
+                        return -1;
+                    }
                 }
                 else
                 {
-                    next.previousState = current;
                     next.steps = current.steps + 1;
+                    level++;
                 }
-
-                maxIter--;
             }
 
             int requiredSteps = 0;
@@ -119,9 +130,10 @@ namespace Solver
             {
                 current = current.previousState;
                 requiredSteps++;
+                game.Undo(true);
             }
 
-            //game.SetState(current);
+            //game.SetState(initial);
 
             return requiredSteps;
         }
@@ -173,10 +185,10 @@ namespace Solver
         public State previousState = null;
         public int steps = 0;
 
-        internal Island currentIsland;
+        public Island currentIsland;
         public List<IslandState> islands = new List<IslandState>();
 
-        public List<Transportable> boat = new List<Transportable>();
+        public List<Transportable> boatTransportables = new List<Transportable>();
         public int boatCapacity = 0;
         public int boatOccupiedSeats = 0;
 
@@ -213,9 +225,9 @@ namespace Solver
 
             for (int i = 0; i < boatCapacity; i++)
             {
-                if (i < boat.Count && boat[i] != null)
+                if (i < boatTransportables.Count && boatTransportables[i] != null)
                 {
-                    result += "[" + boat[i] + "] ";
+                    result += "[" + boatTransportables[i] + "] ";
                 }
                 else
                 {

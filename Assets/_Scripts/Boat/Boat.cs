@@ -9,19 +9,16 @@ public class Boat
     int _capacity = 1;
     int _occupied = 0;
 
-    List<Transportable> _seats = new List<Transportable>();
-    Island _currentIsland;
-
     BoatBehaviour _behaviour;
+
+    Island _currentIsland;
+    List<Transportable> _seats = new List<Transportable>();
+
     public BoatBehaviour Behaviour { get { return _behaviour; } }
-
-    public List<Transportable> Transportables
-    {
-        get { return _seats; }
-    }
-
+    public List<Transportable> Transportables { get { return _seats; } }
     public int Capacity { get { return _capacity; } }
     public int Occupied { get { return _occupied; } }
+    public bool IsEmpty { get { return _occupied == 0; } }
 
 
     public Boat(int capacity)
@@ -29,7 +26,7 @@ public class Boat
         _capacity = capacity;
     }
 
-    public bool LoadBoat(Transportable newTransportable)
+    public bool LoadBoat(Transportable newTransportable, bool instant = false)
     {
         if (_occupied >= _capacity || _currentIsland == null || !_currentIsland.CheckIfExists(newTransportable))
             return false;
@@ -60,10 +57,29 @@ public class Boat
 
         if (_behaviour)
         {
-            newTransportable.GoTo(_behaviour.GetSeat(pos));
+            newTransportable.GoTo(_behaviour.GetSeat(pos), instant);
         }
 
         return true;
+    }
+
+    public void ForceLoad(Transportable newTransportable, int pos)
+    {
+
+        // 0  <  1
+        // 1  ==  1
+        while (pos < _seats.Count)
+        {
+            _seats.Add(null);
+        }
+        _seats[pos] = newTransportable;
+
+        _occupied++;
+
+        if (_behaviour)
+        {
+            newTransportable.GoTo(_behaviour.GetSeat(pos), true);
+        }
     }
 
     internal void SetUp(GameObject g)
@@ -74,14 +90,13 @@ public class Boat
 
     public void GoTo(Island newIsland, bool instant = false)
     {
-        if (_currentIsland == newIsland)
-            return;
-
         if (_behaviour)
             _behaviour.GoTo(newIsland, instant);
 
         _currentIsland = newIsland;
     }
+
+
 
     internal bool Contains(Transportable transportable)
     {
@@ -97,7 +112,7 @@ public class Boat
         }
     }
 
-    public bool UnloadBoat(Transportable selectedTransportable)
+    public bool UnloadBoat(Transportable selectedTransportable, bool instant = false)
     {
         if (_currentIsland == null)
             return false;
@@ -108,7 +123,7 @@ public class Boat
             return false;
         }
         _seats[i] = null;
-        _currentIsland.Add(selectedTransportable);
+        _currentIsland.Add(selectedTransportable, instant);
         _occupied--;
         return true;
     }
@@ -137,8 +152,11 @@ public class Boat
         return _currentIsland;
     }
 
-    internal bool IsEmpty()
+    internal void Empty()
     {
-        return _occupied == 0;
+        _occupied = 0;
     }
+
+
+
 }
