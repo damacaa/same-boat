@@ -18,6 +18,11 @@ public class Transportable
         _scripatableObject = TransportableManager.instace.GetTransportable(key);
     }
 
+    public Transportable(Transportable original)
+    {
+        _scripatableObject = original._scripatableObject;
+    }
+
     public bool CheckCompatibility(Transportable other)
     {
         return CheckCompatibility(this, other);
@@ -51,9 +56,25 @@ public class Transportable
         _behaviour.SetUp(this, _scripatableObject);
     }
 
-    internal void GoTo(Transform transform, bool instant = false)
+    internal void GoTo(Transform transform, out float animationDuration, bool instant = false)
     {
+        animationDuration = 0;
         if (_behaviour)
-            _behaviour.GoTo(transform, instant);
+            _behaviour.GoTo(transform, instant, out animationDuration);
+    }
+
+    internal void Teleport(Boat boat, int pos)
+    {
+        _currentIsland.Remove(this);
+        _currentIsland = null;
+        boat.ForceLoad(this, pos);
+    }
+
+    internal void Teleport(Island island)
+    {
+        if (_currentIsland != null)
+            _currentIsland.Remove(this);
+        island.Add(this, out float animationDuration, true);
+        _currentIsland = island;
     }
 }

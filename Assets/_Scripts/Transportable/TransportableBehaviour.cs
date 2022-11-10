@@ -51,12 +51,14 @@ public class TransportableBehaviour : MonoBehaviour
     }
 
     Coroutine _movement;
-    internal void GoTo(Transform target, bool instant)
+    internal float GoTo(Transform target, bool instant, out float animationDuration)
     {
         if (instant)
         {
             StopAllCoroutines();
             transform.position = target.position;
+            _walking = false;
+            animationDuration = 0;
         }
         else
         {
@@ -66,10 +68,11 @@ public class TransportableBehaviour : MonoBehaviour
                 transform.position = transform.parent.position;
             }
 
-            float duration = Vector2.Distance(transform.position, target.position) / _speed;
-            _movement = StartCoroutine(MovementCoroutine(target, duration));
+            animationDuration = Vector2.Distance(transform.position, target.position) / _speed;
+            _movement = StartCoroutine(MovementCoroutine(target, animationDuration));
         }
         this.transform.parent = target;
+        return animationDuration;
     }
 
     IEnumerator MovementCoroutine(Transform target, float duration)

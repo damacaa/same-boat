@@ -4,22 +4,34 @@ using UnityEngine;
 
 public abstract class Command
 {
-    protected Transportable _actor;
-    protected bool success = true;
+    protected bool _success = true;
+    public bool Success { get { return _success; } }
+    public abstract float Execute(bool instant = false);
+    public abstract float Undo(bool instant = false);
 
-    public abstract void Execute();
-    public abstract void Undo();
+    public IEnumerator ExecuteCoroutine(bool instant = false)
+    {
+        Execute(instant);
+        yield return null;
+    }
+
+    public IEnumerator UndoCoroutine(bool instant = false)
+    {
+        Undo(instant);
+        yield return null;
+    }
 }
 
 public abstract class BoatCommand : Command
 {
+    protected Transportable _trasportable;
     protected Boat _boat;
     protected Island _island;
 
     protected BoatCommand() { }
     public BoatCommand(Transportable actor, Boat boat, Island island)
     {
-        _actor = actor;
+        _trasportable = actor;
         _boat = boat;
         _island = island;
     }

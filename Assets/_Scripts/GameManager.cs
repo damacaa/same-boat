@@ -29,7 +29,7 @@ public class GameManager : MonoBehaviour
         game.GenerateGameObjects();
 
         _boat = game.Boat;
-        _boat.GoTo(game.FirstIsland, true);
+        _boat.GoTo(game.FirstIsland, out float animationDuration, true);
 
         print(game);
     }
@@ -47,6 +47,17 @@ public class GameManager : MonoBehaviour
             game.Undo();
             print(game);
             _selectedTransportable = null;
+        }
+
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            GameLogic g = new GameLogic(game);
+            //g.MoveBoatToIsland(g.FirstIsland);
+            //var s = game.GetCurrentState();
+            int steps = Solver.Solver.Solve(game);
+            print(steps);
+
+            StartCoroutine(game.ShowAllMovesCoroutine());
         }
     }
 
@@ -101,4 +112,5 @@ public class GameManager : MonoBehaviour
             _selectedTransportable = null;
         }
     }
+
 }

@@ -37,9 +37,10 @@ public class BoatBehaviour : MonoBehaviour
         return transform;
     }
 
-    internal void GoTo(Island newIsland, bool instant)
+    internal void GoTo(Island newIsland, out float animationDuration, bool instant)
     {
-        print("Mooving");
+        animationDuration = 0;
+        StopAllCoroutines();
         Vector3 destination = newIsland.Behaviour.GetPortPosition();
         if (instant)
         {
@@ -47,8 +48,8 @@ public class BoatBehaviour : MonoBehaviour
         }
         else
         {
-            float duration = Vector2.Distance(transform.position, destination) / _speed;
-            StartCoroutine(MovementCoroutine(destination, duration));
+            animationDuration = Vector2.Distance(transform.position, destination) / _speed;
+            StartCoroutine(MovementCoroutine(destination, animationDuration));
         }
     }
 

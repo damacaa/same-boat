@@ -7,22 +7,24 @@ public class BoatUnloadCommand : BoatCommand
     public BoatUnloadCommand(Boat boat, Transportable actor)
     {
         _boat = boat;
-        _actor = actor;
+        _trasportable = actor;
     }
 
-    public override void Execute()
+    public override float Execute(bool instant = false)
     {
-        success = _boat.UnloadBoat(_actor);
+        _success = _boat.UnloadBoat(_trasportable, out float animationDuration, instant);
+        return animationDuration;
     }
 
-    public override void Undo()
+    public override float Undo(bool instant = false)
     {
-        if (!success) return;
-        _boat.LoadBoat(_actor);
+        if (!_success) return 0;
+        _boat.LoadBoat(_trasportable, out float animationDuration, instant); 
+        return animationDuration;
     }
 
     public override string ToString()
     {
-        return _actor + " unloaded, " + (success ? "suceeded" : "failed");
+        return _trasportable + " unloaded, " + (_success ? "suceeded" : "failed");
     }
 }

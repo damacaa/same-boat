@@ -12,15 +12,17 @@ public class BoatTravelCommand : BoatCommand
         _island = island;
     }
 
-    public override void Execute()
+    public override float Execute(bool instant = false)
     {
         _previousIsland = _boat.GetCurrentIsland();
-        _boat.GoTo(_island);
+        _boat.GoTo(_island, out float animationDuration, instant);
+        return animationDuration;
     }
 
-    public override void Undo()
+    public override float Undo(bool instant = false)
     {
-        _boat.GoTo(_previousIsland);
+        _boat.GoTo(_previousIsland, out float animationDuration, instant);
+        return animationDuration;
     }
 
     public override string ToString()
