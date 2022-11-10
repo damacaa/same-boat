@@ -126,6 +126,8 @@ public class GameLogic
             }
         }
 
+        _win = win && _boat.IsEmpty();
+
         if (_win)
             Debug.Log("WIN!");
     }
