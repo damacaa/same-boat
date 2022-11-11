@@ -27,6 +27,10 @@ public class TransportableBehaviour : MonoBehaviour
             float r = Mathf.Sin(_speed * Time.time * 10) * 10f;
             transform.rotation = Quaternion.Euler(new Vector3(0, 0, r));
         }
+        else
+        {
+            transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
+        }
 
         _renderer.sortingOrder = 1 + (int)Mathf.Abs(100 - Mathf.Min(transform.position.y * 10, 100));
     }

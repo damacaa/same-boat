@@ -19,6 +19,10 @@ public class MapGenerator : MonoBehaviour
     [SerializeField]
     GameObject _islandPrefab;
 
+
+    [SerializeField]
+    GameObject[] islandGOs;
+
     [SerializeField]
     GameObject[] _boatPrefabs;
 
@@ -38,12 +42,11 @@ public class MapGenerator : MonoBehaviour
     {
         print("Please implement me Alpuerro uwu");
 
-        int i = -1;
+        int i = 0;
         foreach (var island in islands)
         {
-            var g = GameObject.Instantiate(_islandPrefab, Vector2.one * 3.5f * i , Quaternion.identity);
-            island.AssignGameObject(g);
-            i += 2;
+            island.AssignGameObject(islandGOs[i]);
+            i++;
         }
     }
 

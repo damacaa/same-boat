@@ -5,8 +5,14 @@ using UnityEngine;
 
 public class IslandBehaviour : MonoBehaviour
 {
-    Transform[] _transportablePositions;
+    [SerializeField]
     Transform _port;
+    [SerializeField]
+    Transform _center;
+
+    [SerializeField]
+    Transform[] _transportablePositions;
+
     Island _island;
 
     // Start is called before the first frame update
@@ -34,7 +40,7 @@ public class IslandBehaviour : MonoBehaviour
     internal Transform FindSpot()
     {
         Transform t = new GameObject("Spot").transform;
-        t.position = (Vector2)transform.position + 2f * UnityEngine.Random.insideUnitCircle;
+        t.position = (Vector2)_center.position + 2f * UnityEngine.Random.insideUnitCircle;
         t.position = t.position - 0.01f * Vector3.forward;
         t.parent = transform;
         return t;
@@ -42,6 +48,6 @@ public class IslandBehaviour : MonoBehaviour
 
     internal Vector3 GetPortPosition()
     {
-        return transform.position * 0.25f;
+        return _port.position;
     }
 }
