@@ -13,6 +13,8 @@ public class Transportable
     Island _currentIsland;
     public Island Island { get { return _currentIsland; } set { _currentIsland = value; } }
 
+    public int PositionIndexInIsland { get; internal set; }
+
     public Transportable(string key)
     {
         _scripatableObject = TransportableManager.instace.GetTransportable(key);

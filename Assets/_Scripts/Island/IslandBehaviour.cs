@@ -37,13 +37,23 @@ public class IslandBehaviour : MonoBehaviour
         GameManager.instance.IslandInteraction(_island);
     }
 
-    internal Transform FindSpot()
+    internal Transform GetSpot( int index)
     {
-        Transform t = new GameObject("Spot").transform;
-        t.position = (Vector2)_center.position + 2f * UnityEngine.Random.insideUnitCircle;
-        t.position = t.position - 0.05f * Vector3.forward;
-        t.parent = transform;
-        return t;
+        return _transportablePositions[index];
+    }
+
+    internal Transform FindSpot(out int index)
+    {
+        for (index = 0; index < _transportablePositions.Length; index++)
+        {
+            Transform t = _transportablePositions[index];
+            if (t.childCount == 0)
+            {
+                return t;
+            }
+        }
+
+        return transform;
     }
 
     internal Vector3 GetPortPosition()

@@ -51,10 +51,11 @@ public class Island
         _behaviour.Assign(this);
     }
 
-    internal Transform FindSpot()
+    internal Transform FindSpot(out int index)
     {
+        index = -1;
         if (_behaviour)
-            return _behaviour.FindSpot();
+            return _behaviour.FindSpot(out index);
 
         return null;
     }
@@ -66,12 +67,25 @@ public class Island
 
     public void Add(Transportable data, out float animationDuration, bool instant = false)
     {
+        Add(data, -1, out animationDuration, instant);
+    }
+
+    public void Add(Transportable data, int position, out float animationDuration, bool instant = false)
+    {
         _transportables.Add(data);
         data.Island = this;
 
         animationDuration = 0;
         if (_behaviour)
-            data.GoTo(_behaviour.FindSpot(), out animationDuration, instant);
+        {
+            if (position != -1)
+                data.GoTo(_behaviour.GetSpot(position), out animationDuration, instant);
+            else
+            {
+                data.GoTo(_behaviour.FindSpot(out int newPosition), out animationDuration, instant);
+                data.PositionIndexInIsland = newPosition;
+            }
+        }
     }
 
     public void Remove(Transportable data)
