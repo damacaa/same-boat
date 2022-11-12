@@ -121,7 +121,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 256
+        y: 384
         width: 128
         height: 128
       alignment: 0
@@ -142,7 +142,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 128
-        y: 256
+        y: 384
         width: 128
         height: 128
       alignment: 0
@@ -163,7 +163,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 256
-        y: 256
+        y: 384
         width: 128
         height: 128
       alignment: 0
@@ -184,7 +184,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 384
-        y: 256
+        y: 384
         width: 128
         height: 128
       alignment: 0
@@ -205,7 +205,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 640
-        y: 256
+        y: 384
         width: 128
         height: 128
       alignment: 0
@@ -225,8 +225,8 @@ TextureImporter:
       name: placeholder_5
       rect:
         serializedVersion: 2
-        x: 0
-        y: 128
+        x: 768
+        y: 384
         width: 128
         height: 128
       alignment: 0
@@ -246,8 +246,8 @@ TextureImporter:
       name: placeholder_6
       rect:
         serializedVersion: 2
-        x: 128
-        y: 128
+        x: 0
+        y: 256
         width: 128
         height: 128
       alignment: 0
@@ -267,8 +267,8 @@ TextureImporter:
       name: placeholder_7
       rect:
         serializedVersion: 2
-        x: 256
-        y: 128
+        x: 128
+        y: 256
         width: 128
         height: 128
       alignment: 0
@@ -288,8 +288,8 @@ TextureImporter:
       name: placeholder_8
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
+        x: 256
+        y: 256
         width: 128
         height: 128
       alignment: 0
@@ -309,8 +309,8 @@ TextureImporter:
       name: placeholder_9
       rect:
         serializedVersion: 2
-        x: 128
-        y: 0
+        x: 768
+        y: 256
         width: 128
         height: 128
       alignment: 0
@@ -330,8 +330,8 @@ TextureImporter:
       name: placeholder_10
       rect:
         serializedVersion: 2
-        x: 256
-        y: 0
+        x: 0
+        y: 128
         width: 128
         height: 128
       alignment: 0
@@ -351,8 +351,8 @@ TextureImporter:
       name: placeholder_11
       rect:
         serializedVersion: 2
-        x: 384
-        y: 0
+        x: 128
+        y: 128
         width: 128
         height: 128
       alignment: 0
@@ -372,8 +372,8 @@ TextureImporter:
       name: placeholder_12
       rect:
         serializedVersion: 2
-        x: 640
-        y: 0
+        x: 256
+        y: 128
         width: 128
         height: 128
       alignment: 0
@@ -385,6 +385,48 @@ TextureImporter:
       bones: []
       spriteID: f97c890e132640d4ba5a371b0455d9d9
       internalID: 776945309
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: placeholder_13
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 128
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ecf85a694ac90724b959d6dcc67e76c4
+      internalID: 1149269649
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: placeholder_14
+      rect:
+        serializedVersion: 2
+        x: 640
+        y: 128
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 72fd01534b4126a428eb4274f6e54f25
+      internalID: 771002466
       vertices: []
       indices: 
       edges: []
@@ -413,6 +455,8 @@ TextureImporter:
       placeholder_2: 20225175
       placeholder_8: 1774115328
       placeholder_7: 2068369827
+      placeholder_14: 771002466
+      placeholder_13: 1149269649
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

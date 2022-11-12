@@ -11,6 +11,9 @@ public class TransportableBehaviour : MonoBehaviour
     Transportable data;
     bool _walking = false;
 
+    GameObject sprite;
+    GameObject shadow;
+
     Animator _animator;
     SpriteRenderer _renderer;
     // Start is called before the first frame update
@@ -22,15 +25,21 @@ public class TransportableBehaviour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Vector3 euler = sprite.transform.rotation.eulerAngles;
+        euler.x = -45;
+        euler.y = 0;
+
         if (_walking)
         {
-            float r = Mathf.Sin(_speed * Time.time * 10) * 10f;
-            transform.rotation = Quaternion.Euler(new Vector3(0, 0, r));
+            euler.z = Mathf.Sin(_speed * Time.time * 10) * 10f;
         }
         else
         {
-            transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
+            euler.z = 0;
         }
+        sprite.transform.localRotation = Quaternion.Euler(euler);
+
+        transform.rotation = Quaternion.identity;
 
         _renderer.sortingOrder = 1 + (int)Mathf.Abs(100 - Mathf.Min(transform.position.y * 10, 100));
     }
@@ -39,17 +48,18 @@ public class TransportableBehaviour : MonoBehaviour
     {
         data = t;
 
-        if (!TryGetComponent<Animator>(out _animator))
-        {
-            _animator = gameObject.AddComponent<Animator>();
-        }
-        _renderer = gameObject.GetComponent<SpriteRenderer>();
+        sprite = transform.GetChild(0).gameObject;
+        shadow = transform.GetChild(1).gameObject;
+
+        _animator = sprite.GetComponent<Animator>();
+        _renderer = sprite.GetComponent<SpriteRenderer>();
+
 
         if (scriptableObject.animatorController != null)
             _animator.runtimeAnimatorController = scriptableObject.animatorController;
     }
 
-    private void OnMouseDown()
+    public void OnMouseDown()
     {
         GameManager.instance.TransportableInteraction(data);
     }
@@ -63,6 +73,7 @@ public class TransportableBehaviour : MonoBehaviour
             transform.position = target.position;
             _walking = false;
             animationDuration = 0;
+            transform.parent = target;
         }
         else
         {
@@ -75,7 +86,7 @@ public class TransportableBehaviour : MonoBehaviour
             animationDuration = Vector2.Distance(transform.position, target.position) / _speed;
             _movement = StartCoroutine(MovementCoroutine(target, animationDuration));
         }
-        this.transform.parent = target;
+        //this.transform.parent = target;
         return animationDuration;
     }
 
@@ -95,6 +106,8 @@ public class TransportableBehaviour : MonoBehaviour
         }
 
         _walking = false;
+
+        transform.parent = target;
 
         yield return null;
     }

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ColliderTest : MonoBehaviour
+public class SpriteClickDetect : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()
@@ -18,6 +18,6 @@ public class ColliderTest : MonoBehaviour
 
     private void OnMouseDown()
     {
-        print(name);
+        transform.parent.GetComponent<TransportableBehaviour>().OnMouseDown();
     }
 }
