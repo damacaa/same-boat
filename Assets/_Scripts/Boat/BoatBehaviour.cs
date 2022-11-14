@@ -57,6 +57,7 @@ public class BoatBehaviour : MonoBehaviour
     {
         Vector2 pos = transform.position;
 
+        transform.rotation = Quaternion.LookRotation(Vector3.forward, destination - (Vector3)pos);
 
         float t = 0;
         while (t < 1)

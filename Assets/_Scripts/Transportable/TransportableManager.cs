@@ -49,7 +49,7 @@ public class TransportableManager : MonoBehaviour
         {
             foreach (var t in island.Transportables)
             {
-                var g = GameObject.Instantiate(transportablePrefab, island.FindSpot());
+                var g = GameObject.Instantiate(transportablePrefab, island.FindSpot(out int index));
                 t.AssignGameObject(g);
             }
         }

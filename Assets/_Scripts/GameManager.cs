@@ -21,6 +21,7 @@ public class GameManager : MonoBehaviour
     GameLogic game;
 
     Transportable _selectedTransportable;
+
     Boat _boat;
 
     private void Start()
@@ -71,7 +72,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            if (_selectedTransportable != null)
+            if (_selectedTransportable != null && _boat.Contains(_selectedTransportable))
             {
                 game.UnloadFromBoat(_selectedTransportable);
                 _selectedTransportable = null;
@@ -81,7 +82,7 @@ public class GameManager : MonoBehaviour
 
     public void TransportableInteraction(Transportable transportable)
     {
-        //print(transportable);
+        print(transportable);
         if (_boat.GetCurrentIsland().CheckIfExists(transportable))
         {
             _selectedTransportable = transportable;
@@ -95,7 +96,6 @@ public class GameManager : MonoBehaviour
         else
         {
             game.MoveBoatToIsland(transportable.Island);
-
             //_boat.GetCurrentIsland() = transportable.Island;
             //game.LoadOnBoat(transportable);
         }
@@ -103,7 +103,6 @@ public class GameManager : MonoBehaviour
 
     public void BoatInteraction(Boat boat)
     {
-        //print("Boat");
         _boat = boat;
         if (_selectedTransportable != null)
         {
