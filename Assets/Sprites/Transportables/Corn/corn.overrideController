@@ -9,5 +9,5 @@ AnimatorOverrideController:
   m_Name: corn
   m_Controller: {fileID: 9100000, guid: 58a223a0c8f3f184f9daf6b54f0c4ce7, type: 2}
   m_Clips:
-  - m_OriginalClip: {fileID: 7400000, guid: b4ce793cf4a52114aa0510ceab610eb8, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: b9dbcbfd9e9e2124db0e55fe0b8fcc2d, type: 2}
     m_OverrideClip: {fileID: 7400000, guid: 9fefa28313b15f6499cfec81c7d45a69, type: 2}
