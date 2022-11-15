@@ -6,7 +6,11 @@ AnimatorOverrideController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+<<<<<<<< HEAD:Assets/Sprites/Transportables/Chicken/chicken.overrideController
   m_Name: chicken
+========
+  m_Name: fox
+>>>>>>>> master:Assets/Sprites/Transportables/Fox/fox.overrideController
   m_Controller: {fileID: 9100000, guid: 58a223a0c8f3f184f9daf6b54f0c4ce7, type: 2}
   m_Clips:
   - m_OriginalClip: {fileID: 7400000, guid: b4ce793cf4a52114aa0510ceab610eb8, type: 2}

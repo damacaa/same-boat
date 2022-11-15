@@ -6,7 +6,11 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+<<<<<<<< HEAD:Assets/Sprites/Transportables/transportable_idle.anim
   m_Name: transportable_idle
+========
+  m_Name: chicken_idle
+>>>>>>>> master:Assets/Sprites/Transportables/Chicken/chicken_idle.anim
   serializedVersion: 6
   m_Legacy: 0
   m_Compressed: 0
