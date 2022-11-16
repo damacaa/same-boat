@@ -28,17 +28,22 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        _game = new GameLogic(levels[_currentLevel]);
-        _game.GenerateGameObjects();
+        LoadLevel(levels[_currentLevel]);
+    }
 
+    public void LoadLevel(Level level)
+    {
+        _game = new GameLogic(level);
+        _game.GenerateGameObjects();
         _boat = _game.Boat;
         _boat.GoTo(_game.FirstIsland, out float animationDuration, true);
-
-        print(_game);
     }
 
     private void Update()
     {
+        if (_game == null)
+            return;
+
         if (Input.GetKeyDown("right"))
         {
             _game.Execute();
