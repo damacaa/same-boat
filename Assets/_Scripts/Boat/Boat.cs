@@ -70,7 +70,7 @@ public class Boat
 
         // 0  <  1
         // 1  ==  1
-        while (pos < _seats.Count)
+        while (pos >= _seats.Count)
         {
             _seats.Add(null);
         }

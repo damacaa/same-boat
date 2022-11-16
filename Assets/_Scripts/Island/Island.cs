@@ -86,6 +86,10 @@ public class Island
                 data.PositionIndexInIsland = newPosition;
             }
         }
+        else
+        {
+            data.PositionIndexInIsland = _transportables.FindIndex(a => a == data);
+        }
     }
 
     public void Remove(Transportable data)

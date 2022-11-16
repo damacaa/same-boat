@@ -38,6 +38,7 @@ namespace Solver
 
                 if (current.boatOccupiedSeats < current.boatCapacity)
                 {
+                    //If boat has empty seats it will load new transportables
                     for (int i1 = 0; i1 < current.currentIsland.Transportables.Count; i1++)
                     {
                         Transportable transportable = current.currentIsland.Transportables[i1];
@@ -49,11 +50,7 @@ namespace Solver
                         }
 
                         next = game.GetCurrentState();
-                        if (game.Fail || dict.ContainsKey(next.ToString()))
-                        {
-                            game.Undo(true);
-                        }
-                        else
+                        if (CheckValidStep(next))
                         {
                             done = true;
                             break;
@@ -62,6 +59,7 @@ namespace Solver
                 }
                 else
                 {
+                    //If boat doesn't have empty seats it will try to unload in current island
                     for (int i1 = 0; i1 < current.boatTransportables.Count; i1++)
                     {
                         Transportable transportable = current.boatTransportables[i1];
@@ -74,11 +72,7 @@ namespace Solver
                         }
 
                         next = game.GetCurrentState();
-                        if (game.Fail || dict.ContainsKey(next.ToString()))
-                        {
-                            game.Undo(true);
-                        }
-                        else
+                        if (CheckValidStep(next))
                         {
                             done = true;
                             break;
@@ -86,6 +80,7 @@ namespace Solver
                     }
                 }
 
+                //If boat couldn't do anything in current island, it try to will travel to another island
                 if (!done)
                 {
                     foreach (var island in current.islands)
@@ -94,11 +89,7 @@ namespace Solver
                         {
                             game.MoveBoatToIsland(island.islandRef, true);
                             next = game.GetCurrentState();
-                            if (game.Fail || dict.ContainsKey(next.ToString()))
-                            {
-                                game.Undo(true);
-                            }
-                            else
+                            if (CheckValidStep(next))
                             {
                                 done = true;
                                 break;
@@ -107,21 +98,23 @@ namespace Solver
                     }
                 }
 
-                if (!done)
-                {
-                    game.Undo(true);
-                    current = current.previousState;
-                    level--;
-                    if(level < 0)
-                    {
-                        Debug.Log("Can't find a solution");
-                        return -1;
-                    }
-                }
-                else
+                if (done)
                 {
                     next.steps = current.steps + 1;
                     level++;
+                }
+                else
+                {
+                    //If can't do anythin, it will undo
+                    game.Undo(true);
+                    current = current.previousState;
+                    level--;
+                    //If it tries to undo beyond initial state, the search will fail
+                    if (level < 0)
+                    {
+                        Debug.Log("Can't find a solution");
+                        break;
+                    }
                 }
             }
 
@@ -133,18 +126,33 @@ namespace Solver
                 game.Undo(true);
             }
 
-            //game.SetState(initial);
+            if (iter == maxIter)
+            {
+                Debug.Log("Need more iter");
+            }
+
+            if (!game.Win)
+            {
+                return -1;
+            }
 
             return requiredSteps;
+
+            ///////////////////////////////////////////////////////////
+
+            //Functions
+            bool CheckValidStep(State next)
+            {
+                if (game.Fail || dict.ContainsKey(next.ToString()))
+                {
+                    game.Undo(true);
+                    return false;
+                }
+
+                return true;
+            }
         }
 
-        private static bool CheckValidStep(GameLogic game, List<State> closedList)
-        {
-            if (game.Fail)
-                return false;
-
-            return closedList.Contains(game.GetCurrentState());
-        }
 
         public static bool CheckFail(List<Transportable> transportables)
         {
