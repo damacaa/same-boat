@@ -7,15 +7,31 @@ public class TransportableBehaviour : MonoBehaviour
 {
     [SerializeField]
     float _speed = 2f;
+    [SerializeField]
+    float _wiggleSpeed = 10f;
+    [SerializeField]
+    float _wiggleAmpitude = 10f;
 
     Transportable data;
-    bool _walking = false;
+    bool _walking;
+    public bool Walking
+    {
+        get { return _walking; }
+        set
+        {
+            _walking = value;
+            if (_animator)
+                _animator.SetBool("walking", _walking);
+        }
+    }
 
     GameObject sprite;
     GameObject shadow;
 
     Animator _animator;
     SpriteRenderer _renderer;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -29,9 +45,9 @@ public class TransportableBehaviour : MonoBehaviour
         euler.x = -45;
         euler.y = 0;
 
-        if (_walking)
+        if (Walking)
         {
-            euler.z = Mathf.Sin(_speed * Time.time * 10) * 10f;
+            euler.z = Mathf.Sin(_speed * Time.time * _wiggleSpeed) * _wiggleAmpitude;
         }
         else
         {
@@ -71,13 +87,13 @@ public class TransportableBehaviour : MonoBehaviour
         {
             StopAllCoroutines();
             transform.position = target.position;
-            _walking = false;
+            Walking = false;
             animationDuration = 0;
             transform.parent = target;
         }
         else
         {
-            if (_walking)
+            if (Walking)
             {
                 StopCoroutine(_movement);
                 transform.position = transform.parent.position;
@@ -93,7 +109,7 @@ public class TransportableBehaviour : MonoBehaviour
     IEnumerator MovementCoroutine(Transform target, float duration)
     {
         Vector2 pos = transform.position;
-        _walking = true;
+        Walking = true;
 
         yield return null;
 
@@ -105,7 +121,7 @@ public class TransportableBehaviour : MonoBehaviour
             yield return null;
         }
 
-        _walking = false;
+        Walking = false;
 
         transform.parent = target;
 
