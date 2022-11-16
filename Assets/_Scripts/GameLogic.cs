@@ -268,7 +268,7 @@ public class GameLogic
 
         while (_currentCommand < _commands.Count)
         {
-            yield return new WaitForSeconds(_commands[_currentCommand].Execute());
+            yield return new WaitForSeconds(1.1f * _commands[_currentCommand].Execute());
             _currentCommand++;
         }
 
