@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class BoatLoadCommand : BoatCommand
 {
+    int _positionInIsland = -1;
+
     public BoatLoadCommand(Boat boat, Transportable actor)
     {
         _boat = boat;
@@ -12,14 +14,14 @@ public class BoatLoadCommand : BoatCommand
 
     public override float Execute(bool instant = false)
     {
-        _success = _boat.LoadBoat(_trasportable, out float animationDuration, instant);
+        _success = _boat.LoadBoat(_trasportable, out _positionInIsland, out float animationDuration, instant);
         return animationDuration;
     }
 
     public override float Undo(bool instant = false)
     {
         if (!_success) return 0;
-        _boat.UnloadBoat(_trasportable, out float animationDuration, instant);
+        _boat.UnloadBoat(_trasportable, _positionInIsland, out float animationDuration, instant);
         return animationDuration;
     }
 

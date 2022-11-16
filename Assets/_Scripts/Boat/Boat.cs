@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -26,12 +24,15 @@ public class Boat
         _capacity = capacity;
     }
 
-    public bool LoadBoat(Transportable newTransportable, out float animationDuration, bool instant = false)
+    public bool LoadBoat(Transportable newTransportable, out int position, out float animationDuration, bool instant = false)
     {
+        position = -1;
         animationDuration = 0;
         if (_occupied >= _capacity || _currentIsland == null || !_currentIsland.CheckIfExists(newTransportable))
             return false;
 
+        //Returns position where it was before being loaded on boat
+        position = newTransportable.PositionIndexInIsland;
         _currentIsland.Remove(newTransportable);
 
         int pos = -1;
@@ -106,7 +107,7 @@ public class Boat
         return _seats.Contains(transportable);
     }
 
-    public bool UnloadBoat(Transportable selectedTransportable, out float animationDuration, bool instant = false)
+    public bool UnloadBoat(Transportable selectedTransportable, int position, out float animationDuration, bool instant = false)
     {
         animationDuration = 0;
         if (_currentIsland == null)
@@ -118,7 +119,7 @@ public class Boat
             return false;
         }
         _seats[i] = null;
-        _currentIsland.Add(selectedTransportable, out animationDuration, instant);
+        _currentIsland.Add(selectedTransportable, position, out animationDuration, instant);
         _occupied--;
         return true;
     }

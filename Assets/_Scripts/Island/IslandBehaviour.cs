@@ -2,14 +2,55 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class IslandBehaviour : MonoBehaviour
 {
-    Transform[] _transportablePositions;
+    [SerializeField]
     Transform _port;
+    [SerializeField]
+    Transform _center;
+
+    [SerializeField]
+    Transform[] _transportablePositions;
+
     Island _island;
 
     // Start is called before the first frame update
+    private void Awake()
+    {
+        return;
+
+        Tilemap t = GetComponent<Tilemap>();
+        var t0 = t.GetTile(new Vector3Int(-6, -6, 0));
+        if (!t0)
+            return;
+        t.SetTile(new Vector3Int(-6, -5, 0), t0);
+
+
+        Tile tempTile = ScriptableObject.CreateInstance(typeof(Tile)) as Tile;
+
+        int size = 100;
+        Texture2D tex = new Texture2D(size, size);
+
+        Color[] colors = new Color[size * size];
+
+        for (int i = 0; i < size; i++)
+        {
+            for (int j = 0; j < size; j++)
+            {
+                int id = i + (size * j);
+                colors[id] = Mathf.Sin(i)*Color.red;
+            }
+        }
+
+        tex.SetPixels(0, 0, size, size, colors);
+        Sprite sprite = Sprite.Create(tex, new Rect(0.0f, 0.0f, tex.width, tex.height), new Vector2(0.5f, 0.5f), 100.0f);
+        tempTile.sprite = sprite;
+
+        t.SetTile(new Vector3Int(-6, -6, 0), tempTile);
+    }
+
     void Start()
     {
 
@@ -31,17 +72,27 @@ public class IslandBehaviour : MonoBehaviour
         GameManager.instance.IslandInteraction(_island);
     }
 
-    internal Transform FindSpot()
+    internal Transform GetSpot(int index)
     {
-        Transform t = new GameObject("Spot").transform;
-        t.position = (Vector2)transform.position + 2f * UnityEngine.Random.insideUnitCircle;
-        t.position = t.position - 0.01f * Vector3.forward;
-        t.parent = transform;
-        return t;
+        return _transportablePositions[index];
+    }
+
+    internal Transform FindSpot(out int index)
+    {
+        for (index = 0; index < _transportablePositions.Length; index++)
+        {
+            Transform t = _transportablePositions[index];
+            if (t.childCount == 0)
+            {
+                return t;
+            }
+        }
+
+        return transform;
     }
 
     internal Vector3 GetPortPosition()
     {
-        return transform.position * 0.25f;
+        return _port.position;
     }
 }

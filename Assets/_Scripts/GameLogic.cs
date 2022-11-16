@@ -29,31 +29,23 @@ public class GameLogic
     public Boat Boat { get { return _boat; } }
     public Island FirstIsland { get { return _islands[0]; } }
 
-    public GameLogic()
+    public GameLogic(Level level)
     {
-        //Read scene from file
-        SerializedInfo.Level serializedLevel = new SerializedInfo.Level();
-        serializedLevel.islands = new SerializedInfo.Island[2];
-        serializedLevel.islands[0] = new SerializedInfo.Island();
-        serializedLevel.islands[1] = new SerializedInfo.Island();
-        serializedLevel.islands[0].transportables = new string[] { "fox", "chicken", "corn" };
-        serializedLevel.islands[1].transportables = new string[] { };
-
         //Desearialize transportables
-        foreach (var serializedIsland in serializedLevel.islands)
+        foreach (var island in level.Islands)
         {
             Island islandData = new Island();
 
-            foreach (var transportableKey in serializedIsland.transportables)
+            foreach (var transportableSO in island.transportables)
             {
-                islandData.Add(new Transportable(transportableKey), out float animationDuration, true);
+                islandData.Add(new Transportable(transportableSO), out float animationDuration, true);
             }
 
             _islands.Add(islandData);
         }
 
         //Boat
-        _boat = new Boat(serializedLevel.boatCapacity);
+        _boat = new Boat(level.BoatCapacity);
     }
 
     public GameLogic(GameLogic original)
@@ -286,18 +278,3 @@ public class GameLogic
     }
 }
 
-namespace SerializedInfo
-{
-    [System.Serializable]
-    public class Level
-    {
-        public Island[] islands;
-        public int boatCapacity = 1;
-    }
-
-    [System.Serializable]
-    public class Island
-    {
-        public string[] transportables;
-    }
-}

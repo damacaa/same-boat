@@ -17,47 +17,55 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    [SerializeField]
+    Level[] levels;
+    [SerializeField]
+    int _currentLevel;
 
-    GameLogic game;
-
+    GameLogic _game;
     Transportable _selectedTransportable;
     Boat _boat;
 
     private void Start()
     {
-        game = new GameLogic();
-        game.GenerateGameObjects();
+        LoadLevel(levels[_currentLevel]);
+    }
 
-        _boat = game.Boat;
-        _boat.GoTo(game.FirstIsland, out float animationDuration, true);
-
-        print(game);
+    public void LoadLevel(Level level)
+    {
+        _game = new GameLogic(level);
+        _game.GenerateGameObjects();
+        _boat = _game.Boat;
+        _boat.GoTo(_game.FirstIsland, out float animationDuration, true);
     }
 
     private void Update()
     {
+        if (_game == null)
+            return;
+
         if (Input.GetKeyDown("right"))
         {
-            game.Execute();
-            print(game);
+            _game.Execute();
+            print(_game);
         }
 
         if (Input.GetKeyDown("left"))
         {
-            game.Undo();
-            print(game);
+            _game.Undo();
+            print(_game);
             _selectedTransportable = null;
         }
 
         if (Input.GetKeyDown(KeyCode.S))
         {
-            GameLogic g = new GameLogic(game);
+            GameLogic g = new GameLogic(_game);
             //g.MoveBoatToIsland(g.FirstIsland);
             //var s = game.GetCurrentState();
-            int steps = Solver.Solver.Solve(game);
+            int steps = Solver.Solver.Solve(_game);
             print(steps);
 
-            StartCoroutine(game.ShowAllMovesCoroutine());
+            StartCoroutine(_game.ShowAllMovesCoroutine());
         }
     }
 
@@ -67,13 +75,13 @@ public class GameManager : MonoBehaviour
         if (_boat.GetCurrentIsland() != island)
         {
             _selectedTransportable = null;
-            game.MoveBoatToIsland(island);
+            _game.MoveBoatToIsland(island);
         }
         else
         {
-            if (_selectedTransportable != null)
+            if (_selectedTransportable != null && _boat.Contains(_selectedTransportable))
             {
-                game.UnloadFromBoat(_selectedTransportable);
+                _game.UnloadFromBoat(_selectedTransportable);
                 _selectedTransportable = null;
             }
         }
@@ -81,7 +89,7 @@ public class GameManager : MonoBehaviour
 
     public void TransportableInteraction(Transportable transportable)
     {
-        //print(transportable);
+        print(transportable);
         if (_boat.GetCurrentIsland().CheckIfExists(transportable))
         {
             _selectedTransportable = transportable;
@@ -94,8 +102,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            game.MoveBoatToIsland(transportable.Island);
-
+            _game.MoveBoatToIsland(transportable.Island);
             //_boat.GetCurrentIsland() = transportable.Island;
             //game.LoadOnBoat(transportable);
         }
@@ -103,12 +110,11 @@ public class GameManager : MonoBehaviour
 
     public void BoatInteraction(Boat boat)
     {
-        //print("Boat");
         _boat = boat;
         if (_selectedTransportable != null)
         {
             print("Load " + _selectedTransportable);
-            game.LoadOnBoat(_selectedTransportable);
+            _game.LoadOnBoat(_selectedTransportable);
             _selectedTransportable = null;
         }
     }
