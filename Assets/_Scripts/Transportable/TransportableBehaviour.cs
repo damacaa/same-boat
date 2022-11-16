@@ -55,8 +55,8 @@ public class TransportableBehaviour : MonoBehaviour
         _renderer = sprite.GetComponent<SpriteRenderer>();
 
 
-        if (scriptableObject.animatorController != null)
-            _animator.runtimeAnimatorController = scriptableObject.animatorController;
+        if (scriptableObject.AnimatorController != null)
+            _animator.runtimeAnimatorController = scriptableObject.AnimatorController;
     }
 
     public void OnMouseDown()

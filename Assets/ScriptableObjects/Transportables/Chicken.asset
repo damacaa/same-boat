@@ -10,11 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6ad458b35b1b62145bbf2e385dc9ecb5, type: 3}
-  m_Name: Corn
+  m_Name: Chicken
   m_EditorClassIdentifier: 
-  name: Corn
-  size: 1
-  isAlive: 0
-  diet: 0
-  sprite: {fileID: 21300000, guid: 6fb1cd87098828f449ae41bef144faea, type: 3}
-  animatorController: {fileID: 22100000, guid: 6f975aeb62f28cb4aa27e4f47c91b1ef, type: 2}
+  name: Chicken
+  Size: 1
+  IsAlive: 1
+  Diet: 0
+  AnimatorController: {fileID: 22100000, guid: bd898b6bd7c78c24b93479ae476972e0, type: 2}
