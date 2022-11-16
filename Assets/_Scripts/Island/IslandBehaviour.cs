@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class IslandBehaviour : MonoBehaviour
 {
@@ -16,6 +17,40 @@ public class IslandBehaviour : MonoBehaviour
     Island _island;
 
     // Start is called before the first frame update
+    private void Awake()
+    {
+        return;
+
+        Tilemap t = GetComponent<Tilemap>();
+        var t0 = t.GetTile(new Vector3Int(-6, -6, 0));
+        if (!t0)
+            return;
+        t.SetTile(new Vector3Int(-6, -5, 0), t0);
+
+
+        Tile tempTile = ScriptableObject.CreateInstance(typeof(Tile)) as Tile;
+
+        int size = 100;
+        Texture2D tex = new Texture2D(size, size);
+
+        Color[] colors = new Color[size * size];
+
+        for (int i = 0; i < size; i++)
+        {
+            for (int j = 0; j < size; j++)
+            {
+                int id = i + (size * j);
+                colors[id] = Mathf.Sin(i)*Color.red;
+            }
+        }
+
+        tex.SetPixels(0, 0, size, size, colors);
+        Sprite sprite = Sprite.Create(tex, new Rect(0.0f, 0.0f, tex.width, tex.height), new Vector2(0.5f, 0.5f), 100.0f);
+        tempTile.sprite = sprite;
+
+        t.SetTile(new Vector3Int(-6, -6, 0), tempTile);
+    }
+
     void Start()
     {
 
@@ -37,7 +72,7 @@ public class IslandBehaviour : MonoBehaviour
         GameManager.instance.IslandInteraction(_island);
     }
 
-    internal Transform GetSpot( int index)
+    internal Transform GetSpot(int index)
     {
         return _transportablePositions[index];
     }
