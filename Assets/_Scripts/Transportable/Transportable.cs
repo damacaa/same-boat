@@ -15,9 +15,15 @@ public class Transportable
 
     public int PositionIndexInIsland { get; internal set; }
 
+    [Obsolete("")]
     public Transportable(string key)
     {
         _scripatableObject = TransportableManager.instace.GetTransportable(key);
+    }
+
+    public Transportable(TransportableSO scripatableObject)
+    {
+        _scripatableObject = scripatableObject;
     }
 
     public Transportable(Transportable original)
