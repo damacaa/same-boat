@@ -40,13 +40,16 @@ public class MapGenerator : MonoBehaviour
 
     public void GenerateMap(Island[] islands)
     {
-        print("Please implement me Alpuerro uwu");
-
-        int i = 0;
-        foreach (var island in islands)
+        foreach (var island in islandGOs)
         {
-            island.AssignGameObject(islandGOs[i]);
-            i++;
+            island.SetActive(false);
+        }
+
+        for (int i = 0; i < islands.Length; i++)
+        {
+            int goId = i == islands.Length - 1 ? islandGOs.Length - 1 : i;
+            islandGOs[goId].SetActive(true);
+            islands[i].AssignGameObject(islandGOs[goId]);
         }
     }
 

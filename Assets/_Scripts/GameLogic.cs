@@ -36,8 +36,10 @@ public class GameLogic
         serializedLevel.islands = new SerializedInfo.Island[2];
         serializedLevel.islands[0] = new SerializedInfo.Island();
         serializedLevel.islands[1] = new SerializedInfo.Island();
+        //serializedLevel.islands[2] = new SerializedInfo.Island();
         serializedLevel.islands[0].transportables = new string[] { "fox", "chicken", "corn" };
         serializedLevel.islands[1].transportables = new string[] { };
+        //serializedLevel.islands[2].transportables = new string[] { };
 
         //Desearialize transportables
         foreach (var serializedIsland in serializedLevel.islands)
