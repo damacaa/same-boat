@@ -64,11 +64,11 @@ public class Transportable
         _behaviour.SetUp(this, _scripatableObject);
     }
 
-    internal void GoTo(Transform transform, out float animationDuration, bool instant = false)
+    internal void GoTo(Transform transform, out float animationDuration, bool instant, bool backwards = false)
     {
         animationDuration = 0;
         if (_behaviour)
-            _behaviour.GoTo(transform, instant, out animationDuration);
+            _behaviour.GoTo(transform, instant, out animationDuration, backwards);
     }
 
     internal void Teleport(Boat boat, int pos)

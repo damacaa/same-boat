@@ -21,7 +21,7 @@ public class BoatUnloadCommand : BoatCommand
     public override float Undo(bool instant = false)
     {
         if (!_success) return 0;
-        _boat.LoadBoat(_trasportable, out _positionInIsland, out float animationDuration, instant);
+        _boat.LoadBoat(_trasportable, out _positionInIsland, out float animationDuration, instant, true);
         return animationDuration;
     }
 
