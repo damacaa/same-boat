@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 
@@ -145,8 +146,8 @@ public class GameLogic
             }
         }
 
-        if (Solver.Solver.CheckFail(_boat.Transportables))
-            Debug.Log("Fail in boat");
+        /*if (Solver.Solver.CheckFail(_boat.Transportables))
+            Debug.Log("Fail in boat");*/
 
         return fail;
     }
@@ -232,7 +233,7 @@ public class GameLogic
         }
         currentState.currentIsland = _boat.GetCurrentIsland();
 
-        currentState.boatTransportables = _boat.Transportables;
+        currentState.boatTransportables = _boat.Transportables.FindAll(t => t != null).OrderBy(t => t.ToString()).ToArray();
         currentState.boatCapacity = _boat.Capacity;
         currentState.boatOccupiedSeats = _boat.Occupied;
 
@@ -243,15 +244,12 @@ public class GameLogic
     {
 
         _boat.Empty();
-        for (int i = 0; i < state.boatTransportables.Count; i++)
+        for (int i = 0; i < state.boatTransportables.Length; i++)
         {
             if (state.boatTransportables[i] != null)
                 state.boatTransportables[i].Teleport(_boat, i);
         }
         _boat.GoTo(state.currentIsland, out float animationDuration, true);
-
-        List<Transportable> transportablesToMove = new List<Transportable>();
-        List<Island> islandToMoveTo = new List<Island>();
 
         foreach (var island in state.islands)
         {
@@ -268,8 +266,9 @@ public class GameLogic
 
         while (_currentCommand < _commands.Count)
         {
-            yield return new WaitForSeconds(1.1f * _commands[_currentCommand].Execute());
+            float wait = 1.1f * _commands[_currentCommand].Execute();
             _currentCommand++;
+            yield return new WaitForSeconds(wait);
         }
 
         _busy = false;

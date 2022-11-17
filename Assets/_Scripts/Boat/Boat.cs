@@ -33,6 +33,7 @@ public class Boat
 
         //Returns position where it was before being loaded on boat
         position = newTransportable.PositionIndexInIsland;
+
         _currentIsland.Remove(newTransportable);
 
         int pos = -1;
@@ -44,15 +45,8 @@ public class Boat
         else
         {
             //Find an empty seat
-            for (int i = 0; i < _capacity; i++)
-            {
-                if (_seats[i] == null)
-                {
-                    _seats[i] = newTransportable;
-                    pos = i;
-                    break;
-                }
-            }
+            pos = _seats.FindIndex(a => a == null);
+            _seats[pos] = newTransportable;
         }
 
         _occupied++;
@@ -113,7 +107,7 @@ public class Boat
         if (_currentIsland == null)
             return false;
 
-        int i = _seats.IndexOf(selectedTransportable);
+        int i = _seats.FindIndex(a => a == selectedTransportable);
         if (i == -1)
         {
             return false;

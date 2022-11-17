@@ -59,9 +59,6 @@ public class GameManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.S))
         {
-            GameLogic g = new GameLogic(_game);
-            //g.MoveBoatToIsland(g.FirstIsland);
-            //var s = game.GetCurrentState();
             int steps = Solver.Solver.Solve(_game);
             print(steps);
 
