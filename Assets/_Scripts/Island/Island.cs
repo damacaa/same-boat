@@ -70,7 +70,7 @@ public class Island
         Add(data, -1, out animationDuration, instant);
     }
 
-    public void Add(Transportable data, int position, out float animationDuration, bool instant = false)
+    public void Add(Transportable data, int position, out float animationDuration, bool instant = false, bool backwards = false)
     {
         _transportables.Add(data);
         data.Island = this;
@@ -79,10 +79,10 @@ public class Island
         if (_behaviour)
         {
             if (position != -1)
-                data.GoTo(_behaviour.GetSpot(position), out animationDuration, instant);
+                data.GoTo(_behaviour.GetSpot(position), out animationDuration, instant, backwards);
             else
             {
-                data.GoTo(_behaviour.FindSpot(out int newPosition), out animationDuration, instant);
+                data.GoTo(_behaviour.FindSpot(out int newPosition), out animationDuration, instant, backwards);
                 data.PositionIndexInIsland = newPosition;
             }
         }

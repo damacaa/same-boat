@@ -167,7 +167,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _speed: 4
   _wiggleSpeed: 5
-  _wiggleAmpitude: 7
+  _wiggleAmpitude: 6
+  _smoothTransition: 0.05
+  _flipSpeed: 1.25
 --- !u!1 &8960046612342157303
 GameObject:
   m_ObjectHideFlags: 0

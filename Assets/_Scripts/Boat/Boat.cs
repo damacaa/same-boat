@@ -24,7 +24,7 @@ public class Boat
         _capacity = capacity;
     }
 
-    public bool LoadBoat(Transportable newTransportable, out int position, out float animationDuration, bool instant = false)
+    public bool LoadBoat(Transportable newTransportable, out int position, out float animationDuration, bool instant = false, bool backwards = false)
     {
         position = -1;
         animationDuration = 0;
@@ -59,7 +59,7 @@ public class Boat
 
         if (_behaviour)
         {
-            newTransportable.GoTo(_behaviour.GetSeat(pos), out animationDuration, instant);
+            newTransportable.GoTo(_behaviour.GetSeat(pos), out animationDuration, instant, backwards);
         }
 
         return true;
@@ -107,7 +107,7 @@ public class Boat
         return _seats.Contains(transportable);
     }
 
-    public bool UnloadBoat(Transportable selectedTransportable, int position, out float animationDuration, bool instant = false)
+    public bool UnloadBoat(Transportable selectedTransportable, int position, out float animationDuration, bool instant = false, bool backwards = false)
     {
         animationDuration = 0;
         if (_currentIsland == null)
@@ -119,7 +119,7 @@ public class Boat
             return false;
         }
         _seats[i] = null;
-        _currentIsland.Add(selectedTransportable, position, out animationDuration, instant);
+        _currentIsland.Add(selectedTransportable, position, out animationDuration, instant, backwards);
         _occupied--;
         return true;
     }
