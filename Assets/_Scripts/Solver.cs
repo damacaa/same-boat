@@ -158,6 +158,164 @@ namespace Solver
         }
 
 
+
+        public static int SolveWidth(GameLogic game)
+        {
+
+
+            List<State> openList = new List<State>();
+            List<State> closedList = new List<State>();
+
+            State initial = game.GetCurrentState();
+            State current = initial;
+            State newState = initial;
+
+            openList.Add(initial);
+
+            int iter = 0;
+            int maxIter = 1000;
+            while (!game.Win && openList.Count > 0 && iter < maxIter)
+            {
+                iter++;
+
+                //current = openList[0];
+                SetState(openList[0]);
+                openList.Remove(current);
+                closedList.Add(current);
+
+                if (game.GetCurrentState().ToString() != current.ToString())
+                {
+                    Debug.LogError("Fuck");
+                }
+
+                Debug.Log(iter + ": " + current);
+
+                if (game.Win)
+                {
+                    break;
+                }
+
+                if (current.boatOccupiedSeats < current.boatCapacity)
+                {
+                    //If boat has empty seats it will load new transportables
+                    for (int i = 0; i < current.currentIsland.Transportables.Count; i++)
+                    {
+                        Transportable transportable = current.currentIsland.Transportables[i];
+                        if (transportable == null || !game.LoadOnBoat(transportable, true))
+                        {
+                            continue;
+                        }
+
+                        newState = game.GetCurrentState();
+                        if (CheckValidStep(newState))
+                        {
+                            newState.previousState = current;
+                            newState.steps = current.steps + 1;
+                            openList.Add(newState);
+                        }
+
+                        game.Undo(true);
+                    }
+                }
+
+                if (current.boatOccupiedSeats > 0)
+                {
+                    //If boat has transportables it will try to unload in current island
+                    for (int i = 0; i < current.boatTransportables.Length; i++)
+                    {
+                        Transportable transportable = current.boatTransportables[i];
+                        if (transportable == null || !game.UnloadFromBoat(transportable, true))
+                        {
+                            continue;
+                        }
+
+                        newState = game.GetCurrentState();
+                        if (CheckValidStep(newState))
+                        {
+                            newState.previousState = current;
+                            newState.steps = current.steps + 1;
+                            openList.Add(newState);
+                        }
+
+                        game.Undo(true);
+                    }
+                }
+
+                for (int i = current.islands.Count - 1; i >= 0; i--)
+                {
+                    State.IslandState island = current.islands[i];
+                    if (island.islandRef == current.currentIsland)
+                        continue;
+
+                    game.MoveBoatToIsland(island.islandRef, true);
+
+                    newState = game.GetCurrentState();
+                    if (CheckValidStep(newState))
+                    {
+                        newState.previousState = current;
+                        newState.steps = current.steps + 1;
+                        openList.Add(newState);
+                    }
+
+                    game.Undo(true);
+                }
+            }
+
+            if (!game.Win)
+            {
+                if (iter == maxIter)
+                    Debug.Log("Need more iter");
+
+                return -1;
+            }
+
+            int requiredSteps = 0;
+            while (current != null)
+            {
+                current = current.previousState;
+                requiredSteps++;
+                game.Undo(true);
+            }
+
+            return requiredSteps;
+
+            ///////////////////////////////////////////////////////////
+
+            //Functions
+            bool CheckValidStep(State next)
+            {
+                return !(game.Fail || openList.Contains(next) || closedList.Contains(next));
+            }
+
+            void SetState(State s)
+            {
+                int iter = 0;
+
+                List<State> states = new List<State>();
+                State aux = s;
+                while (aux != null && iter < 100)
+                {
+                    states.Add(aux);
+                    aux = aux.previousState;
+                    iter++;
+                }
+                states.Reverse();
+
+                game.Reset();
+
+                for (int i = 1; i < states.Count; i++)
+                {
+                    if (!(states[i].command != null && game.AddCommand(states[i].command, true)))
+                    {
+                        Debug.Log("Fuck " + iter);
+                    }
+                }
+
+                current = s;
+            }
+        }
+
+
         public static bool CheckFail(List<Transportable> transportables)
         {
             bool success = true;
@@ -203,6 +361,8 @@ namespace Solver
         public Transportable[] boatTransportables;
         public int boatCapacity = 0;
         public int boatOccupiedSeats = 0;
+
+        public Command command;
 
         public int F { get { return (2 * islands[islands.Count - 1].transportables.Length) - steps; } }
 

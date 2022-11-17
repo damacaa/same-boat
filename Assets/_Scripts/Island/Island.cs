@@ -139,7 +139,7 @@ public class Island
         for (int i = 0; i < _transportables.Count; i++)
         {
             Transportable t = _transportables[i];
-            result += t == null ? "null " : t + " ";
+            result += t == null ? "" : t + " ";
         }
         result += "]";
         return result;

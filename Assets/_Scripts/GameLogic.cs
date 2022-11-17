@@ -10,7 +10,7 @@ public class GameLogic
     //Entities
     Player _player;
     Boat _boat;
-    List<Island> _islands = new List<Island>();
+    public List<Island> _islands = new List<Island>();
 
     //Command
     int _currentCommand = 0;
@@ -21,7 +21,7 @@ public class GameLogic
     bool _fail = false;
     bool _undone = false;
     private bool _waitForEnd = true;
-    private bool _busy;
+    private bool _showingSolveAnimation = false;
     float _nextTime = 0;
 
     public bool Win { get { return _win; } }
@@ -76,6 +76,16 @@ public class GameLogic
         }
     }
 
+    internal void Reset()
+    {
+        for (int i = 0; i <= _commands.Count; i++)
+        {
+            Undo(true);
+        }
+        //_commands.Clear();
+        _currentCommand = 0;
+    }
+
     public void GenerateGameObjects()
     {
         //Build map
@@ -86,7 +96,7 @@ public class GameLogic
 
     public bool Execute(bool instant = false)
     {
-        if (_waitForEnd && (_busy || Time.time < _nextTime))
+        if (!instant && (_showingSolveAnimation || (_waitForEnd && Time.time < _nextTime)))
         {
             //instant = true;//Should make current animation skipeable
             return false;
@@ -94,8 +104,18 @@ public class GameLogic
 
         if (!_fail && _currentCommand < _commands.Count)
         {
-            float animationDuration = _commands[_currentCommand].Execute(instant);
-            _nextTime = Time.time + (0.5f * animationDuration);
+            bool success = _commands[_currentCommand].Execute(out float animationDuration, instant);
+
+
+            //If command fails
+            if (!success)
+            {
+                _commands.RemoveAt(_currentCommand);
+                return false;
+            }
+
+            if (!instant)
+                _nextTime = Time.time + (0.5f * animationDuration);
 
             //Debug.Log(_commands[_currentCommand]);
 
@@ -114,18 +134,19 @@ public class GameLogic
 
     public void Undo(bool instant = false)
     {
-        if (_waitForEnd && (_busy || Time.time < _nextTime))
+        if (!instant && (_showingSolveAnimation || (_waitForEnd && Time.time < _nextTime)))
         {
             //instant = true;
             return;
         }
 
-        if (_currentCommand > 0)
+        if (_currentCommand > 0 && _commands.Count > 0)
         {
             _undone = true;
             _currentCommand--;
-            float animationDuration = _commands[_currentCommand].Undo(instant);
-            _nextTime = Time.time + (0.5f * animationDuration);
+            _commands[_currentCommand].Undo(out float animationDuration, instant);
+            if (!instant)
+                _nextTime = Time.time + (0.5f * animationDuration);
             _fail = false;
             //Debug.Log("Undone: " + _commands[_currentCommand]);
         }
@@ -169,34 +190,7 @@ public class GameLogic
             Debug.Log("WIN!");
     }
 
-    public override string ToString()
-    {
-        string result = "";
 
-        string progress = "";
-        for (int i = 0; i <= _commands.Count; i++)
-        {
-            if (i == _currentCommand)
-            {
-                progress += "|";
-            }
-            else
-            {
-                progress += "-";
-            }
-        }
-
-        result += progress + " " + _currentCommand + "/" + _commands.Count + "\n";
-
-        foreach (var island in _islands)
-        {
-            result += island + "    ";
-        }
-
-        result += _boat + "\n";
-
-        return result;
-    }
 
     public bool LoadOnBoat(Transportable load, bool instant = false)
     {
@@ -213,7 +207,7 @@ public class GameLogic
         return AddCommand(new BoatTravelCommand(_boat, island), instant);
     }
 
-    bool AddCommand(Command command, bool instant = false)
+    public bool AddCommand(Command command, bool instant = false)
     {
         if (_undone && _commands.Count > _currentCommand)
             _commands.RemoveRange(_currentCommand, _commands.Count - _currentCommand);
@@ -237,43 +231,55 @@ public class GameLogic
         currentState.boatCapacity = _boat.Capacity;
         currentState.boatOccupiedSeats = _boat.Occupied;
 
+        if (_commands.Count > 0 && _currentCommand > 0 && _currentCommand - 1 < _commands.Count)
+            currentState.command = _commands[_currentCommand - 1];
+
         return currentState;
-    }
-
-    public void SetState(Solver.State state)
-    {
-
-        _boat.Empty();
-        for (int i = 0; i < state.boatTransportables.Length; i++)
-        {
-            if (state.boatTransportables[i] != null)
-                state.boatTransportables[i].Teleport(_boat, i);
-        }
-        _boat.GoTo(state.currentIsland, out float animationDuration, true);
-
-        foreach (var island in state.islands)
-        {
-            foreach (var transportable in island.transportables)
-            {
-                transportable.Teleport(island.islandRef);
-            }
-        }
     }
 
     public IEnumerator ShowAllMovesCoroutine()
     {
-        _busy = true;
+        _showingSolveAnimation = true;
 
         while (_currentCommand < _commands.Count)
         {
-            float wait = 1.1f * _commands[_currentCommand].Execute();
+            _commands[_currentCommand].Execute(out float wait);
             _currentCommand++;
-            yield return new WaitForSeconds(wait);
+            yield return new WaitForSeconds(1.1f * wait);
         }
 
-        _busy = false;
+        _showingSolveAnimation = false;
 
         yield return null;
+    }
+
+    public override string ToString()
+    {
+        string result = "";
+
+        string progress = "";
+        for (int i = 0; i < _commands.Count; i++)
+        {
+            if (i == _currentCommand)
+            {
+                progress += "|";
+            }
+            else
+            {
+                progress += _commands[i].Success ? "-" : "x";
+            }
+        }
+
+        result += progress + " " + _currentCommand + "/" + _commands.Count + "\n";
+
+        foreach (var island in _islands)
+        {
+            result += island + "    ";
+        }
+
+        result += _boat + "\n";
+
+        return result;
     }
 }
 

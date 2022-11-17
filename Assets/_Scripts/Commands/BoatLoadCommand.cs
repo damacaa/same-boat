@@ -12,17 +12,15 @@ public class BoatLoadCommand : BoatCommand
         _trasportable = actor;
     }
 
-    public override float Execute(bool instant = false)
+    public override bool Execute(out float animationDuration, bool instant = false)
     {
-        _success = _boat.LoadBoat(_trasportable, out _positionInIsland, out float animationDuration, instant);
-        return animationDuration;
+        _success = _boat.LoadBoat(_trasportable, out _positionInIsland, out animationDuration, instant);
+        return _success;
     }
 
-    public override float Undo(bool instant = false)
+    public override void Undo(out float animationDuration, bool instant = false)
     {
-        if (!_success) return 0;
-        _boat.UnloadBoat(_trasportable, _positionInIsland, out float animationDuration, instant, true);
-        return animationDuration;
+        _boat.UnloadBoat(_trasportable, _positionInIsland, out animationDuration, instant, true);
     }
 
     public override string ToString()

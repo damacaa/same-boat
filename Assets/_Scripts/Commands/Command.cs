@@ -6,20 +6,12 @@ public abstract class Command
 {
     protected bool _success = true;
     public bool Success { get { return _success; } }
-    public abstract float Execute(bool instant = false);
-    public abstract float Undo(bool instant = false);
 
-    public IEnumerator ExecuteCoroutine(bool instant = false)
-    {
-        Execute(instant);
-        yield return null;
-    }
+    public abstract bool Execute(out float animationDuration, bool instant = false);
+    public abstract void Undo(out float animationDuration, bool instant = false);
 
-    public IEnumerator UndoCoroutine(bool instant = false)
-    {
-        Undo(instant);
-        yield return null;
-    }
+    public bool Execute() { return Execute(out float animationDuration, true); }
+    public void Undo() { Undo(out float animationDuration, true); }
 }
 
 public abstract class BoatCommand : Command
