@@ -28,7 +28,8 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        LoadLevel(levels[_currentLevel]);
+        if(!SceneLoader.Instance)
+            LoadLevel(levels[_currentLevel]);
     }
 
     public void LoadLevel(Level level)
