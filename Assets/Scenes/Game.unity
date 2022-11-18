@@ -1126,7 +1126,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 9fc1ac9099c05054d8707da8a018e462, type: 2}
   - {fileID: 11400000, guid: b79d61c0547e3e54886413f2fcdede23, type: 2}
   - {fileID: 11400000, guid: 9d11f2d7f20891b488dbe7732b2500b2, type: 2}
-  _currentLevel: 0
+  _currentLevel: 2
 --- !u!1 &1104401106
 GameObject:
   m_ObjectHideFlags: 0
@@ -2596,7 +2596,7 @@ Tilemap:
       m_AnimatedSprites:
       - {fileID: -1550397418, guid: e4b563171c9482044b57942092e82174, type: 3}
       - {fileID: 2072227539, guid: e4b563171c9482044b57942092e82174, type: 3}
-      m_AnimationSpeed: 6.0000005
+      m_AnimationSpeed: 6
       m_AnimationTimeOffset: 0
       m_IsLooping: 1
   m_TileAssetArray:
@@ -3614,7 +3614,7 @@ Tilemap:
       m_AnimatedSprites:
       - {fileID: -1550397418, guid: e4b563171c9482044b57942092e82174, type: 3}
       - {fileID: 2072227539, guid: e4b563171c9482044b57942092e82174, type: 3}
-      m_AnimationSpeed: 6.0000005
+      m_AnimationSpeed: 6
       m_AnimationTimeOffset: 0
       m_IsLooping: 1
   - first: {x: 4, y: 4, z: 0}
