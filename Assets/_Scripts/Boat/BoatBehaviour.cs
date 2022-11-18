@@ -7,6 +7,8 @@ public class BoatBehaviour : MonoBehaviour
 {
     [SerializeField]
     float _speed = 5f;
+    [SerializeField]
+    float _rotationTime = 0.2f;
 
     Boat _boat;
     // Start is called before the first frame update
@@ -57,11 +59,20 @@ public class BoatBehaviour : MonoBehaviour
     {
         yield return new WaitForEndOfFrame();
 
+
+        Quaternion rot = transform.rotation;
+        Quaternion targetRot = Quaternion.LookRotation(Vector3.forward, destination - transform.position);
+
         Vector2 pos = transform.position;
-
-        transform.rotation = Quaternion.LookRotation(Vector3.forward, destination - (Vector3)pos);
-
         float t = 0;
+        while (t < 1)
+        {
+            transform.rotation = Quaternion.Lerp(rot, targetRot, t);
+            t += Time.deltaTime / _rotationTime;
+            yield return null;
+        }
+
+        t = 0;
         while (t < 1)
         {
             transform.position = Vector2.Lerp(pos, destination, t);
