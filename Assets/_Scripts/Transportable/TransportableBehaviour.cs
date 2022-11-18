@@ -28,13 +28,29 @@ public class TransportableBehaviour : MonoBehaviour
 
     Transportable data;
     bool _walking;
-    public bool Walking { get { return _walking; } set { _walking = value; } }
+    public bool Walking
+    {
+        get { return _walking; }
+        set
+        {
+            _walking = value;
+
+            if (!_particles)
+                return;
+
+            if (_walking)
+                _particles.Play();
+            else
+                _particles.Stop();
+        }
+    }
 
     GameObject _sprite;
     GameObject _shadow;
 
     Animator _animator;
     SpriteRenderer _renderer;
+    ParticleSystem _particles;
 
 
     // Start is called before the first frame update
@@ -64,7 +80,7 @@ public class TransportableBehaviour : MonoBehaviour
 
         // Scale
         float scaleY = 0.5f;
-        scaleY += _wiggle * 0.1f * (MathF.Sin(_speed * Time.time * _wiggleSpeed) + 1) / 2;//Walking
+        scaleY += _wiggle * 0.15f * (MathF.Sin(_speed * Time.time * _wiggleSpeed) + 1) / 2;//Walking
         scaleY += (1 - _wiggle) * _idleAnimation.Evaluate(Time.time * idleSpeed);//Resting
 
         _sprite.transform.localScale = new Vector3(0.5f, scaleY, 0.5f);
@@ -90,6 +106,9 @@ public class TransportableBehaviour : MonoBehaviour
         _animator = _sprite.GetComponent<Animator>();
         _renderer = _sprite.GetComponent<SpriteRenderer>();
         _renderer.sprite = scriptableObject.sprite;
+        _particles = GetComponentInChildren<ParticleSystem>();
+        _particles.Pause();
+
 
         int res = scriptableObject.sprite.texture.width;
         int halfRes = res / 2;
