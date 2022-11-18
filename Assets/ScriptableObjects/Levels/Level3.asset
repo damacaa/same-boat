@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Level3
   m_EditorClassIdentifier: 
   name: What
-  BoatCapacity: 1
+  BoatCapacity: 2
   BoatMaxWeightAllowed: 2
   CanMoveEmpyBoat: 0
   Islands:

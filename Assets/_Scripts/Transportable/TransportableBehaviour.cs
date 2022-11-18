@@ -16,22 +16,19 @@ public class TransportableBehaviour : MonoBehaviour
     [SerializeField]
     float _flipSpeed = 1f;
 
+    [SerializeField]
+    float idleSpeed = 1;
+    [SerializeField]
+    AnimationCurve _idleAnimation;
+
     bool _mirror = false;
     float _wiggle = 0;
     float _rotY = 0;
+    float _unscaledCenterOffset;
 
     Transportable data;
     bool _walking;
-    public bool Walking
-    {
-        get { return _walking; }
-        set
-        {
-            _walking = value;
-            if (_animator)
-                _animator.SetBool("walking", _walking);
-        }
-    }
+    public bool Walking { get { return _walking; } set { _walking = value; } }
 
     GameObject _sprite;
     GameObject _shadow;
@@ -44,6 +41,7 @@ public class TransportableBehaviour : MonoBehaviour
     void Start()
     {
 
+
     }
 
     // Update is called once per frame
@@ -51,7 +49,8 @@ public class TransportableBehaviour : MonoBehaviour
     {
         _renderer.sortingOrder = 1 + (int)Mathf.Abs(100 - Mathf.Min(transform.position.y * 10, 100));
 
-        transform.rotation = Quaternion.identity;
+        // Rotation
+        transform.rotation = Quaternion.identity;//Always look at camera, even if parent rotates
 
         _rotY += _flipSpeed * 1000 * Time.deltaTime * (_mirror ? 1 : -1);
         _rotY = Mathf.Clamp(_rotY, 0, 180);
@@ -62,6 +61,23 @@ public class TransportableBehaviour : MonoBehaviour
         Quaternion rotXZ = Quaternion.Euler(-45, 0, rotZ);
 
         _sprite.transform.localRotation = rotXZ * rotY;
+
+        // Scale
+        float scaleY = 0.5f;
+        scaleY += _wiggle * 0.1f * (MathF.Sin(_speed * Time.time * _wiggleSpeed) + 1) / 2;//Walking
+        scaleY += (1 - _wiggle) * _idleAnimation.Evaluate(Time.time * idleSpeed);//Resting
+
+        _sprite.transform.localScale = new Vector3(0.5f, scaleY, 0.5f);
+
+        // Position
+        float h = _unscaledCenterOffset * _sprite.transform.localScale.y;
+
+        Vector3 center = new Vector3();
+        center.x = 0;
+        center.y = Mathf.Cos(-45 * Mathf.Deg2Rad) * h;
+        center.z = Mathf.Sin(-45 * Mathf.Deg2Rad) * h;
+
+        _sprite.transform.localPosition = center + _wiggle * 0.3f * ((Mathf.Sin(_speed * Time.time * _wiggleSpeed) + 1f) / 2f) * _sprite.transform.up;
     }
 
     public void SetUp(Transportable t, TransportableSO scriptableObject)
@@ -73,10 +89,15 @@ public class TransportableBehaviour : MonoBehaviour
 
         _animator = _sprite.GetComponent<Animator>();
         _renderer = _sprite.GetComponent<SpriteRenderer>();
+        _renderer.sprite = scriptableObject.sprite;
 
-        if (scriptableObject.AnimatorController != null)
-            _animator.runtimeAnimatorController = scriptableObject.AnimatorController;
+        int res = scriptableObject.sprite.texture.width;
+        int halfRes = res / 2;
+        float ppu = scriptableObject.sprite.pixelsPerUnit;
+        _unscaledCenterOffset = halfRes / ppu;
     }
+
+
 
     public void OnMouseDown()
     {
