@@ -7,15 +7,39 @@ public class TransportableBehaviour : MonoBehaviour
 {
     [SerializeField]
     float _speed = 2f;
+    [SerializeField]
+    float _wiggleSpeed = 10f;
+    [SerializeField]
+    float _wiggleAmpitude = 10f;
+    [SerializeField]
+    float _smoothTransition = .1f;
+    [SerializeField]
+    float _flipSpeed = 1f;
+
+    bool _mirror = false;
+    float _wiggle = 0;
+    float _rotY = 0;
 
     Transportable data;
-    bool _walking = false;
+    bool _walking;
+    public bool Walking
+    {
+        get { return _walking; }
+        set
+        {
+            _walking = value;
+            if (_animator)
+                _animator.SetBool("walking", _walking);
+        }
+    }
 
-    GameObject sprite;
-    GameObject shadow;
+    GameObject _sprite;
+    GameObject _shadow;
 
     Animator _animator;
     SpriteRenderer _renderer;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -25,35 +49,30 @@ public class TransportableBehaviour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Vector3 euler = sprite.transform.rotation.eulerAngles;
-        euler.x = -45;
-        euler.y = 0;
-
-        if (_walking)
-        {
-            euler.z = Mathf.Sin(_speed * Time.time * 10) * 10f;
-        }
-        else
-        {
-            euler.z = 0;
-        }
-        sprite.transform.localRotation = Quaternion.Euler(euler);
+        _renderer.sortingOrder = 1 + (int)Mathf.Abs(100 - Mathf.Min(transform.position.y * 10, 100));
 
         transform.rotation = Quaternion.identity;
 
-        _renderer.sortingOrder = 1 + (int)Mathf.Abs(100 - Mathf.Min(transform.position.y * 10, 100));
+        _rotY += _flipSpeed * 1000 * Time.deltaTime * (_mirror ? 1 : -1);
+        _rotY = Mathf.Clamp(_rotY, 0, 180);
+        Quaternion rotY = Quaternion.AngleAxis(_rotY, transform.up);
+
+        _wiggle = Walking ? 1 : Mathf.Max(0, _wiggle - Time.deltaTime * (1f / _smoothTransition));
+        float rotZ = _wiggle * (_mirror ? -1 : 1) * Mathf.Sin(_speed * Time.time * _wiggleSpeed) * _wiggleAmpitude;
+        Quaternion rotXZ = Quaternion.Euler(-45, 0, rotZ);
+
+        _sprite.transform.localRotation = rotXZ * rotY;
     }
 
     public void SetUp(Transportable t, TransportableSO scriptableObject)
     {
         data = t;
 
-        sprite = transform.GetChild(0).gameObject;
-        shadow = transform.GetChild(1).gameObject;
+        _sprite = transform.GetChild(0).gameObject;
+        _shadow = transform.GetChild(1).gameObject;
 
-        _animator = sprite.GetComponent<Animator>();
-        _renderer = sprite.GetComponent<SpriteRenderer>();
-
+        _animator = _sprite.GetComponent<Animator>();
+        _renderer = _sprite.GetComponent<SpriteRenderer>();
 
         if (scriptableObject.AnimatorController != null)
             _animator.runtimeAnimatorController = scriptableObject.AnimatorController;
@@ -65,19 +84,22 @@ public class TransportableBehaviour : MonoBehaviour
     }
 
     Coroutine _movement;
-    internal float GoTo(Transform target, bool instant, out float animationDuration)
+    internal float GoTo(Transform target, bool instant, out float animationDuration, bool backwards)
     {
+        _mirror = target.position.x < transform.position.x;
+        if (backwards)
+            _mirror = !_mirror;
+
         if (instant)
         {
             StopAllCoroutines();
             transform.position = target.position;
-            _walking = false;
+            Walking = false;
             animationDuration = 0;
-            transform.parent = target;
         }
         else
         {
-            if (_walking)
+            if (Walking)
             {
                 StopCoroutine(_movement);
                 transform.position = transform.parent.position;
@@ -86,14 +108,16 @@ public class TransportableBehaviour : MonoBehaviour
             animationDuration = Vector2.Distance(transform.position, target.position) / _speed;
             _movement = StartCoroutine(MovementCoroutine(target, animationDuration));
         }
-        //this.transform.parent = target;
+
+        transform.parent = target;
+
         return animationDuration;
     }
 
     IEnumerator MovementCoroutine(Transform target, float duration)
     {
         Vector2 pos = transform.position;
-        _walking = true;
+        Walking = true;
 
         yield return null;
 
@@ -105,7 +129,9 @@ public class TransportableBehaviour : MonoBehaviour
             yield return null;
         }
 
-        _walking = false;
+        Walking = false;
+
+        _mirror = false;// I'm not sure
 
         transform.parent = target;
 

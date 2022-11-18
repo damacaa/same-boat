@@ -28,7 +28,8 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        LoadLevel(levels[_currentLevel]);
+        if(!SceneLoader.Instance)
+            LoadLevel(levels[_currentLevel]);
     }
 
     public void LoadLevel(Level level)
@@ -59,13 +60,28 @@ public class GameManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.S))
         {
-            GameLogic g = new GameLogic(_game);
-            //g.MoveBoatToIsland(g.FirstIsland);
-            //var s = game.GetCurrentState();
             int steps = Solver.Solver.Solve(_game);
             print(steps);
 
             StartCoroutine(_game.ShowAllMovesCoroutine());
+        }
+
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            int steps = Solver.Solver.SolveWidth(_game);
+            print(steps + " steps");
+
+            StartCoroutine(_game.ShowAllMovesCoroutine());
+        }
+
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            _game.Reset();
+        }
+        
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            _game.Test();
         }
     }
 
@@ -89,8 +105,7 @@ public class GameManager : MonoBehaviour
 
     public void TransportableInteraction(Transportable transportable)
     {
-        print(transportable);
-        if (_boat.GetCurrentIsland().CheckIfExists(transportable))
+        if (_boat.GetCurrentIsland().Contains(transportable))
         {
             _selectedTransportable = transportable;
             print("Select " + _selectedTransportable);
@@ -113,7 +128,7 @@ public class GameManager : MonoBehaviour
         _boat = boat;
         if (_selectedTransportable != null)
         {
-            print("Load " + _selectedTransportable);
+            //print("Load " + _selectedTransportable);
             _game.LoadOnBoat(_selectedTransportable);
             _selectedTransportable = null;
         }

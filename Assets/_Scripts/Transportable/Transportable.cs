@@ -13,6 +13,7 @@ public class Transportable
     Island _currentIsland;
     public Island Island { get { return _currentIsland; } set { _currentIsland = value; } }
 
+    public int Weight { get { return _scripatableObject.Weight; } }
     public int PositionIndexInIsland { get; internal set; }
 
     [Obsolete("")]
@@ -64,25 +65,10 @@ public class Transportable
         _behaviour.SetUp(this, _scripatableObject);
     }
 
-    internal void GoTo(Transform transform, out float animationDuration, bool instant = false)
+    internal void GoTo(Transform transform, out float animationDuration, bool instant, bool backwards = false)
     {
         animationDuration = 0;
         if (_behaviour)
-            _behaviour.GoTo(transform, instant, out animationDuration);
-    }
-
-    internal void Teleport(Boat boat, int pos)
-    {
-        _currentIsland.Remove(this);
-        _currentIsland = null;
-        boat.ForceLoad(this, pos);
-    }
-
-    internal void Teleport(Island island)
-    {
-        if (_currentIsland != null)
-            _currentIsland.Remove(this);
-        island.Add(this, out float animationDuration, true);
-        _currentIsland = island;
+            _behaviour.GoTo(transform, instant, out animationDuration, backwards);
     }
 }

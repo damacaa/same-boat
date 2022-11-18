@@ -7,6 +7,14 @@ public class BoatBehaviour : MonoBehaviour
 {
     [SerializeField]
     float _speed = 5f;
+    [SerializeField]
+    float _rotationTime = 0.2f;
+
+    [SerializeField]
+    Transform[] _seats;
+
+    [SerializeField]
+    GameObject driver;
 
     Boat _boat;
     // Start is called before the first frame update
@@ -24,6 +32,10 @@ public class BoatBehaviour : MonoBehaviour
     internal void SetUp(Boat boat)
     {
         _boat = boat;
+        if (!boat.CanMoveEmpty)
+        {
+            driver.SetActive(false);
+        }
     }
 
     private void OnMouseDown()
@@ -34,7 +46,7 @@ public class BoatBehaviour : MonoBehaviour
     internal Transform GetSeat(int pos)
     {
         //Needs work
-        return transform;
+        return _seats[pos];
     }
 
     internal void GoTo(Island newIsland, out float animationDuration, bool instant)
@@ -55,11 +67,22 @@ public class BoatBehaviour : MonoBehaviour
 
     IEnumerator MovementCoroutine(Vector3 destination, float duration)
     {
+        yield return new WaitForEndOfFrame();
+
+
+        Quaternion rot = transform.rotation;
+        Quaternion targetRot = Quaternion.LookRotation(Vector3.forward, destination - transform.position);
+
         Vector2 pos = transform.position;
-
-        transform.rotation = Quaternion.LookRotation(Vector3.forward, destination - (Vector3)pos);
-
         float t = 0;
+        while (t < 1)
+        {
+            transform.rotation = Quaternion.Lerp(rot, targetRot, t);
+            t += Time.deltaTime / _rotationTime;
+            yield return null;
+        }
+
+        t = 0;
         while (t < 1)
         {
             transform.position = Vector2.Lerp(pos, destination, t);
