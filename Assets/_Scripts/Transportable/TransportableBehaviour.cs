@@ -96,7 +96,6 @@ public class TransportableBehaviour : MonoBehaviour
             transform.position = target.position;
             Walking = false;
             animationDuration = 0;
-            transform.parent = target;
         }
         else
         {
@@ -109,7 +108,9 @@ public class TransportableBehaviour : MonoBehaviour
             animationDuration = Vector2.Distance(transform.position, target.position) / _speed;
             _movement = StartCoroutine(MovementCoroutine(target, animationDuration));
         }
-        //this.transform.parent = target;
+
+        transform.parent = target;
+
         return animationDuration;
     }
 

@@ -28,11 +28,12 @@ public class Boat
     {
         position = -1;
         animationDuration = 0;
-        if (_occupied >= _capacity || _currentIsland == null || !_currentIsland.CheckIfExists(newTransportable))
+        if (_occupied >= _capacity || _currentIsland == null || !_currentIsland.Contains(newTransportable))
             return false;
 
         //Returns position where it was before being loaded on boat
         position = newTransportable.PositionIndexInIsland;
+
         _currentIsland.Remove(newTransportable);
 
         int pos = -1;
@@ -44,15 +45,8 @@ public class Boat
         else
         {
             //Find an empty seat
-            for (int i = 0; i < _capacity; i++)
-            {
-                if (_seats[i] == null)
-                {
-                    _seats[i] = newTransportable;
-                    pos = i;
-                    break;
-                }
-            }
+            pos = _seats.FindIndex(a => a == null);
+            _seats[pos] = newTransportable;
         }
 
         _occupied++;
@@ -63,25 +57,6 @@ public class Boat
         }
 
         return true;
-    }
-
-    public void ForceLoad(Transportable newTransportable, int pos)
-    {
-
-        // 0  <  1
-        // 1  ==  1
-        while (pos >= _seats.Count)
-        {
-            _seats.Add(null);
-        }
-        _seats[pos] = newTransportable;
-
-        _occupied++;
-
-        if (_behaviour)
-        {
-            newTransportable.GoTo(_behaviour.GetSeat(pos), out float animationDuration, true);
-        }
     }
 
     internal void SetUp(GameObject g)
@@ -100,8 +75,6 @@ public class Boat
         _currentIsland = newIsland;
     }
 
-
-
     internal bool Contains(Transportable transportable)
     {
         return _seats.Contains(transportable);
@@ -113,7 +86,7 @@ public class Boat
         if (_currentIsland == null)
             return false;
 
-        int i = _seats.IndexOf(selectedTransportable);
+        int i = _seats.FindIndex(a => a == selectedTransportable);
         if (i == -1)
         {
             return false;
@@ -122,6 +95,11 @@ public class Boat
         _currentIsland.Add(selectedTransportable, position, out animationDuration, instant, backwards);
         _occupied--;
         return true;
+    }
+
+    public Island GetCurrentIsland()
+    {
+        return _currentIsland;
     }
 
     public override string ToString()
@@ -142,17 +120,4 @@ public class Boat
 
         return result;
     }
-
-    public Island GetCurrentIsland()
-    {
-        return _currentIsland;
-    }
-
-    internal void Empty()
-    {
-        _occupied = 0;
-    }
-
-
-
 }

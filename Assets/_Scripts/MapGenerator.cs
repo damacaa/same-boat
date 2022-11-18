@@ -55,7 +55,7 @@ public class MapGenerator : MonoBehaviour
 
     public void GenerateBoat(Boat boat)
     {
-        var g = GameObject.Instantiate(_boatPrefabs[boat.Capacity - 1], Vector3.zero, Quaternion.identity);
+        var g = GameObject.Instantiate(_boatPrefabs[Mathf.Min(_boatPrefabs.Length - 1, boat.Capacity - 1)], Vector3.zero, Quaternion.identity);
         boat.SetUp(g);
     }
 }
