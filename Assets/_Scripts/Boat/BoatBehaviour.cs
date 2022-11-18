@@ -55,6 +55,8 @@ public class BoatBehaviour : MonoBehaviour
 
     IEnumerator MovementCoroutine(Vector3 destination, float duration)
     {
+        yield return new WaitForEndOfFrame();
+
         Vector2 pos = transform.position;
 
         transform.rotation = Quaternion.LookRotation(Vector3.forward, destination - (Vector3)pos);
