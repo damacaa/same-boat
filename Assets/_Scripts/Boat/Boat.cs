@@ -28,7 +28,7 @@ public class Boat
     {
         position = -1;
         animationDuration = 0;
-        if (_occupied >= _capacity || _currentIsland == null || !_currentIsland.CheckIfExists(newTransportable))
+        if (_occupied >= _capacity || _currentIsland == null || !_currentIsland.Contains(newTransportable))
             return false;
 
         //Returns position where it was before being loaded on boat
@@ -59,25 +59,6 @@ public class Boat
         return true;
     }
 
-    public void ForceLoad(Transportable newTransportable, int pos)
-    {
-
-        // 0  <  1
-        // 1  ==  1
-        while (pos >= _seats.Count)
-        {
-            _seats.Add(null);
-        }
-        _seats[pos] = newTransportable;
-
-        _occupied++;
-
-        if (_behaviour)
-        {
-            newTransportable.GoTo(_behaviour.GetSeat(pos), out float animationDuration, true);
-        }
-    }
-
     internal void SetUp(GameObject g)
     {
         _behaviour = g.GetComponent<BoatBehaviour>();
@@ -93,8 +74,6 @@ public class Boat
 
         _currentIsland = newIsland;
     }
-
-
 
     internal bool Contains(Transportable transportable)
     {
@@ -118,6 +97,11 @@ public class Boat
         return true;
     }
 
+    public Island GetCurrentIsland()
+    {
+        return _currentIsland;
+    }
+
     public override string ToString()
     {
         string result = "< ";
@@ -136,17 +120,4 @@ public class Boat
 
         return result;
     }
-
-    public Island GetCurrentIsland()
-    {
-        return _currentIsland;
-    }
-
-    internal void Empty()
-    {
-        _occupied = 0;
-    }
-
-
-
 }

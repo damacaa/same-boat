@@ -61,7 +61,7 @@ public class Island
         return null;
     }
 
-    internal bool CheckIfExists(Transportable newTransportable)
+    internal bool Contains(Transportable newTransportable)
     {
         return _transportables.Contains(newTransportable);
     }
@@ -120,19 +120,7 @@ public class Island
     {
         return _transportables.Count(a => a != null) == 0;
     }
-    internal void Enable()
-    {
-        if (_behaviour)
-            _behaviour.GetComponent<Collider2D>().enabled = true;
-    }
-
-    internal void Disable()
-    {
-        if (_behaviour)
-            _behaviour.GetComponent<Collider2D>().enabled = false;
-    }
-
-
+ 
     public override string ToString()
     {
         string result = _name + ": [ ";

@@ -68,7 +68,7 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.W))
         {
             int steps = Solver.Solver.SolveWidth(_game);
-            print(steps);
+            print(steps + " steps");
 
             StartCoroutine(_game.ShowAllMovesCoroutine());
         }
@@ -76,25 +76,6 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.R))
         {
             _game.Reset();
-        }
-
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-            print("Test");
-            var fox = _game._islands[0].Transportables[0];
-            var chicken = _game._islands[0].Transportables[1];
-            var corn = _game._islands[0].Transportables[2];
-
-            var a = _game._islands[0];
-            var b = _game._islands[1];
-
-            _game.LoadOnBoat(fox, true);
-            _game.MoveBoatToIsland(b, true);
-            _game.UnloadFromBoat(fox, true);
-            _game.Undo(true);
-            _game.Undo(true);
-            _game.Undo(true);
-            _game.LoadOnBoat(chicken, true);
         }
     }
 
@@ -118,8 +99,7 @@ public class GameManager : MonoBehaviour
 
     public void TransportableInteraction(Transportable transportable)
     {
-        print(transportable);
-        if (_boat.GetCurrentIsland().CheckIfExists(transportable))
+        if (_boat.GetCurrentIsland().Contains(transportable))
         {
             _selectedTransportable = transportable;
             print("Select " + _selectedTransportable);
@@ -142,7 +122,7 @@ public class GameManager : MonoBehaviour
         _boat = boat;
         if (_selectedTransportable != null)
         {
-            print("Load " + _selectedTransportable);
+            //print("Load " + _selectedTransportable);
             _game.LoadOnBoat(_selectedTransportable);
             _selectedTransportable = null;
         }

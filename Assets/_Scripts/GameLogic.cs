@@ -10,7 +10,7 @@ public class GameLogic
     //Entities
     Player _player;
     Boat _boat;
-    public List<Island> _islands = new List<Island>();
+    List<Island> _islands = new List<Island>();
 
     //Command
     int _currentCommand = 0;
@@ -49,40 +49,13 @@ public class GameLogic
         _boat = new Boat(level.BoatCapacity);
     }
 
-    public GameLogic(GameLogic original)
-    {
-        _boat = new Boat(original._boat.Capacity);
-        for (int i = 0; i < original._boat.Transportables.Count; i++)
-        {
-            if (original._boat.Transportables[i] != null)
-                _boat.ForceLoad(new Transportable(original._boat.Transportables[i]), i);
-        }
-
-        foreach (var island in original._islands)
-        {
-            Island islandData = new Island();
-
-            foreach (var transportable in island.Transportables)
-            {
-                islandData.Add(new Transportable(transportable), out float animationDuration);
-            }
-
-            if (island == original._boat.GetCurrentIsland())
-            {
-                _boat.GoTo(islandData, out float animationDuration);
-            }
-
-            _islands.Add(islandData);
-        }
-    }
-
     internal void Reset()
     {
-        for (int i = 0; i <= _commands.Count; i++)
+        for (int i = 0; i <= _commands.Count; i++) //Have to figure out how many undos are needed
         {
             Undo(true);
         }
-        //_commands.Clear();
+        _commands.Clear();
         _currentCommand = 0;
     }
 
@@ -119,7 +92,7 @@ public class GameLogic
 
             //Debug.Log(_commands[_currentCommand]);
 
-            _fail = CheckFail();
+            _fail = CheckFail(!instant);
 
             if (!_fail)
             {
@@ -148,11 +121,12 @@ public class GameLogic
             if (!instant)
                 _nextTime = Time.time + (0.5f * animationDuration);
             _fail = false;
+            _win = false;
             //Debug.Log("Undone: " + _commands[_currentCommand]);
         }
     }
 
-    bool CheckFail()
+    bool CheckFail(bool showMessage = true)
     {
         bool fail = false;
         foreach (var island in _islands)
@@ -163,7 +137,9 @@ public class GameLogic
             if (Solver.Solver.CheckFail(island.Transportables))
             {
                 fail = true;
-                Debug.Log("Fail in island " + island.Name);
+
+                if (showMessage)
+                    Debug.Log("Fail in island " + island.Name);
             }
         }
 
@@ -225,14 +201,14 @@ public class GameLogic
         {
             currentState.AddIsland(island);
         }
-        currentState.currentIsland = _boat.GetCurrentIsland();
+        currentState.CurrentIsland = _boat.GetCurrentIsland();
 
-        currentState.boatTransportables = _boat.Transportables.FindAll(t => t != null).OrderBy(t => t.ToString()).ToArray();
-        currentState.boatCapacity = _boat.Capacity;
-        currentState.boatOccupiedSeats = _boat.Occupied;
+        currentState.BoatTransportables = _boat.Transportables.FindAll(t => t != null).OrderBy(t => t.ToString()).ToArray();
+        currentState.BoatCapacity = _boat.Capacity;
+        currentState.BoatOccupiedSeats = _boat.Occupied;
 
         if (_commands.Count > 0 && _currentCommand > 0 && _currentCommand - 1 < _commands.Count)
-            currentState.command = _commands[_currentCommand - 1];
+            currentState.Bommand = _commands[_currentCommand - 1];
 
         return currentState;
     }

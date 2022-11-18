@@ -70,19 +70,4 @@ public class Transportable
         if (_behaviour)
             _behaviour.GoTo(transform, instant, out animationDuration, backwards);
     }
-
-    internal void Teleport(Boat boat, int pos)
-    {
-        _currentIsland.Remove(this);
-        _currentIsland = null;
-        boat.ForceLoad(this, pos);
-    }
-
-    internal void Teleport(Island island)
-    {
-        if (_currentIsland != null)
-            _currentIsland.Remove(this);
-        island.Add(this, out float animationDuration, true);
-        _currentIsland = island;
-    }
 }
