@@ -77,6 +77,11 @@ public class GameManager : MonoBehaviour
         {
             _game.Reset();
         }
+        
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            _game.Test();
+        }
     }
 
     public void IslandInteraction(Island island)

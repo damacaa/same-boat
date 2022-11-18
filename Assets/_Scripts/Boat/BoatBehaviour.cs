@@ -10,6 +10,12 @@ public class BoatBehaviour : MonoBehaviour
     [SerializeField]
     float _rotationTime = 0.2f;
 
+    [SerializeField]
+    Transform[] _seats;
+
+    [SerializeField]
+    GameObject driver;
+
     Boat _boat;
     // Start is called before the first frame update
     void Start()
@@ -26,6 +32,10 @@ public class BoatBehaviour : MonoBehaviour
     internal void SetUp(Boat boat)
     {
         _boat = boat;
+        if (!boat.CanMoveEmpty)
+        {
+            driver.SetActive(false);
+        }
     }
 
     private void OnMouseDown()
@@ -36,7 +46,7 @@ public class BoatBehaviour : MonoBehaviour
     internal Transform GetSeat(int pos)
     {
         //Needs work
-        return transform;
+        return _seats[pos];
     }
 
     internal void GoTo(Island newIsland, out float animationDuration, bool instant)
