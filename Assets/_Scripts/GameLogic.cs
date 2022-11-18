@@ -8,7 +8,6 @@ using UnityEngine;
 public class GameLogic
 {
     //Entities
-    Player _player;
     Boat _boat;
     List<Island> _islands = new List<Island>();
 
@@ -46,7 +45,7 @@ public class GameLogic
         }
 
         //Boat
-        _boat = new Boat(level.BoatCapacity);
+        _boat = new Boat(_islands[0], level.BoatCapacity, level.BoatMaxWeightAllowed, level.CanMoveEmpyBoat);
     }
 
     internal void Reset()
@@ -206,6 +205,9 @@ public class GameLogic
         currentState.BoatTransportables = _boat.Transportables.FindAll(t => t != null).OrderBy(t => t.ToString()).ToArray();
         currentState.BoatCapacity = _boat.Capacity;
         currentState.BoatOccupiedSeats = _boat.Occupied;
+        currentState.BoatMaxWeight = _boat.MaxWeight;
+        currentState.BoatCurrentWeight = _boat.CurrentWeight;
+        currentState.BoatCanMoveEmpty = _boat.CanMoveEmpty;
 
         if (_commands.Count > 0 && _currentCommand > 0 && _currentCommand - 1 < _commands.Count)
             currentState.Bommand = _commands[_currentCommand - 1];
@@ -227,6 +229,19 @@ public class GameLogic
         _showingSolveAnimation = false;
 
         yield return null;
+    }
+
+
+    public void Test()
+    {
+        var a = _islands[0];
+        var b = _islands[1];
+
+        var fox = a.Transportables[0];
+        var chicken = a.Transportables[1];
+        var corn = a.Transportables[2];
+
+        LoadOnBoat(fox);
     }
 
     public override string ToString()

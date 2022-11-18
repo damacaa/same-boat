@@ -3,10 +3,6 @@ using UnityEngine;
 
 public class Boat
 {
-    [SerializeField]
-    int _capacity = 1;
-    int _occupied = 0;
-
     BoatBehaviour _behaviour;
 
     Island _currentIsland;
@@ -14,22 +10,34 @@ public class Boat
 
     public BoatBehaviour Behaviour { get { return _behaviour; } }
     public List<Transportable> Transportables { get { return _seats; } }
-    public int Capacity { get { return _capacity; } }
-    public int Occupied { get { return _occupied; } }
-    public bool IsEmpty { get { return _occupied == 0; } }
+    public int Capacity { get; private set; }
+    public int Occupied { get; private set; }
+    public int MaxWeight { get; private set; }
+    public int CurrentWeight { get; private set; }
+    public bool IsEmpty { get { return Occupied == 0; } }
+    public bool CanMoveEmpty { get;private set; }
 
 
-    public Boat(int capacity)
+    public Boat(Island island, int capacity, int maxWeight,bool canMoveEmpty)
     {
-        _capacity = capacity;
+        _currentIsland = island;
+
+        Capacity = capacity;
+        MaxWeight = maxWeight;
+        CanMoveEmpty = canMoveEmpty;
     }
 
     public bool LoadBoat(Transportable newTransportable, out int position, out float animationDuration, bool instant = false, bool backwards = false)
     {
         position = -1;
         animationDuration = 0;
-        if (_occupied >= _capacity || _currentIsland == null || !_currentIsland.Contains(newTransportable))
+        if (Occupied >= Capacity
+            || (CurrentWeight + newTransportable.Weight) > MaxWeight
+            || _currentIsland == null
+            || !_currentIsland.Contains(newTransportable)) {
+            Debug.Log("Fuck");
             return false;
+        }
 
         //Returns position where it was before being loaded on boat
         position = newTransportable.PositionIndexInIsland;
@@ -37,7 +45,7 @@ public class Boat
         _currentIsland.Remove(newTransportable);
 
         int pos = -1;
-        if (_seats.Count < _capacity)
+        if (_seats.Count < Capacity)
         {
             _seats.Add(newTransportable);
             pos = _seats.Count - 1;
@@ -49,7 +57,8 @@ public class Boat
             _seats[pos] = newTransportable;
         }
 
-        _occupied++;
+        Occupied++;
+        CurrentWeight += newTransportable.Weight;
 
         if (_behaviour)
         {
@@ -61,18 +70,25 @@ public class Boat
 
     internal void SetUp(GameObject g)
     {
+        g.transform.position = _currentIsland.Behaviour.GetPortPosition();
         _behaviour = g.GetComponent<BoatBehaviour>();
         _behaviour.SetUp(this);
     }
 
-    public void GoTo(Island newIsland, out float animationDuration, bool instant = false)
+    public bool GoTo(Island newIsland, out float animationDuration, bool instant = false)
     {
         animationDuration = 0;
+
+        if (!CanMoveEmpty && Occupied == 0) {
+            return false;
+        }
 
         if (_behaviour)
             _behaviour.GoTo(newIsland, out animationDuration, instant);
 
         _currentIsland = newIsland;
+
+        return true;
     }
 
     internal bool Contains(Transportable transportable)
@@ -93,7 +109,8 @@ public class Boat
         }
         _seats[i] = null;
         _currentIsland.Add(selectedTransportable, position, out animationDuration, instant, backwards);
-        _occupied--;
+        Occupied--;
+        CurrentWeight -= selectedTransportable.Weight;
         return true;
     }
 
@@ -106,7 +123,7 @@ public class Boat
     {
         string result = "< ";
 
-        for (int i = 0; i < _capacity; i++)
+        for (int i = 0; i < Capacity; i++)
         {
             result += "[ ";
             if (i < _seats.Count && _seats[i] != null)

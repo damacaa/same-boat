@@ -33,8 +33,8 @@ public class TransportableBehaviour : MonoBehaviour
         }
     }
 
-    GameObject sprite;
-    GameObject shadow;
+    GameObject _sprite;
+    GameObject _shadow;
 
     Animator _animator;
     SpriteRenderer _renderer;
@@ -61,18 +61,18 @@ public class TransportableBehaviour : MonoBehaviour
         float rotZ = _wiggle * (_mirror ? -1 : 1) * Mathf.Sin(_speed * Time.time * _wiggleSpeed) * _wiggleAmpitude;
         Quaternion rotXZ = Quaternion.Euler(-45, 0, rotZ);
 
-        sprite.transform.localRotation = rotXZ * rotY;
+        _sprite.transform.localRotation = rotXZ * rotY;
     }
 
     public void SetUp(Transportable t, TransportableSO scriptableObject)
     {
         data = t;
 
-        sprite = transform.GetChild(0).gameObject;
-        shadow = transform.GetChild(1).gameObject;
+        _sprite = transform.GetChild(0).gameObject;
+        _shadow = transform.GetChild(1).gameObject;
 
-        _animator = sprite.GetComponent<Animator>();
-        _renderer = sprite.GetComponent<SpriteRenderer>();
+        _animator = _sprite.GetComponent<Animator>();
+        _renderer = _sprite.GetComponent<SpriteRenderer>();
 
         if (scriptableObject.AnimatorController != null)
             _animator.runtimeAnimatorController = scriptableObject.AnimatorController;

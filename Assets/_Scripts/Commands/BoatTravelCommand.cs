@@ -15,12 +15,16 @@ public class BoatTravelCommand : BoatCommand
     public override bool Execute(out float animationDuration, bool instant = false)
     {
         _previousIsland = _boat.GetCurrentIsland();
-        _boat.GoTo(_island, out animationDuration, instant);
-        return true;
+        _success = _boat.GoTo(_island, out animationDuration, instant);
+        return _success;
     }
 
     public override void Undo(out float animationDuration, bool instant = false)
     {
+        if (!_success) {
+            animationDuration = 0;
+            return;
+        }
         _boat.GoTo(_previousIsland, out animationDuration, instant);
     }
 

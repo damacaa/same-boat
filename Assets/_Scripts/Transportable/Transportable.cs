@@ -13,6 +13,7 @@ public class Transportable
     Island _currentIsland;
     public Island Island { get { return _currentIsland; } set { _currentIsland = value; } }
 
+    public int Weight { get { return _scripatableObject.Weight; } }
     public int PositionIndexInIsland { get; internal set; }
 
     [Obsolete("")]

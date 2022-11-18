@@ -186,12 +186,12 @@ namespace Solver
                 }
 
                 //If boat has empty seats it will load new transportables
-                if (current.BoatOccupiedSeats < current.BoatCapacity)
+                if (current.BoatOccupiedSeats < current.BoatCapacity && current.BoatCurrentWeight < current.BoatMaxWeight)
                 {
                     for (int i = 0; i < current.CurrentIsland.Transportables.Count; i++)
                     {
                         Transportable transportable = current.CurrentIsland.Transportables[i];
-                        if (transportable == null || !game.LoadOnBoat(transportable, true))
+                        if (transportable == null || (current.BoatCurrentWeight + transportable.Weight) > current.BoatMaxWeight || !game.LoadOnBoat(transportable, true))
                         {
                             continue;
                         }
@@ -246,7 +246,7 @@ namespace Solver
                 for (int i = current.Islands.Count - 1; i >= 0; i--)
                 {
                     State.IslandState island = current.Islands[i];
-                    if (island.islandRef == current.CurrentIsland)
+                    if (island.islandRef == current.CurrentIsland || (!current.BoatCanMoveEmpty && current.BoatOccupiedSeats == 0))
                         continue;
 
                     game.MoveBoatToIsland(island.islandRef, true);
@@ -375,6 +375,10 @@ namespace Solver
         public Command Bommand;
 
         public int F { get { return (2 * Islands[Islands.Count - 1].transportables.Length) - Steps; } }
+
+        public int BoatMaxWeight { get; internal set; }
+        public int BoatCurrentWeight { get; internal set; }
+        public bool BoatCanMoveEmpty { get; internal set; }
 
         public void AddIsland(Island island)
         {

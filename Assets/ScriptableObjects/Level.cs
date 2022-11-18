@@ -7,6 +7,8 @@ public class Level : ScriptableObject
 {
     public new string name;
     public int BoatCapacity = 1;
+    public int BoatMaxWeightAllowed = 2;
+    public bool CanMoveEmpyBoat = true;
     public Level.Island[] Islands;
 
     [System.Serializable]
