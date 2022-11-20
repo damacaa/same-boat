@@ -16,4 +16,4 @@ MonoBehaviour:
   Weight: 2
   IsAlive: 1
   Diet: 0
-  AnimatorController: {fileID: 22100000, guid: 96517fc03b90e8143889cdd3bf91ff3a, type: 2}
+  sprite: {fileID: 21300000, guid: 9f27b725d69f6b445a201d1310c9f984, type: 3}

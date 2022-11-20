@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager instance;
+    public static GameManager instance { get; private set; }
     private void Awake()
     {
         if (instance)
@@ -22,66 +22,66 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     int _currentLevel;
 
-    GameLogic _game;
+    public GameLogic Game { get; private set; }
     Transportable _selectedTransportable;
     Boat _boat;
 
     private void Start()
     {
-        if(!SceneLoader.Instance)
+        if (!SceneLoader.Instance)
             LoadLevel(levels[_currentLevel]);
     }
 
     public void LoadLevel(Level level)
     {
-        _game = new GameLogic(level);
-        _game.GenerateGameObjects();
-        _boat = _game.Boat;
-        _boat.GoTo(_game.FirstIsland, out float animationDuration, true);
+        Game = new GameLogic(level);
+        Game.GenerateGameObjects();
+        _boat = Game.Boat;
+        _boat.GoTo(Game.FirstIsland, out float animationDuration, true);
     }
 
     private void Update()
     {
-        if (_game == null)
+        if (Game == null)
             return;
 
         if (Input.GetKeyDown("right"))
         {
-            _game.Execute();
-            print(_game);
+            Game.Execute();
+            print(Game);
         }
 
         if (Input.GetKeyDown("left"))
         {
-            _game.Undo();
-            print(_game);
+            Game.Undo();
+            print(Game);
             _selectedTransportable = null;
         }
 
         if (Input.GetKeyDown(KeyCode.S))
         {
-            int steps = Solver.Solver.Solve(_game);
+            int steps = Solver.Solver.Solve(Game);
             print(steps);
 
-            StartCoroutine(_game.ShowAllMovesCoroutine());
+            StartCoroutine(Game.ShowAllMovesCoroutine());
         }
 
         if (Input.GetKeyDown(KeyCode.W))
         {
-            int steps = Solver.Solver.SolveWidth(_game);
+            int steps = Solver.Solver.SolveWidth(Game);
             print(steps + " steps");
 
-            StartCoroutine(_game.ShowAllMovesCoroutine());
+            StartCoroutine(Game.ShowAllMovesCoroutine());
         }
 
         if (Input.GetKeyDown(KeyCode.R))
         {
-            _game.Reset();
+            Game.Reset();
         }
-        
+
         if (Input.GetKeyDown(KeyCode.T))
         {
-            _game.Test();
+            Game.Test();
         }
     }
 
@@ -91,13 +91,13 @@ public class GameManager : MonoBehaviour
         if (_boat.GetCurrentIsland() != island)
         {
             _selectedTransportable = null;
-            _game.MoveBoatToIsland(island);
+            Game.MoveBoatToIsland(island);
         }
         else
         {
             if (_selectedTransportable != null && _boat.Contains(_selectedTransportable))
             {
-                _game.UnloadFromBoat(_selectedTransportable);
+                Game.UnloadFromBoat(_selectedTransportable);
                 _selectedTransportable = null;
             }
         }
@@ -117,7 +117,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            _game.MoveBoatToIsland(transportable.Island);
+            Game.MoveBoatToIsland(transportable.Island);
             //_boat.GetCurrentIsland() = transportable.Island;
             //game.LoadOnBoat(transportable);
         }
@@ -126,10 +126,9 @@ public class GameManager : MonoBehaviour
     public void BoatInteraction(Boat boat)
     {
         _boat = boat;
-        if (_selectedTransportable != null)
+        if (_selectedTransportable != null && Game.LoadOnBoat(_selectedTransportable))
         {
             //print("Load " + _selectedTransportable);
-            _game.LoadOnBoat(_selectedTransportable);
             _selectedTransportable = null;
         }
     }
