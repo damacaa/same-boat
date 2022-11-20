@@ -26,7 +26,7 @@ public class TransportableBehaviour : MonoBehaviour
     float _rotY = 0;
     float _unscaledCenterOffset;
 
-    Transportable data;
+    public Transportable Data { get; private set; }
     bool _walking;
     public bool Walking
     {
@@ -98,7 +98,7 @@ public class TransportableBehaviour : MonoBehaviour
 
     public void SetUp(Transportable t, TransportableSO scriptableObject)
     {
-        data = t;
+        Data = t;
 
         _sprite = transform.GetChild(0).gameObject;
         _shadow = transform.GetChild(1).gameObject;
@@ -120,7 +120,7 @@ public class TransportableBehaviour : MonoBehaviour
 
     public void OnMouseDown()
     {
-        GameManager.instance.TransportableInteraction(data);
+        GameManager.instance.TransportableInteraction(Data);
     }
 
     Coroutine _movement;
