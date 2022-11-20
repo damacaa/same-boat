@@ -217,6 +217,8 @@ MonoBehaviour:
   _menu: {fileID: 405528317}
   _levelSelect: {fileID: 1205457289}
   _options: {fileID: 0}
+  GoStraightToGame: 0
+  level: {fileID: 11400000, guid: 9fc1ac9099c05054d8707da8a018e462, type: 2}
 --- !u!4 &1013690887
 Transform:
   m_ObjectHideFlags: 0
