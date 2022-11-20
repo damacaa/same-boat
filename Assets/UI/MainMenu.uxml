@@ -1,0 +1,11 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/MainMenu.uss?fileID=7433441132597879392&amp;guid=4666eae0098cfec4f9d4e9423660d530&amp;type=3#MainMenu" />
+    <ui:VisualElement name="Canvas" style="align-items: center; justify-content: center; width: 100%; height: 100%;">
+        <ui:VisualElement name="Header" style="height: 10%; margin-left: 0; margin-right: 0; padding-left: 0.5%; padding-right: 0.5%; padding-top: 0.5%; padding-bottom: 0.5%; margin-top: 0; margin-bottom: 0; background-color: rgb(180, 180, 180); width: 100%;" />
+        <ui:VisualElement name="Body" style="height: 100%; max-height: none; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 10px; padding-right: 10px; padding-top: 10px; padding-bottom: 10px; align-items: center; justify-content: center; flex-direction: row; width: 100%;">
+            <ui:VisualElement name="Buttons" style="width: 50%; height: 50%; justify-content: center; align-items: center;">
+                <ui:Button text="Play" display-tooltip-when-elided="true" name="PlayButton" class="menu-button" style="width: 30%; height: 20%; left: auto; align-items: center; justify-content: center; top: auto; position: relative; right: auto; font-size: 35%;" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

@@ -1,35 +1,17 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
-    private void Awake()
-    {
-        if (instance)
-        {
-            Destroy(this);
-        }
-        else
-        {
-            instance = this;
-        }
-    }
-
-    [SerializeField]
-    Level[] levels;
-    [SerializeField]
-    int _currentLevel;
 
     GameLogic _game;
     Transportable _selectedTransportable;
     Boat _boat;
 
-    private void Start()
+    private void Awake()
     {
-        if(!SceneLoader.Instance)
-            LoadLevel(levels[_currentLevel]);
+        if (instance) Destroy(this);
+        else instance = this;
     }
 
     public void LoadLevel(Level level)
@@ -78,7 +60,7 @@ public class GameManager : MonoBehaviour
         {
             _game.Reset();
         }
-        
+
         if (Input.GetKeyDown(KeyCode.T))
         {
             _game.Test();
@@ -133,5 +115,4 @@ public class GameManager : MonoBehaviour
             _selectedTransportable = null;
         }
     }
-
 }
