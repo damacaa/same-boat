@@ -35,7 +35,7 @@ public class GameManager : MonoBehaviour
     public void LoadLevel(Level level)
     {
         Game = new GameLogic(level);
-        Game.GenerateGameObjects();
+        Game.GenerateGameObjects(level);
         _boat = Game.Boat;
         _boat.GoTo(Game.FirstIsland, out float animationDuration, true);
     }

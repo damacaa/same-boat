@@ -58,10 +58,10 @@ public class GameLogic
         _currentCommand = 0;
     }
 
-    public void GenerateGameObjects()
+    public void GenerateGameObjects(Level level)
     {
         //Build map
-        MapGenerator.instace.GenerateMap(_islands.ToArray()); //Should generate island behaviours
+        MapGenerator.instace.GenerateMap(_islands.ToArray(), level); //Should generate island behaviours
         MapGenerator.instace.GenerateBoat(_boat);
         TransportableManager.instace.GenerateSprites(_islands.ToArray());
     }
