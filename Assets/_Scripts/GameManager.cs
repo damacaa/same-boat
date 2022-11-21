@@ -79,6 +79,16 @@ public class GameManager : MonoBehaviour
         {
             Game.Test();
         }
+
+        if (Game.Fail)
+        {
+
+        }
+
+        if (Game.Win)
+        {
+
+        }
     }
 
     internal bool MoveBoatTo(BoatBehaviour boat, IslandBehaviour island)

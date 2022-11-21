@@ -25,7 +25,8 @@ public class IslandBehaviour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        Outline outline = GetComponent<Outline>();
+        outline.enabled = false;
     }
 
     internal void Assign(Island island)

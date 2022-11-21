@@ -16,17 +16,19 @@ public class BoatBehaviour : MonoBehaviour
     [SerializeField]
     GameObject driver;
 
+    Outline _outline;
+
     public Boat Data { get; private set; }
     // Start is called before the first frame update
     void Start()
     {
-
+        _outline = GetComponent<Outline>();
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        _outline.enabled = false;
     }
 
     internal void SetUp(Boat boat)

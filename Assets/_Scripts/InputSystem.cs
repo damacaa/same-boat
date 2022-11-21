@@ -25,7 +25,7 @@ public class InputSystem : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void LateUpdate()
     {
         if (Input.GetMouseButtonDown(0))
         {
@@ -33,7 +33,7 @@ public class InputSystem : MonoBehaviour
         }
         else if (Input.GetMouseButton(0))
         {
-            OnDrag();
+            OnHover();
         }
         else if (Input.GetMouseButtonUp(0))
         {
@@ -69,11 +69,13 @@ public class InputSystem : MonoBehaviour
                 _cursor.transform.position = hit.point;
             }
         }
-        else { }
+        else { 
+        
+        }
 
     }
 
-    private void OnDrag()
+    private void OnHover()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
@@ -84,14 +86,20 @@ public class InputSystem : MonoBehaviour
             if (_boat && g.TryGetComponent<IslandBehaviour>(out IslandBehaviour island))
             {
                 _line.End(g.transform.GetChild(0));
+                Outline outline = g.GetComponent<Outline>();
+                outline.enabled = true;
             }
-            else if (_transportable && g.TryGetComponent<IslandBehaviour>(out island))
+            else if (_transportable && g.TryGetComponent<IslandBehaviour>(out island) && _transportable.Data.Island != island.Data)
             {
                 _line.End(island.FindSpot(out int index));
+                Outline outline = g.GetComponent<Outline>();
+                outline.enabled = true;
             }
             else if (_transportable && g.TryGetComponent<BoatBehaviour>(out BoatBehaviour boat))
             {
                 _line.End(boat.FindSeat());
+                Outline outline = g.GetComponent<Outline>();
+                outline.enabled = true;
             }
             else
             {
