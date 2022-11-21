@@ -40,7 +40,7 @@ public class IslandBehaviour : MonoBehaviour
 
     internal Transform GetSpot(int index)
     {
-        return _transportablePositions[index];
+        return _transportablePositions[Math.Min(index, _transportablePositions.Count - 1)];
     }
 
     internal Transform FindSpot(out int index)

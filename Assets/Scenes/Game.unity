@@ -208,7 +208,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 40
+  field of view: 18
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -234,7 +234,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_LocalRotation: {x: -0.38268343, y: 0, z: 0, w: 0.92387956}
-  m_LocalPosition: {x: 0, y: -15, z: -15}
+  m_LocalPosition: {x: 0, y: -30, z: -30}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -285,11 +285,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c7dc02823a85c14c853d74cdfa39e5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  resolution: 1
   size: {x: 32, y: 32}
+  resolution: 1
   worldMaterial: {fileID: 2100000, guid: 98ce9466513ed8447b95367b0309bf22, type: 2}
+  colors:
+  - {r: 1, g: 0.6075944, b: 0.33490568, a: 1}
+  - {r: 0.85236424, g: 0.5707547, b: 1, a: 1}
+  - {r: 0.4198113, g: 1, b: 0.7671396, a: 1}
+  - {r: 0.504717, g: 0.9468651, b: 1, a: 1}
+  _darkColor: {r: 0.23349059, g: 0.2514514, b: 0.31132078, a: 1}
+  map: {fileID: 2800000, guid: 7c27b6935c20ed24bb8c48af6e63306c, type: 3}
   _threshold: 0.5
-  map: {fileID: 2800000, guid: 1a025abf17839894bacee0519cdbca9e, type: 3}
   _boatPrefabs:
   - {fileID: 5100809846752158426, guid: 5c1f710ca9d63564898dffdf089fae00, type: 3}
 --- !u!1 &1103618236

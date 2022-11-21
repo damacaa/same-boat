@@ -24,6 +24,8 @@ public class MapGenerator : MonoBehaviour
     Material worldMaterial;
     [SerializeField]
     Color[] colors;
+    [SerializeField]
+    Color _darkColor;
 
     [SerializeField]
     Texture2D map;
@@ -86,9 +88,12 @@ public class MapGenerator : MonoBehaviour
             spotsTransform.parent = g.transform;
 
             // Spots
-            Transform[] spots = FindSpots(maps[i], 3);
+            Transform[] spots = FindSpots(maps[i], 5);
             foreach (var s in spots)
             {
+                if (!s)
+                    continue;
+
                 s.transform.parent = spotsTransform;
                 behaviour.AddSpot(s);
             }
@@ -101,6 +106,9 @@ public class MapGenerator : MonoBehaviour
         var go = MeshGenerator.GenerateMesh(tiles, blockSize, worldMaterial);
         go.name = "Other";
         go.transform.parent = transform;
+        var darkMaterial = new Material(worldMaterial);
+        darkMaterial.color = _darkColor;
+        go.GetComponent<MeshRenderer>().material = darkMaterial;
 
         // Functions /////////////////////////////////////////////////////////////////////////////////////
 
