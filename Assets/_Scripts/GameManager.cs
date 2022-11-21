@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -23,8 +24,6 @@ public class GameManager : MonoBehaviour
     int _currentLevel;
 
     public GameLogic Game { get; private set; }
-    Transportable _selectedTransportable;
-    Boat _boat;
 
     private void Start()
     {
@@ -36,8 +35,6 @@ public class GameManager : MonoBehaviour
     {
         Game = new GameLogic(level);
         Game.GenerateGameObjects(level);
-        _boat = Game.Boat;
-        _boat.GoTo(Game.FirstIsland, out float animationDuration, true);
     }
 
     private void Update()
@@ -55,7 +52,6 @@ public class GameManager : MonoBehaviour
         {
             Game.Undo();
             print(Game);
-            _selectedTransportable = null;
         }
 
         if (Input.GetKeyDown(KeyCode.S))
@@ -85,52 +81,38 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void IslandInteraction(Island island)
+    internal bool MoveBoatTo(BoatBehaviour boat, IslandBehaviour island)
     {
-        //print(island.Name);
-        if (_boat.GetCurrentIsland() != island)
+        return Game.MoveBoatToIsland(island.Data);
+    }
+
+    internal bool MoveTransportableTo(TransportableBehaviour transportable, IslandBehaviour island)
+    {
+        if (island.Data != Game.Boat.GetCurrentIsland())
         {
-            _selectedTransportable = null;
-            Game.MoveBoatToIsland(island);
-        }
-        else
-        {
-            if (_selectedTransportable != null && _boat.Contains(_selectedTransportable))
+            if (!Game.MoveBoatToIsland(island.Data, true))
+                return false;
+
+            if (!Game.UnloadFromBoat(transportable.Data, true))
             {
-                Game.UnloadFromBoat(_selectedTransportable);
-                _selectedTransportable = null;
+                Game.Undo(true);
+                return false;
             }
+
+            Game.Undo(true);
+            Game.Undo(true);
+
+            StartCoroutine(Game.ShowAllMovesCoroutine());
+
+            return true;
         }
+        //return false; // Game.MoveBoatToIsland(island.Data)
+
+        return Game.UnloadFromBoat(transportable.Data);
     }
 
-    public void TransportableInteraction(Transportable transportable)
+    internal bool MoveTransportableTo(TransportableBehaviour transportable, BoatBehaviour boat)
     {
-        if (_boat.GetCurrentIsland().Contains(transportable))
-        {
-            _selectedTransportable = transportable;
-            print("Select " + _selectedTransportable);
-        }
-        else if (_boat.Contains(transportable))
-        {
-            _selectedTransportable = transportable;
-            print("Select " + _selectedTransportable);
-        }
-        else
-        {
-            Game.MoveBoatToIsland(transportable.Island);
-            //_boat.GetCurrentIsland() = transportable.Island;
-            //game.LoadOnBoat(transportable);
-        }
+        return Game.LoadOnBoat(transportable.Data);
     }
-
-    public void BoatInteraction(Boat boat)
-    {
-        _boat = boat;
-        if (_selectedTransportable != null && Game.LoadOnBoat(_selectedTransportable))
-        {
-            //print("Load " + _selectedTransportable);
-            _selectedTransportable = null;
-        }
-    }
-
 }
