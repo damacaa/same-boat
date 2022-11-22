@@ -130,7 +130,7 @@ public class GameLogic
         bool fail = false;
         foreach (var island in _islands)
         {
-            if (island == _boat.GetCurrentIsland())
+            if (island == _boat.Island)
                 continue;
 
             if (Solver.Solver.CheckFail(island.Transportables))
@@ -200,7 +200,7 @@ public class GameLogic
         {
             currentState.AddIsland(island);
         }
-        currentState.CurrentIsland = _boat.GetCurrentIsland();
+        currentState.CurrentIsland = _boat.Island;
 
         currentState.BoatTransportables = _boat.Transportables.FindAll(t => t != null).OrderBy(t => t.ToString()).ToArray();
         currentState.BoatCapacity = _boat.Capacity;

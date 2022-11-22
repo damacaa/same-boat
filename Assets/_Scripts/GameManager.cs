@@ -98,7 +98,7 @@ public class GameManager : MonoBehaviour
 
     internal bool MoveTransportableTo(TransportableBehaviour transportable, IslandBehaviour island)
     {
-        if (island.Data != Game.Boat.GetCurrentIsland())
+        if (island.Data != Game.Boat.Island)
         {
             if (!Game.MoveBoatToIsland(island.Data, true))
                 return false;

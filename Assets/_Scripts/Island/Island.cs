@@ -109,6 +109,7 @@ public class Island
     public void Remove(Transportable data)
     {
         _transportables[data.PositionIndexInIsland] = null;
+        data.Island = null;
     }
 
     public bool CheckFail()

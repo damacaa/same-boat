@@ -8,6 +8,9 @@ public class InputSystem : MonoBehaviour
     float distance = 50f;
 
     [SerializeField]
+    LayerMask _layerMask;
+
+    [SerializeField]
     Line _line;
 
     TransportableBehaviour _transportable;
@@ -69,8 +72,9 @@ public class InputSystem : MonoBehaviour
                 _cursor.transform.position = hit.point;
             }
         }
-        else { 
-        
+        else
+        {
+
         }
 
     }
@@ -79,35 +83,37 @@ public class InputSystem : MonoBehaviour
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
-        if (Physics.Raycast(ray, out hit, distance) )
+        if (Physics.Raycast(ray, out hit, distance, _layerMask))
         {
             var g = hit.collider.gameObject;
+            _cursor.transform.position = hit.point;
 
             if (_boat && g.TryGetComponent<IslandBehaviour>(out IslandBehaviour island))
             {
-                _line.End(g.transform.GetChild(0));
+                //_line.End(g.transform.GetChild(0));
                 Outline outline = g.GetComponent<Outline>();
                 outline.enabled = true;
             }
-            else if (_transportable && g.TryGetComponent<IslandBehaviour>(out island) && _transportable.Data.Island != island.Data)
+            else if (_transportable && g.TryGetComponent<IslandBehaviour>(out island))
             {
-                _line.End(island.FindSpot(out int index));
-                Outline outline = g.GetComponent<Outline>();
-                outline.enabled = true;
+                //_line.End(island.FindSpot(out int index));
+                if (_transportable.Data.Island == null)
+                {
+                    Outline outline = g.GetComponent<Outline>();
+                    outline.enabled = true;
+                }
             }
             else if (_transportable && g.TryGetComponent<BoatBehaviour>(out BoatBehaviour boat))
             {
-                _line.End(boat.FindSeat());
-                Outline outline = g.GetComponent<Outline>();
-                outline.enabled = true;
-            }
-            else
-            {
-                _cursor.transform.position = hit.point;
-                _line.End(_cursor.transform);
+                //_line.End(boat.transform);
+                if (boat.Data.Island == _transportable.Data.Island)
+                {
+                    Outline outline = g.GetComponent<Outline>();
+                    outline.enabled = true;
+                }
             }
 
-            //print(g.name);
+            _line.End(_cursor.transform);
         }
     }
 
@@ -116,7 +122,7 @@ public class InputSystem : MonoBehaviour
         bool fail = false;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
-        if (Physics.Raycast(ray, out hit, distance))
+        if (Physics.Raycast(ray, out hit, distance, _layerMask))
         {
             var g = hit.collider.gameObject;
 
