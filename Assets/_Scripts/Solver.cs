@@ -325,26 +325,47 @@ namespace Solver
         }
 
 
-        public static bool CheckFail(List<Transportable> transportables)
+        public static bool CheckRules(List<Transportable> transportables, Rule[] rules)
         {
-            bool success = true;
+            // Could be optimized by counting each only once, using a dictionary maybe
 
-            foreach (var a in transportables)
+            foreach (var r in rules)
             {
-                foreach (var b in transportables)
-                {
-                    if (a == null || b == null)
-                    {
-                        continue;
-                    }
+                int aCount = 0, bCount = 0;
 
-                    success = success && a.CheckCompatibility(b);
-                    if (a == b)
+                // Count how many transportables of each type in rule
+                foreach (var t in transportables)
+                {
+                    if (t == null)
+                        continue;
+
+                    if (t.ScripatableObject == r.A)
+                        aCount++;
+                    else if (t.ScripatableObject == r.B)
+                        bCount++;
+                }
+
+                switch (r.comparison)
+                {
+                    case Rule.RuleType.CantCoexist:
+                        if (aCount > 0 && bCount > 0)
+                            return false;
+                        break;
+                    case Rule.RuleType.CountMustBeGreaterThan:
+                        if (aCount <= bCount)
+                            return false;
+                        break;
+                    case Rule.RuleType.CountMustBeGreaterEqualThan:
+                        if (aCount < bCount)
+                            return false;
+                        break;
+                    default:
+                        Debug.Log("Rule not implemented");
                         break;
                 }
             }
 
-            return !success;
+            return true;
         }
     }
 

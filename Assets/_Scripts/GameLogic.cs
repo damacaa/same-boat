@@ -7,6 +7,8 @@ using UnityEngine;
 
 public class GameLogic
 {
+    Level _level;
+
     //Entities
     Boat _boat;
     List<Island> _islands = new List<Island>();
@@ -31,6 +33,8 @@ public class GameLogic
 
     public GameLogic(Level level)
     {
+        _level = level;
+
         //Desearialize transportables
         foreach (var island in level.Islands)
         {
@@ -133,7 +137,7 @@ public class GameLogic
             if (island == _boat.Island)
                 continue;
 
-            if (Solver.Solver.CheckFail(island.Transportables))
+            if (!Solver.Solver.CheckRules(island.Transportables, _level.rules))
             {
                 fail = true;
 
