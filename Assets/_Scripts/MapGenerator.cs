@@ -78,6 +78,12 @@ public class MapGenerator : MonoBehaviour
             g.name = "Island " + i;
             g.transform.parent = transform;
             IslandBehaviour behaviour = g.AddComponent<IslandBehaviour>();
+            Outline outline = g.AddComponent<Outline>();
+            outline.enabled = false;
+            outline.OutlineWidth = 2f;
+            outline.OutlineColor = colors[i];
+            outline.OutlineMode = Outline.Mode.OutlineVisible;
+            outline.UpdateMaterialProperties();
 
             // Port
             var portTransform = GeneratePort(maps[i]);
