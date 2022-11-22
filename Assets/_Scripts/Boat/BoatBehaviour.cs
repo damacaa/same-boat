@@ -16,22 +16,24 @@ public class BoatBehaviour : MonoBehaviour
     [SerializeField]
     GameObject driver;
 
-    Boat _boat;
+    Outline _outline;
+
+    public Boat Data { get; private set; }
     // Start is called before the first frame update
     void Start()
     {
-
+        _outline = GetComponent<Outline>();
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        _outline.enabled = false;
     }
 
     internal void SetUp(Boat boat)
     {
-        _boat = boat;
+        Data = boat;
         if (!boat.CanMoveEmpty)
         {
             driver.SetActive(false);
@@ -40,7 +42,7 @@ public class BoatBehaviour : MonoBehaviour
 
     private void OnMouseDown()
     {
-        GameManager.instance.BoatInteraction(_boat);
+        //GameManager.instance.BoatInteraction(Data);
     }
 
     internal Transform GetSeat(int pos)
@@ -92,5 +94,16 @@ public class BoatBehaviour : MonoBehaviour
 
 
         yield return null;
+    }
+
+    internal Transform FindSeat()
+    {
+        for (int i = 0; i < _seats.Length; i++)
+        {
+            if (_seats[i].childCount == 0)
+                return _seats[i];
+        }
+
+        return transform;
     }
 }

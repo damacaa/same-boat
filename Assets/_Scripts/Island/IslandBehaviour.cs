@@ -12,7 +12,7 @@ public class IslandBehaviour : MonoBehaviour
     [SerializeField]
     List<Transform> _transportablePositions = new List<Transform>();
 
-    Island _island;
+    public Island Data { get; private set; }
 
     // Start is called before the first frame update
 
@@ -25,17 +25,18 @@ public class IslandBehaviour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        Outline outline = GetComponent<Outline>();
+        outline.enabled = false;
     }
 
     internal void Assign(Island island)
     {
-        _island = island;
+        Data = island;
     }
 
     private void OnMouseDown()
     {
-        GameManager.instance.IslandInteraction(_island);
+        //GameManager.instance.IslandInteraction(Data);
     }
 
     internal Transform GetSpot(int index)
