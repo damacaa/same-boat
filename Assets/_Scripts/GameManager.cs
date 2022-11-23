@@ -25,6 +25,8 @@ public class GameManager : MonoBehaviour
 
     public GameLogic Game { get; private set; }
 
+    string _rules = "";
+
     private void Start()
     {
         if (!SceneLoader.Instance)
@@ -38,7 +40,7 @@ public class GameManager : MonoBehaviour
 
         foreach (var rule in level.rules)
         {
-            print(rule);
+            _rules += rule;
         }
     }
 
@@ -129,5 +131,29 @@ public class GameManager : MonoBehaviour
     internal bool MoveTransportableTo(TransportableBehaviour transportable, BoatBehaviour boat)
     {
         return Game.LoadOnBoat(transportable.Data);
+    }
+
+    private void OnGUI()
+    {
+        if (Game == null)
+            return;
+
+        int width = Screen.width / 8;
+        int height = Screen.height / 20;
+        int space = Screen.height / 50;
+
+        if (GUI.Button(new Rect(space, space, width, height), "Undo"))
+            Game.Undo();
+
+        if (GUI.Button(new Rect(space, space + height + space, width, height), "Reset"))
+            Game.Reset();
+
+        if (GUI.Button(new Rect(space, 2 * (space + height) + space, width, height), "Solve"))
+        {
+            Solver.Solver.SolveWidth(Game);
+            StartCoroutine(Game.ShowAllMovesCoroutine());
+        }
+
+        GUI.TextArea(new Rect(Screen.width - (3 * width) - space, space, 3 * width, 5 * height), _rules);
     }
 }
