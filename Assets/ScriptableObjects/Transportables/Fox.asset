@@ -13,7 +13,9 @@ MonoBehaviour:
   m_Name: Fox
   m_EditorClassIdentifier: 
   name: Fox
+  NamePlural: Foxes
   Weight: 2
+  CanDrive: 1
   IsAlive: 1
   Diet: 0
   sprite: {fileID: 21300000, guid: 9f27b725d69f6b445a201d1310c9f984, type: 3}

@@ -6,7 +6,9 @@ using UnityEngine;
 public class TransportableSO : ScriptableObject
 {
     public new string name;
+    public string NamePlural;
     public int Weight = 1;
+    public bool CanDrive = true;
     public bool IsAlive = true;
     public DietType Diet = DietType.None;
     public Sprite sprite;

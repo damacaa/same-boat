@@ -38,6 +38,7 @@ public class GameManager : MonoBehaviour
         Game = new GameLogic(level);
         Game.GenerateGameObjects(level);
 
+        _rules = level.name + ":\n";
         foreach (var rule in level.rules)
         {
             _rules += rule + "\n";
