@@ -35,6 +35,11 @@ public class GameManager : MonoBehaviour
     {
         Game = new GameLogic(level);
         Game.GenerateGameObjects(level);
+
+        foreach (var rule in level.rules)
+        {
+            print(rule);
+        }
     }
 
     private void Update()

@@ -7,32 +7,31 @@ public class Transportable
 {
     TransportableBehaviour _behaviour;
     public TransportableBehaviour Behaviour { get { return _behaviour; } }
-
-    TransportableSO _scripatableObject;
+    public TransportableSO ScripatableObject { get; private set; }
 
     Island _currentIsland;
     public Island Island { get { return _currentIsland; } set { _currentIsland = value; } }
 
-    public int Weight { get { return _scripatableObject.Weight; } }
+    public int Weight { get { return ScripatableObject.Weight; } }
     public int PositionIndexInIsland { get; internal set; }
 
     [Obsolete("")]
     public Transportable(string key)
     {
-        _scripatableObject = TransportableManager.instace.GetTransportable(key);
+        ScripatableObject = TransportableManager.instace.GetTransportable(key);
     }
 
     public Transportable(TransportableSO scripatableObject)
     {
-        _scripatableObject = scripatableObject;
+        ScripatableObject = scripatableObject;
     }
 
     public Transportable(Transportable original)
     {
-        _scripatableObject = original._scripatableObject;
+        ScripatableObject = original.ScripatableObject;
     }
 
-    public bool CheckCompatibility(Transportable other)
+    /*public bool CheckCompatibility(Transportable other)
     {
         return CheckCompatibility(this, other);
     }
@@ -52,17 +51,17 @@ public class Transportable
             return false;
 
         return true;
-    }
+    }*/
 
     public override string ToString()
     {
-        return _scripatableObject.name;
+        return ScripatableObject.name;
     }
 
     internal void AssignGameObject(GameObject g)
     {
         _behaviour = g.GetComponent<TransportableBehaviour>();
-        _behaviour.SetUp(this, _scripatableObject);
+        _behaviour.SetUp(this, ScripatableObject);
     }
 
     internal void GoTo(Transform transform, out float animationDuration, bool instant, bool backwards = false)

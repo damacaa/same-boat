@@ -323,29 +323,6 @@ namespace Solver
                 current = s;
             }
         }
-
-
-        public static bool CheckFail(List<Transportable> transportables)
-        {
-            bool success = true;
-
-            foreach (var a in transportables)
-            {
-                foreach (var b in transportables)
-                {
-                    if (a == null || b == null)
-                    {
-                        continue;
-                    }
-
-                    success = success && a.CheckCompatibility(b);
-                    if (a == b)
-                        break;
-                }
-            }
-
-            return !success;
-        }
     }
 
     public class State : IEquatable<State>
