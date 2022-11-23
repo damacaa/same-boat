@@ -40,7 +40,7 @@ public class GameManager : MonoBehaviour
 
         foreach (var rule in level.rules)
         {
-            _rules += rule;
+            _rules += rule + "\n";
         }
     }
 
