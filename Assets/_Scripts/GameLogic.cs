@@ -179,11 +179,11 @@ public class GameLogic
                         return false;
                     break;
                 case Rule.RuleType.CountMustBeGreaterThan:
-                    if (aCount <= bCount)
+                    if (aCount > 0 && aCount <= bCount)
                         return false;
                     break;
                 case Rule.RuleType.CountMustBeGreaterEqualThan:
-                    if (aCount < bCount)
+                    if (aCount > 0 && aCount < bCount)
                         return false;
                     break;
                 default:
