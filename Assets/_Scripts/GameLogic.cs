@@ -49,7 +49,7 @@ public class GameLogic
         }
 
         //Boat
-        _boat = new Boat(_islands[0], level.BoatCapacity, level.BoatMaxWeightAllowed, level.CanMoveEmpyBoat);
+        _boat = new Boat(_islands[0], level.BoatCapacity, level.BoatMaxWeightAllowed, level.BoatMaxTravelCost, level.CanMoveEmpyBoat);
     }
 
     internal void Reset()
