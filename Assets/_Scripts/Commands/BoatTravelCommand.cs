@@ -14,7 +14,7 @@ public class BoatTravelCommand : BoatCommand
 
     public override bool Execute(out float animationDuration, bool instant = false)
     {
-        _previousIsland = _boat.GetCurrentIsland();
+        _previousIsland = _boat.Island;
         _success = _boat.GoTo(_island, out animationDuration, instant);
         return _success;
     }
