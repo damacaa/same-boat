@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: The classic
   BoatCapacity: 1
-  BoatMaxWeightAllowed: 2
+  BoatMaxWeightAllowed: 0
+  BoatMaxTravelCost: 0
   CanMoveEmpyBoat: 1
   Islands:
   - transportables:

@@ -51,7 +51,7 @@ public class BoatBehaviour : MonoBehaviour
         return _seats[pos];
     }
 
-    internal void GoTo(Island newIsland, out float animationDuration, bool instant)
+    internal void GoTo(Island newIsland, out float animationDuration, bool instant, bool backwards)
     {
         animationDuration = 0;
         StopAllCoroutines();
@@ -63,17 +63,17 @@ public class BoatBehaviour : MonoBehaviour
         else
         {
             animationDuration = Vector2.Distance(transform.position, destination) / _speed;
-            StartCoroutine(MovementCoroutine(destination, animationDuration));
+            StartCoroutine(MovementCoroutine(destination, animationDuration, backwards));
         }
     }
 
-    IEnumerator MovementCoroutine(Vector3 destination, float duration)
+    IEnumerator MovementCoroutine(Vector3 destination, float duration, bool backwards)
     {
         yield return new WaitForEndOfFrame();
 
 
         Quaternion rot = transform.rotation;
-        Quaternion targetRot = Quaternion.LookRotation(Vector3.forward, destination - transform.position);
+        Quaternion targetRot = Quaternion.LookRotation(backwards ? -Vector3.forward : Vector3.forward, destination - transform.position);
 
         Vector2 pos = transform.position;
         float t = 0;

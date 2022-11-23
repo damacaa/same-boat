@@ -42,7 +42,7 @@ public class Island
     public Island()
     {
         string letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        _name = "" + letters[_islandsCreated];
+        _name = "" + letters[_islandsCreated % letters.Length];
         _islandsCreated++;
     }
 
@@ -121,7 +121,7 @@ public class Island
     {
         return _transportables.Count(a => a != null) == 0;
     }
- 
+
     public override string ToString()
     {
         string result = _name + ": [ ";
