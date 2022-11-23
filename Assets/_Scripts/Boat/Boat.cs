@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -12,18 +13,23 @@ public class Boat
     public int Occupied { get; private set; }
     public int MaxWeight { get; private set; }
     public int CurrentWeight { get; private set; }
+    public int MaxTravelCost { get; private set; }
+    public int CurrentTravelCost { get; private set; }
     public bool IsEmpty { get { return Occupied == 0; } }
-    public bool CanMoveEmpty { get;private set; }
+    public bool CanMoveEmpty { get; private set; }
     public Island Island { get; private set; }
 
 
-    public Boat(Island island, int capacity, int maxWeight,bool canMoveEmpty)
+    public Boat(Island island, int capacity, int maxWeight, int maxTravelCost, bool canMoveEmpty)
     {
         Island = island;
 
         Capacity = capacity;
         MaxWeight = maxWeight;
+        MaxTravelCost = maxTravelCost;
         CanMoveEmpty = canMoveEmpty;
+
+        CurrentTravelCost = 0;
     }
 
     public bool LoadBoat(Transportable newTransportable, out int position, out float animationDuration, bool instant = false, bool backwards = false)
@@ -31,10 +37,11 @@ public class Boat
         position = -1;
         animationDuration = 0;
         if (Occupied >= Capacity
-            || (CurrentWeight + newTransportable.Weight) > MaxWeight
+            || (MaxWeight != 0 && (CurrentWeight + newTransportable.Weight) > MaxWeight)
             || Island == null
-            || !Island.Contains(newTransportable)) {
-            Debug.Log("Fuck");
+            || !Island.Contains(newTransportable))
+        {
+            //Debug.Log("Fuck");
             return false;
         }
 
@@ -74,16 +81,29 @@ public class Boat
         _behaviour.SetUp(this);
     }
 
-    public bool GoTo(Island newIsland, out float animationDuration, bool instant = false)
+    public bool GoTo(Island newIsland, out float animationDuration, bool instant = false, bool backwards = false)
     {
         animationDuration = 0;
 
-        if (!CanMoveEmpty && Occupied == 0) {
+        int travelCost = 0;
+        foreach (var t in _seats)
+        {
+            if (t == null)
+                continue;
+
+            //travelCost += t.ScripatableObject.TravelCost;
+            travelCost = Math.Max(travelCost, t.ScripatableObject.TravelCost);
+        }
+
+        if ((!CanMoveEmpty && Occupied == 0) || (!backwards && MaxTravelCost > 0 && (CurrentTravelCost + travelCost) > MaxTravelCost))
+        {
             return false;
         }
 
+        CurrentTravelCost += backwards ? -travelCost : travelCost;
+
         if (_behaviour)
-            _behaviour.GoTo(newIsland, out animationDuration, instant);
+            _behaviour.GoTo(newIsland, out animationDuration, instant, backwards);
 
         Island = newIsland;
 

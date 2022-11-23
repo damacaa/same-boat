@@ -15,6 +15,7 @@ MonoBehaviour:
   name: Chicken
   NamePlural: Chickens
   Weight: 1
+  TravelCost: 2
   CanDrive: 1
   IsAlive: 1
   Diet: 0

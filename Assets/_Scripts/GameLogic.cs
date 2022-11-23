@@ -49,7 +49,7 @@ public class GameLogic
         }
 
         //Boat
-        _boat = new Boat(_islands[0], level.BoatCapacity, level.BoatMaxWeightAllowed, level.CanMoveEmpyBoat);
+        _boat = new Boat(_islands[0], level.BoatCapacity, level.BoatMaxWeightAllowed, level.BoatMaxTravelCost, level.CanMoveEmpyBoat);
     }
 
     internal void Reset()
@@ -255,6 +255,8 @@ public class GameLogic
         currentState.BoatMaxWeight = _boat.MaxWeight;
         currentState.BoatCurrentWeight = _boat.CurrentWeight;
         currentState.BoatCanMoveEmpty = _boat.CanMoveEmpty;
+        currentState.BoatMaxTravelCost = _boat.MaxTravelCost;
+        currentState.BoatTravelCost = _boat.CurrentTravelCost;
 
         if (_commands.Count > 0 && _currentCommand > 0 && _currentCommand - 1 < _commands.Count)
             currentState.Bommand = _commands[_currentCommand - 1];
