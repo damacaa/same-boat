@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Torch
   BoatCapacity: 2
-  BoatMaxWeightAllowed: 100
-  BoatMaxTravelCost: 100
+  BoatMaxWeightAllowed: 0
+  BoatMaxTravelCost: 15
   CanMoveEmpyBoat: 0
   Islands:
   - transportables:
@@ -24,12 +24,4 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 8bb208a2f8e4d454ebc0ff9967aeed9c, type: 2}
     - {fileID: 11400000, guid: c93da487864c90f4897ed27019024def, type: 2}
   - transportables: []
-  rules:
-  - A: {fileID: 11400000, guid: 8bb208a2f8e4d454ebc0ff9967aeed9c, type: 2}
-    comparison: 1
-    B: {fileID: 11400000, guid: cec013bbd6b087046b857f5414739136, type: 2}
-    result: 1
-  - A: {fileID: 11400000, guid: c93da487864c90f4897ed27019024def, type: 2}
-    comparison: 1
-    B: {fileID: 11400000, guid: 8bb208a2f8e4d454ebc0ff9967aeed9c, type: 2}
-    result: 1
+  rules: []

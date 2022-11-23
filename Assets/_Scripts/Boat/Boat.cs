@@ -37,11 +37,11 @@ public class Boat
         position = -1;
         animationDuration = 0;
         if (Occupied >= Capacity
-            || (CurrentWeight + newTransportable.Weight) > MaxWeight
+            || (MaxWeight != 0 && (CurrentWeight + newTransportable.Weight) > MaxWeight)
             || Island == null
             || !Island.Contains(newTransportable))
         {
-            Debug.Log("Fuck");
+            //Debug.Log("Fuck");
             return false;
         }
 
@@ -95,15 +95,12 @@ public class Boat
             travelCost = Math.Max(travelCost, t.ScripatableObject.TravelCost);
         }
 
-        if (!CanMoveEmpty && Occupied == 0 || (!backwards && MaxTravelCost > 0 && (CurrentTravelCost + travelCost) > MaxTravelCost))
+        if ((!CanMoveEmpty && Occupied == 0) || (!backwards && MaxTravelCost > 0 && (CurrentTravelCost + travelCost) > MaxTravelCost))
         {
             return false;
         }
 
-        if (!backwards & MaxTravelCost > 0)
-            CurrentTravelCost += travelCost;
-        else if (backwards)
-            CurrentTravelCost -= travelCost;
+        CurrentTravelCost += backwards ? -travelCost : travelCost;
 
         if (_behaviour)
             _behaviour.GoTo(newIsland, out animationDuration, instant, backwards);

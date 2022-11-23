@@ -25,7 +25,7 @@ public class GameManager : MonoBehaviour
 
     public GameLogic Game { get; private set; }
 
-    string _rules = "";
+    string _levelDescription = "";
 
     private void Start()
     {
@@ -35,14 +35,30 @@ public class GameManager : MonoBehaviour
 
     public void LoadLevel(Level level)
     {
+        if(Game != null)
+        {
+            var transportables = FindObjectsOfType<TransportableBehaviour>();
+            foreach (var t in transportables)
+            {
+                Destroy(t.gameObject);
+            }
+
+            var boat = FindObjectOfType<BoatBehaviour>();
+            Destroy(boat.gameObject);
+
+            var map = FindObjectOfType<MapGenerator>();
+            for (int i = 0; i < map.transform.childCount; i++)
+            {
+                Destroy(map.transform.GetChild(i).gameObject);
+            }
+
+            Game = null;
+        }
+
         Game = new GameLogic(level);
         Game.GenerateGameObjects(level);
 
-        _rules = level.name + ":\n";
-        foreach (var rule in level.rules)
-        {
-            _rules += rule + "\n";
-        }
+        _levelDescription = level.ToString();
     }
 
     private void Update()
@@ -75,7 +91,8 @@ public class GameManager : MonoBehaviour
             int steps = Solver.Solver.SolveWidth(Game);
             print(steps + " steps");
 
-            StartCoroutine(Game.ShowAllMovesCoroutine());
+            if (steps != -1)
+                StartCoroutine(Game.ShowAllMovesCoroutine());
         }
 
         if (Input.GetKeyDown(KeyCode.R))
@@ -155,6 +172,15 @@ public class GameManager : MonoBehaviour
             StartCoroutine(Game.ShowAllMovesCoroutine());
         }
 
-        GUI.TextArea(new Rect(Screen.width - (3 * width) - space, space, 3 * width, 5 * height), _rules);
+        GUI.TextArea(new Rect(Screen.width - (3 * width) - space, space, 3 * width, 5 * height), _levelDescription);
+
+        width = height;
+        for (int i = 0; i < levels.Length; i++)
+        {
+            if (GUI.Button(new Rect(space + i * (space + width), Screen.height - space - height, width, height), i.ToString()))
+            {
+                LoadLevel(levels[i]);
+            }
+        }
     }
 }

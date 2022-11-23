@@ -15,6 +15,7 @@ MonoBehaviour:
   name: Boat capacity
   BoatCapacity: 2
   BoatMaxWeightAllowed: 2
+  BoatMaxTravelCost: 0
   CanMoveEmpyBoat: 0
   Islands:
   - transportables:
