@@ -10,24 +10,27 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 43576c3ff47158b4580a126f4cf8a5e2, type: 3}
-  m_Name: Level2
+  m_Name: Level4
   m_EditorClassIdentifier: 
-  name: Boat capacity
+  name: Layton
   BoatCapacity: 2
-  BoatMaxWeightAllowed: 2
-  CanMoveEmpyBoat: 0
+  BoatMaxWeightAllowed: 4
+  CanMoveEmpyBoat: 1
   Islands:
   - transportables:
     - {fileID: 11400000, guid: cec013bbd6b087046b857f5414739136, type: 2}
     - {fileID: 11400000, guid: 8bb208a2f8e4d454ebc0ff9967aeed9c, type: 2}
+    - {fileID: 11400000, guid: 8bb208a2f8e4d454ebc0ff9967aeed9c, type: 2}
+    - {fileID: 11400000, guid: c93da487864c90f4897ed27019024def, type: 2}
+    - {fileID: 11400000, guid: c93da487864c90f4897ed27019024def, type: 2}
     - {fileID: 11400000, guid: c93da487864c90f4897ed27019024def, type: 2}
   - transportables: []
   rules:
-  - A: {fileID: 11400000, guid: cec013bbd6b087046b857f5414739136, type: 2}
-    comparison: 0
+  - A: {fileID: 11400000, guid: 8bb208a2f8e4d454ebc0ff9967aeed9c, type: 2}
+    comparison: 1
+    B: {fileID: 11400000, guid: cec013bbd6b087046b857f5414739136, type: 2}
+    result: 1
+  - A: {fileID: 11400000, guid: c93da487864c90f4897ed27019024def, type: 2}
+    comparison: 1
     B: {fileID: 11400000, guid: 8bb208a2f8e4d454ebc0ff9967aeed9c, type: 2}
     result: 1
-  - A: {fileID: 11400000, guid: 8bb208a2f8e4d454ebc0ff9967aeed9c, type: 2}
-    comparison: 0
-    B: {fileID: 11400000, guid: c93da487864c90f4897ed27019024def, type: 2}
-    result: 0

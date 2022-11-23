@@ -30,10 +30,10 @@ public class Rule
                 s = "Can't have a " + A.name.ToLower() + " and a " + B.name.ToLower() + " together in the same island";
                 break;
             case RuleType.CountMustBeGreaterThan:
-                s = "Number of " + A.name.ToLower() + "s must be greater than the number of " + B.name.ToLower() + "s";
+                s = "Number of " + A.NamePlural.ToLower() + " must be greater than the number of " + B.NamePlural.ToLower();
                 break;
             case RuleType.CountMustBeGreaterEqualThan:
-                s = "Number of " + A.name.ToLower() + "s must be greater than or equal to the number of " + B.name.ToLower() + "s";
+                s = "Number of " + A.NamePlural.ToLower() + " must be greater than or equal to the number of " + B.NamePlural.ToLower();
                 break;
             default:
                 break;

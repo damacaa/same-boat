@@ -94,7 +94,7 @@ public class MapGenerator : MonoBehaviour
             spotsTransform.parent = g.transform;
 
             // Spots
-            Transform[] spots = FindSpots(maps[i], 5);
+            Transform[] spots = FindSpots(maps[i], 6);
             foreach (var s in spots)
             {
                 if (!s)
