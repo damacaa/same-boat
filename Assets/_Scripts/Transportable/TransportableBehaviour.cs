@@ -120,7 +120,7 @@ public class TransportableBehaviour : MonoBehaviour
 
     public void OnMouseDown()
     {
-        GameManager.instance.TransportableInteraction(Data);
+        //GameManager.instance.TransportableInteraction(Data);
     }
 
     Coroutine _movement;

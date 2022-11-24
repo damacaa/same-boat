@@ -13,7 +13,10 @@ MonoBehaviour:
   m_Name: Chicken
   m_EditorClassIdentifier: 
   name: Chicken
+  NamePlural: Chickens
   Weight: 1
+  TravelCost: 2
+  CanDrive: 1
   IsAlive: 1
   Diet: 0
   sprite: {fileID: 21300000, guid: dc05a20702feaba46b8641af949a8c56, type: 3}
