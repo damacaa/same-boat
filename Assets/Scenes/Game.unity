@@ -591,10 +591,12 @@ MonoBehaviour:
   - {r: 0.4198113, g: 1, b: 0.7671396, a: 1}
   - {r: 0.504717, g: 0.9468651, b: 1, a: 1}
   _darkColor: {r: 0.23349059, g: 0.2514514, b: 0.31132078, a: 1}
-  map: {fileID: 2800000, guid: 7c27b6935c20ed24bb8c48af6e63306c, type: 3}
+  _map: {fileID: 2800000, guid: 7c27b6935c20ed24bb8c48af6e63306c, type: 3}
   _threshold: 0.5
   _boatPrefabs:
   - {fileID: 5100809846752158426, guid: 5c1f710ca9d63564898dffdf089fae00, type: 3}
+  _floorDecorations:
+  - {fileID: 8410071624898323670, guid: 0c832ba7e8bf878469aa0c0633c012f3, type: 3}
 --- !u!1 &1103618236
 GameObject:
   m_ObjectHideFlags: 0
@@ -645,6 +647,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 9d11f2d7f20891b488dbe7732b2500b2, type: 2}
   - {fileID: 11400000, guid: ccc527afc36fe43498fdd7a14a3deb50, type: 2}
   - {fileID: 11400000, guid: e7aa722d7f634624b83d5ef6fb0cc49e, type: 2}
+  - {fileID: 11400000, guid: e05fbfc1c4b77d64fb078329a80b2d4a, type: 2}
   _currentLevel: 0
 --- !u!1 &1971991502
 GameObject:
