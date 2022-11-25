@@ -46,6 +46,11 @@ public class Island
         _islandsCreated++;
     }
 
+    ~Island()
+    {
+        _islandsCreated--;
+    }
+
     public void AssignGameObject(GameObject g)
     {
         _behaviour = g.GetComponent<IslandBehaviour>();

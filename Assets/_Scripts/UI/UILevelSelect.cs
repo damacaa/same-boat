@@ -5,7 +5,7 @@ using UnityEngine.UIElements;
 public class UILevelSelect : MonoBehaviour
 {
     [SerializeField] private UIManager _uiManager;
-    [SerializeField] Level[] levels;
+    [SerializeField] Level[] _levels;
 
     private VisualElement _root;
     private VisualElement _canvas;
@@ -21,7 +21,7 @@ public class UILevelSelect : MonoBehaviour
         _canvas = _root.Q<VisualElement>("Canvas");
 
 
-        for (int i = 0; i < levels.Length; i++)
+        for (int i = 0; i < _levels.Length; i++)
         {
 
         }
@@ -46,7 +46,7 @@ public class UILevelSelect : MonoBehaviour
         {
             GameManager game = FindObjectOfType<GameManager>();
             if (game)
-                game.LoadLevel(levels[i]);
+                game.LoadLevel(_levels[i]);
         };
 
     }
@@ -58,7 +58,7 @@ public class UILevelSelect : MonoBehaviour
         {
             GameManager game = FindObjectOfType<GameManager>();
             if (game)
-                game.LoadLevel(levels[0]);
+                game.LoadLevel(_levels[0]);
         };
     }
     private void StarLevel2()
@@ -69,7 +69,7 @@ public class UILevelSelect : MonoBehaviour
         {
             GameManager game = FindObjectOfType<GameManager>();
             if (game)
-                game.LoadLevel(levels[1]);
+                game.LoadLevel(_levels[1]);
         };
     }
     private void StarLevel3()
@@ -80,7 +80,7 @@ public class UILevelSelect : MonoBehaviour
         {
             GameManager game = FindObjectOfType<GameManager>();
             if (game)
-                game.LoadLevel(levels[2]);
+                game.LoadLevel(_levels[2]);
         };
     }
 }
