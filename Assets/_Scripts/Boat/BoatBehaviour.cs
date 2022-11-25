@@ -73,7 +73,7 @@ public class BoatBehaviour : MonoBehaviour
 
 
         Quaternion rot = transform.rotation;
-        Quaternion targetRot = Quaternion.LookRotation(backwards ? -Vector3.forward : Vector3.forward, destination - transform.position);
+        Quaternion targetRot = Quaternion.LookRotation(Vector3.forward, backwards ? transform.position - destination : destination - transform.position);
 
         Vector2 pos = transform.position;
         float t = 0;

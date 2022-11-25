@@ -17,6 +17,7 @@ MonoBehaviour:
   BoatMaxWeightAllowed: 0
   BoatMaxTravelCost: 15
   CanMoveEmpyBoat: 0
+  Map: {fileID: 2800000, guid: 1a025abf17839894bacee0519cdbca9e, type: 3}
   Islands:
   - transportables:
     - {fileID: 11400000, guid: eedba2dfd80b3a440950af3b4a393562, type: 2}

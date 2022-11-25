@@ -91,7 +91,7 @@ public class MeshGenerator
             triangles.Add(idD);
             triangles.Add(idC);
 
-            Vector2 uv00 = _floorUVs[Mathf.FloorToInt(Mathf.Pow(Random.value, 3) * 0.99f * _floorUVs.Length)];
+            Vector2 uv00 = _floorUVs[Mathf.FloorToInt(Mathf.Pow(Random.value, 2) * 0.99f * _floorUVs.Length)];
             Vector2 uv10 = new Vector2(uv00.x + _w, uv00.y);
             Vector2 uv11 = new Vector2(uv00.x + _w, uv00.y + _h);
             Vector2 uv01 = new Vector2(uv00.x, uv00.y + _h);
@@ -152,7 +152,7 @@ public class MeshGenerator
             normals.Add(normal);
             normals.Add(normal);
 
-            Vector2 uv00 = _wallUVs[Mathf.FloorToInt(Mathf.Pow(Random.value, .4f) * 0.99f * _wallUVs.Length)];
+            Vector2 uv00 = _wallUVs[Mathf.FloorToInt(Mathf.Pow(Random.value, 2.2f) * 0.99f * _wallUVs.Length)];
             Vector2 uv10 = new Vector2(uv00.x + _w, uv00.y);
             Vector2 uv11 = new Vector2(uv00.x + _w, uv00.y + _h);
             Vector2 uv01 = new Vector2(uv00.x, uv00.y + _h);
@@ -193,8 +193,8 @@ public class MeshGenerator
                 }
             }
 
-            _wallUVs = new Vector2[2];
-            for (int i = 0; i < 2; i++)
+            _wallUVs = new Vector2[3];
+            for (int i = 0; i < 3; i++)
             {
                 _wallUVs[i] = new Vector2(_w * i, 0);
             }

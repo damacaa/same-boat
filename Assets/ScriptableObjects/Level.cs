@@ -14,8 +14,10 @@ public class Level : ScriptableObject
     [Range(0, 100)]
     public int BoatMaxTravelCost = 0;
     public bool CanMoveEmpyBoat = true;
+    public Texture2D Map;
     public Level.Island[] Islands;
     public Rule[] rules;
+
 
     public override string ToString()
     {
