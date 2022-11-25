@@ -1,11 +1,10 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Boat
 {
     BoatBehaviour _behaviour;
-
-    Island _currentIsland;
     List<Transportable> _seats = new List<Transportable>();
 
     public BoatBehaviour Behaviour { get { return _behaviour; } }
@@ -14,17 +13,23 @@ public class Boat
     public int Occupied { get; private set; }
     public int MaxWeight { get; private set; }
     public int CurrentWeight { get; private set; }
+    public int MaxTravelCost { get; private set; }
+    public int CurrentTravelCost { get; private set; }
     public bool IsEmpty { get { return Occupied == 0; } }
-    public bool CanMoveEmpty { get;private set; }
+    public bool CanMoveEmpty { get; private set; }
+    public Island Island { get; private set; }
 
 
-    public Boat(Island island, int capacity, int maxWeight,bool canMoveEmpty)
+    public Boat(Island island, int capacity, int maxWeight, int maxTravelCost, bool canMoveEmpty)
     {
-        _currentIsland = island;
+        Island = island;
 
         Capacity = capacity;
         MaxWeight = maxWeight;
+        MaxTravelCost = maxTravelCost;
         CanMoveEmpty = canMoveEmpty;
+
+        CurrentTravelCost = 0;
     }
 
     public bool LoadBoat(Transportable newTransportable, out int position, out float animationDuration, bool instant = false, bool backwards = false)
@@ -32,17 +37,18 @@ public class Boat
         position = -1;
         animationDuration = 0;
         if (Occupied >= Capacity
-            || (CurrentWeight + newTransportable.Weight) > MaxWeight
-            || _currentIsland == null
-            || !_currentIsland.Contains(newTransportable)) {
-            Debug.Log("Fuck");
+            || (MaxWeight != 0 && (CurrentWeight + newTransportable.Weight) > MaxWeight)
+            || Island == null
+            || !Island.Contains(newTransportable))
+        {
+            //Debug.Log("Fuck");
             return false;
         }
 
         //Returns position where it was before being loaded on boat
         position = newTransportable.PositionIndexInIsland;
 
-        _currentIsland.Remove(newTransportable);
+        Island.Remove(newTransportable);
 
         int pos = -1;
         if (_seats.Count < Capacity)
@@ -70,23 +76,36 @@ public class Boat
 
     internal void SetUp(GameObject g)
     {
-        g.transform.position = _currentIsland.Behaviour.GetPortPosition();
+        g.transform.position = Island.Behaviour.GetPortPosition();
         _behaviour = g.GetComponent<BoatBehaviour>();
         _behaviour.SetUp(this);
     }
 
-    public bool GoTo(Island newIsland, out float animationDuration, bool instant = false)
+    public bool GoTo(Island newIsland, out float animationDuration, bool instant = false, bool backwards = false)
     {
         animationDuration = 0;
 
-        if (!CanMoveEmpty && Occupied == 0) {
+        int travelCost = 0;
+        foreach (var t in _seats)
+        {
+            if (t == null)
+                continue;
+
+            //travelCost += t.ScripatableObject.TravelCost;
+            travelCost = Math.Max(travelCost, t.ScripatableObject.TravelCost);
+        }
+
+        if ((!CanMoveEmpty && Occupied == 0) || (!backwards && MaxTravelCost > 0 && (CurrentTravelCost + travelCost) > MaxTravelCost))
+        {
             return false;
         }
 
-        if (_behaviour)
-            _behaviour.GoTo(newIsland, out animationDuration, instant);
+        CurrentTravelCost += backwards ? -travelCost : travelCost;
 
-        _currentIsland = newIsland;
+        if (_behaviour)
+            _behaviour.GoTo(newIsland, out animationDuration, instant, backwards);
+
+        Island = newIsland;
 
         return true;
     }
@@ -99,7 +118,7 @@ public class Boat
     public bool UnloadBoat(Transportable selectedTransportable, int position, out float animationDuration, bool instant = false, bool backwards = false)
     {
         animationDuration = 0;
-        if (_currentIsland == null)
+        if (Island == null)
             return false;
 
         int i = _seats.FindIndex(a => a == selectedTransportable);
@@ -108,15 +127,10 @@ public class Boat
             return false;
         }
         _seats[i] = null;
-        _currentIsland.Add(selectedTransportable, position, out animationDuration, instant, backwards);
+        Island.Add(selectedTransportable, position, out animationDuration, instant, backwards);
         Occupied--;
         CurrentWeight -= selectedTransportable.Weight;
         return true;
-    }
-
-    public Island GetCurrentIsland()
-    {
-        return _currentIsland;
     }
 
     public override string ToString()
@@ -133,7 +147,7 @@ public class Boat
 
         result += " > (In island ";
 
-        result += _currentIsland.Name + ")";
+        result += Island.Name + ")";
 
         return result;
     }

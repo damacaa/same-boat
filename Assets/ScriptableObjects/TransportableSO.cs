@@ -6,10 +6,13 @@ using UnityEngine;
 public class TransportableSO : ScriptableObject
 {
     public new string name;
+    public string NamePlural;
+
     public int Weight = 1;
-    public bool IsAlive = true;
-    public DietType Diet = DietType.None;
-    public RuntimeAnimatorController AnimatorController;
+    public int TravelCost = 1;
+    public bool CanDrive = true;
+
+    public Sprite sprite;
     public enum DietType
     {
         None,

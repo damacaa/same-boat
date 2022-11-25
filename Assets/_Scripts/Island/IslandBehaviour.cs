@@ -7,49 +7,15 @@ using UnityEngine.Tilemaps;
 public class IslandBehaviour : MonoBehaviour
 {
     [SerializeField]
-    Transform _port;
-    [SerializeField]
-    Transform _center;
+    public Transform _port;
 
     [SerializeField]
-    Transform[] _transportablePositions;
+    List<Transform> _transportablePositions = new List<Transform>();
 
-    Island _island;
+    public Island Data { get; private set; }
 
     // Start is called before the first frame update
-    private void Awake()
-    {
-        return;
 
-        Tilemap t = GetComponent<Tilemap>();
-        var t0 = t.GetTile(new Vector3Int(-6, -6, 0));
-        if (!t0)
-            return;
-        t.SetTile(new Vector3Int(-6, -5, 0), t0);
-
-
-        Tile tempTile = ScriptableObject.CreateInstance(typeof(Tile)) as Tile;
-
-        int size = 100;
-        Texture2D tex = new Texture2D(size, size);
-
-        Color[] colors = new Color[size * size];
-
-        for (int i = 0; i < size; i++)
-        {
-            for (int j = 0; j < size; j++)
-            {
-                int id = i + (size * j);
-                colors[id] = Mathf.Sin(i)*Color.red;
-            }
-        }
-
-        tex.SetPixels(0, 0, size, size, colors);
-        Sprite sprite = Sprite.Create(tex, new Rect(0.0f, 0.0f, tex.width, tex.height), new Vector2(0.5f, 0.5f), 100.0f);
-        tempTile.sprite = sprite;
-
-        t.SetTile(new Vector3Int(-6, -6, 0), tempTile);
-    }
 
     void Start()
     {
@@ -59,27 +25,28 @@ public class IslandBehaviour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        Outline outline = GetComponent<Outline>();
+        outline.enabled = false;
     }
 
     internal void Assign(Island island)
     {
-        _island = island;
+        Data = island;
     }
 
     private void OnMouseDown()
     {
-        GameManager.instance.IslandInteraction(_island);
+        //GameManager.instance.IslandInteraction(Data);
     }
 
     internal Transform GetSpot(int index)
     {
-        return _transportablePositions[index];
+        return _transportablePositions[Math.Min(index, _transportablePositions.Count - 1)];
     }
 
     internal Transform FindSpot(out int index)
     {
-        for (index = 0; index < _transportablePositions.Length; index++)
+        for (index = 0; index < _transportablePositions.Count; index++)
         {
             Transform t = _transportablePositions[index];
             if (t.childCount == 0)
@@ -94,5 +61,10 @@ public class IslandBehaviour : MonoBehaviour
     internal Vector3 GetPortPosition()
     {
         return _port.position;
+    }
+
+    internal void AddSpot(Transform t)
+    {
+        _transportablePositions.Add(t);
     }
 }
