@@ -1,21 +1,20 @@
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
+
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+
     public static GameManager instance { get; private set; }
     private void Awake()
     {
         if (instance)
-        {
             Destroy(this);
-        }
         else
-        {
             instance = this;
-        }
     }
 
     [SerializeField]
@@ -23,19 +22,21 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     int _currentLevel;
 
+
     public GameLogic Game { get; private set; }
 
     string _levelDescription = "";
 
+
     private void Start()
     {
-        if (!SceneLoader.Instance)
+        if (!ProgressManager.Instance)
             LoadLevel(levels[_currentLevel]);
     }
 
     public void LoadLevel(Level level)
     {
-        if(Game != null)
+        if (Game != null)
         {
             var transportables = FindObjectsOfType<TransportableBehaviour>();
             foreach (var t in transportables)
@@ -183,4 +184,7 @@ public class GameManager : MonoBehaviour
             }
         }
     }
+
 }
+
+

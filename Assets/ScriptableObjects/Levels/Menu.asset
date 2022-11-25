@@ -10,19 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 43576c3ff47158b4580a126f4cf8a5e2, type: 3}
-  m_Name: Level5
+  m_Name: Menu
   m_EditorClassIdentifier: 
-  name: Torch
-  BoatCapacity: 2
+  name: Menu background
+  BoatCapacity: 1
   BoatMaxWeightAllowed: 0
-  BoatMaxTravelCost: 15
+  BoatMaxTravelCost: 0
   CanMoveEmpyBoat: 0
-  Map: {fileID: 2800000, guid: f944d0c065e6cf44fb2c6180bcf8d17a, type: 3}
+  Map: {fileID: 2800000, guid: 7c27b6935c20ed24bb8c48af6e63306c, type: 3}
   Islands:
-  - transportables:
-    - {fileID: 11400000, guid: eedba2dfd80b3a440950af3b4a393562, type: 2}
-    - {fileID: 11400000, guid: cec013bbd6b087046b857f5414739136, type: 2}
-    - {fileID: 11400000, guid: 8bb208a2f8e4d454ebc0ff9967aeed9c, type: 2}
-    - {fileID: 11400000, guid: c93da487864c90f4897ed27019024def, type: 2}
+  - transportables: []
+  - transportables: []
+  - transportables: []
   - transportables: []
   rules: []
