@@ -30,8 +30,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-
-        if (!SceneLoader.Instance)
+        if (!ProgressManager.Instance)
             LoadLevel(levels[_currentLevel]);
     }
 
