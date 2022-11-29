@@ -6,7 +6,6 @@ public class SoundController : MonoBehaviour
 {
     #region VARIABLES
     // Settings
-    public float timePerStep = 0.62f;
     public float sfxVolume = 0.8f;
     // Pointers
     private AudioSource sfxSource;
@@ -19,19 +18,11 @@ public class SoundController : MonoBehaviour
     [SerializeField]
     private AudioClip[] chicken_snd;
     [SerializeField]
-    private AudioClip[] chicken_steps_snd;
-    [SerializeField]
     private AudioClip[] fox_snd;
-    [SerializeField]
-    private AudioClip[] fox_steps_snd;
     [SerializeField]
     private AudioClip[] corn_snd;
     [SerializeField]
-    private AudioClip[] corn_steps_snd;
-    [SerializeField]
     private AudioClip[] boat_snd;
-    [SerializeField]
-    private AudioClip boat_steps_snd;
     [SerializeField]
     private AudioClip[] man_snd;
     [SerializeField]
@@ -39,15 +30,9 @@ public class SoundController : MonoBehaviour
     [SerializeField]
     private AudioClip win_snd;
     [SerializeField]
-    private AudioClip lose_snd;    
-    // Auxiliar
-    private bool[] stepsPlaying = new bool[] { false, false, false, false };
-    private float[] stepsTimers = new float[] { 0, 0, 0, 0 };
-    // private AudioClip[][] steps_snd;
-    private string[] stepsNames = new string[] { "corn", "chicken", "fox", "boat" };
-    // Test
-    //private float testTimer = 0;
-    //private int testCounter = 0;
+    private AudioClip lose_snd;
+
+    private bool stopRequested = false;
     #endregion
 
     #region UNITY CALLBACKS
@@ -55,15 +40,20 @@ public class SoundController : MonoBehaviour
     {
         sfxSource = GetComponents<AudioSource>()[0];
         bgmSource = GetComponents<AudioSource>()[1];
-        /*
-        steps_snd = new AudioClip[4][];
-        steps_snd[0] = corn_steps_snd;
-        steps_snd[1] = chicken_steps_snd;
-        steps_snd[2] = fox_steps_snd;
-        steps_snd[3] = new AudioClip[1] {boat_steps_snd};
-        */
     }
     #endregion
+
+    private void Update()
+    {
+        if (stopRequested)
+        {
+            bgmSource.volume = bgmSource.volume - 1 * Time.deltaTime;
+            if (bgmSource.volume <= 0)
+            {
+                stopRequested = false;
+            }
+        }
+    }
 
     #region PUBLIC METHODS
     /// <summary>
@@ -74,37 +64,34 @@ public class SoundController : MonoBehaviour
     /// <param name="effect"></param>
     public void PlaySound(string name)
     {
-        if (name.Equals("corn"))
+        switch (name)
         {
-            sfxSource.PlayOneShot(corn_snd[Random.Range(0, corn_snd.Length)], sfxVolume - 0.1f);
-        }
-        else if (name.Equals("chicken"))
-        {
-            sfxSource.PlayOneShot(chicken_snd[Random.Range(0, chicken_snd.Length)], sfxVolume);
-        }
-        else if (name.Equals("fox"))
-        {
-            sfxSource.PlayOneShot(fox_snd[Random.Range(0, fox_snd.Length)], sfxVolume);
-        }
-        else if (name.Equals("man"))
-        {
-            sfxSource.PlayOneShot(man_snd[Random.Range(0, man_snd.Length)], sfxVolume);
-        }
-        else if (name.Equals("boat"))
-        {
-            sfxSource.PlayOneShot(boat_snd[Random.Range(0, boat_snd.Length)], sfxVolume);
-        }
-        else if (name.Equals("win"))
-        {
-            sfxSource.PlayOneShot(win_snd, sfxVolume);
-        }
-        else if (name.Equals("fail"))
-        {
-            sfxSource.PlayOneShot(lose_snd, sfxVolume);
-        }
-        else if (name.Equals("ui"))
-        {
-            sfxSource.PlayOneShot(ui_snd, sfxVolume);
+            case "corn":
+                sfxSource.PlayOneShot(corn_snd[Random.Range(0, corn_snd.Length)], sfxVolume - 0.1f);
+                break;
+            case "chicken":
+                sfxSource.PlayOneShot(chicken_snd[Random.Range(0, chicken_snd.Length)], sfxVolume);
+                break;
+            case "fox":
+                sfxSource.PlayOneShot(fox_snd[Random.Range(0, fox_snd.Length)], sfxVolume);
+                break;
+            case "man":
+                sfxSource.PlayOneShot(man_snd[Random.Range(0, man_snd.Length)], sfxVolume);
+                break;
+            case "boat":
+                sfxSource.PlayOneShot(boat_snd[Random.Range(0, boat_snd.Length)], sfxVolume);
+                break;
+            case "win":
+                StopSong();
+                sfxSource.PlayOneShot(win_snd, sfxVolume);
+                break;
+            case "fail":
+                StopSong();
+                sfxSource.PlayOneShot(lose_snd, sfxVolume);
+                break;
+            case "ui":
+                sfxSource.PlayOneShot(ui_snd, sfxVolume);
+                break;
         }
     }
 
@@ -129,6 +116,14 @@ public class SoundController : MonoBehaviour
     }
 
     /// <summary>
+    /// Stops the song
+    /// </summary>
+    public void StopSong()
+    {
+        stopRequested = true;
+    }
+
+    /// <summary>
     /// Sets the volume
     /// </summary>
     /// <param name="volume"></param>
@@ -136,99 +131,6 @@ public class SoundController : MonoBehaviour
     {
         sfxSource.volume = volume;
         bgmSource.volume = volume;
-    }
-    #endregion
-
-    #region IN DEVELOPMENT
-    /// <summary>
-    /// Starts playing steps sound effect
-    /// NAMES: corn, chicken, fox and boat
-    /// </summary>
-    /// <param name="name"></param>
-    private void PlaySteps(string name)
-    {
-        if (name.Equals("corn"))
-        {
-            stepsPlaying[0] = true;
-            stepsTimers[0] = 0;
-        }
-        else if (name.Equals("chicken"))
-        {
-            stepsPlaying[1] = true;
-            stepsTimers[1] = 0;
-        }
-        else if (name.Equals("fox"))
-        {
-            stepsPlaying[2] = true;
-            stepsTimers[2] = 0;
-        }
-        else if (name.Equals("boat"))
-        {
-            stepsPlaying[3] = true;
-            stepsTimers[3] = 0;
-        }
-    }
-
-    private void PlaySteps(string name, int index)
-    {
-        if (name.Equals("corn"))
-        {
-            sfxSource.PlayOneShot(corn_steps_snd[index]);
-        }
-        else if (name.Equals("chicken"))
-        {
-            sfxSource.PlayOneShot(chicken_steps_snd[index]);
-        }
-        else if (name.Equals("fox"))
-        {
-            sfxSource.PlayOneShot(fox_steps_snd[index]);
-        }
-        else if (name.Equals("boat"))
-        {
-            sfxSource.PlayOneShot(boat_steps_snd);
-        }
-    }
-
-    /// <summary>
-    /// Stops playing steps sound effects
-    /// NAMES: corn, chicken, fox and boat
-    /// </summary>
-    /// <param name="name"></param>
-    private void StopSteps(string name)
-    {
-        if (name.Equals("corn"))
-        {
-            stepsPlaying[0] = false;
-        }
-        else if (name.Equals("chicken"))
-        {
-            stepsPlaying[1] = false;
-        }
-        else if (name.Equals("fox"))
-        {
-            stepsPlaying[2] = false;
-        }
-        else if (name.Equals("boat"))
-        {
-            stepsPlaying[3] = false;
-        }
-    }
-
-    private void Update()
-    {
-        /*
-        for (int i = 0; i < stepsPlaying.Length; i++)
-        {
-            if (stepsPlaying[i])
-            {
-                stepsTimers[i] += Time.deltaTime;
-            }
-            if (stepsTimers[i] > timePerStep)
-            {
-                PlaySteps(stepsNames[i], Random.Range(0, steps_snd[i].Length));
-            }
-        }        
-        */
     }
     #endregion
 }
