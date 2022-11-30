@@ -20,4 +20,9 @@ public class UIMenu : MonoBehaviour
         _playButton = _root.Q<Button>("PlayButton");
         _playButton.clicked += _uiManager.GoToLevelSelect;
     }
+
+    private void Start()
+    {
+        SoundController.Instace.PlaySong(0);
+    }
 }

@@ -17,12 +17,14 @@ public class BoatBehaviour : MonoBehaviour
     GameObject driver;
 
     Outline _outline;
+    AudioSource _audioSource;
 
     public Boat Data { get; private set; }
     // Start is called before the first frame update
     void Start()
     {
         _outline = GetComponent<Outline>();
+        _audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame

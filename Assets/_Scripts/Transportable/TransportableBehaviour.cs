@@ -20,6 +20,8 @@ public class TransportableBehaviour : MonoBehaviour
     float idleSpeed = 1;
     [SerializeField]
     AnimationCurve _idleAnimation;
+    [SerializeField]
+    AudioClip _stepSound;
 
     bool _mirror = false;
     float _wiggle = 0;
@@ -51,13 +53,15 @@ public class TransportableBehaviour : MonoBehaviour
     Animator _animator;
     SpriteRenderer _renderer;
     ParticleSystem _particles;
+    AudioSource _audioSource;
+    AudioSource _stepAudioSource;
 
 
     // Start is called before the first frame update
     void Start()
     {
-
-
+        _audioSource = GetComponents<AudioSource>()[0];
+        _stepAudioSource = GetComponents<AudioSource>()[1];
     }
 
     // Update is called once per frame
@@ -75,6 +79,11 @@ public class TransportableBehaviour : MonoBehaviour
         _wiggle = Walking ? 1 : Mathf.Max(0, _wiggle - Time.deltaTime * (1f / _smoothTransition));
         float rotZ = _wiggle * (_mirror ? -1 : 1) * Mathf.Sin(_speed * Time.time * _wiggleSpeed) * _wiggleAmpitude;
         Quaternion rotXZ = Quaternion.Euler(-45, 0, rotZ);
+
+
+        if (!_mirror ? rotZ < -_wiggleAmpitude + Time.deltaTime : rotZ > _wiggleAmpitude - Time.deltaTime)
+            _stepAudioSource.PlayOneShot(_stepSound);
+
 
         _sprite.transform.localRotation = rotXZ * rotY;
 
@@ -147,6 +156,9 @@ public class TransportableBehaviour : MonoBehaviour
 
             animationDuration = Vector2.Distance(transform.position, target.position) / _speed;
             _movement = StartCoroutine(MovementCoroutine(target, animationDuration));
+
+            if (Data.ScripatableObject.Sounds.Length > 0)
+                _audioSource.PlayOneShot(Data.ScripatableObject.Sounds[UnityEngine.Random.Range(0, Data.ScripatableObject.Sounds.Length)]);
         }
 
         transform.parent = target;
