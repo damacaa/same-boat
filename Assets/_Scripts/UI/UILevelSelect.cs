@@ -8,8 +8,6 @@ public class UILevelSelect : MonoBehaviour
     [SerializeField] private MenuUIManager _uiManager;
     [SerializeField] Level[] _levels;
 
-    private List<Button> _levelsButtons;
-
     private VisualElement _root;
     private VisualElement _canvas;
     private VisualElement.Hierarchy _buttonsList;
@@ -17,8 +15,6 @@ public class UILevelSelect : MonoBehaviour
 
     private void Awake()
     {
-        _levelsButtons = new List<Button>();
-
         _root = GetComponent<UIDocument>().rootVisualElement;
 
         _canvas = _root.Q<VisualElement>("Canvas");
@@ -28,12 +24,24 @@ public class UILevelSelect : MonoBehaviour
 
         for (int i = 0; i < _levels.Length; i++)
         {
-            _levelsButtons.Add(new Button());
-            _levelsButtons[i].text = $"Level {i + 1}";
-            _levelsButtons[i].AddToClassList("level-list-button");
+            Button button = new Button();
+            button.text = $"Level {i + 1}";
+            button.AddToClassList("level-list-button");
             Level level = _levels[i];
-            _levelsButtons[i].clicked += delegate { StartLevel(level); };
-            _buttonsList.Add(_levelsButtons[i]);
+            button.clicked += _uiManager.CloseLevelSelect;
+            button.clicked += _uiManager.CloseMenu;
+            button.clicked += () =>
+            {
+                SceneManager.LoadScene(1);
+
+                SceneManager.sceneLoaded += (Scene scene, LoadSceneMode mode) =>
+                {
+                    GameManager game = FindObjectOfType<GameManager>();
+                    if (game)
+                        game.LoadLevel(level);
+                };
+            };
+            _buttonsList.Add(button);
         }
 
         _backButton = _root.Q<Button>("Back");
