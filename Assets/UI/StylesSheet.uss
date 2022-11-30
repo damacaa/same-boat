@@ -21,8 +21,8 @@
     border-right-color: rgba(0, 0, 0, 0);
     border-top-color: rgba(0, 0, 0, 0);
     border-bottom-color: rgba(0, 0, 0, 0);
-    color: rgba(221, 221, 221, 255);
-    -unity-text-outline-color: rgba(207, 207, 207, 255);
+    color: rgb(221, 221, 221);
+    -unity-text-outline-color: rgb(207, 207, 207);
     transition-duration: 0.15s;
 }
 
@@ -41,10 +41,103 @@
     visibility: visible;
     -unity-text-align: middle-center;
     background-color: rgba(255, 255, 255, 0);
-    color: rgba(255, 255, 255, 255);
+    color: rgb(255, 255, 255);
     border-left-color: rgba(0, 0, 0, 0);
     border-right-color: rgba(0, 0, 0, 0);
     border-top-color: rgba(0, 0, 0, 0);
     border-bottom-color: rgba(0, 0, 0, 0);
     transition-duration: 0.15s;
+}
+
+.level-list-button {
+    width: auto;
+    height: auto;
+    left: auto;
+    align-items: center;
+    justify-content: center;
+    top: auto;
+    position: relative;
+    right: auto;
+    font-size: 30px;
+    -unity-font-style: normal;
+    display: flex;
+    visibility: visible;
+    -unity-text-align: middle-center;
+    background-color: rgba(0, 0, 0, 0);
+    border-left-color: rgba(0, 0, 0, 0);
+    border-right-color: rgba(0, 0, 0, 0);
+    border-top-color: rgba(0, 0, 0, 0);
+    border-bottom-color: rgba(0, 0, 0, 0);
+    color: rgb(221, 221, 221);
+    -unity-text-outline-color: rgb(207, 207, 207);
+    transition-duration: 0.15s;
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.level-list-button:hover {
+    width: auto;
+    height: auto;
+    left: auto;
+    align-items: center;
+    justify-content: center;
+    top: auto;
+    position: relative;
+    right: auto;
+    font-size: 40px;
+    -unity-font-style: normal;
+    display: flex;
+    visibility: visible;
+    -unity-text-align: middle-center;
+    background-color: rgba(0, 0, 0, 0);
+    border-left-color: rgba(0, 0, 0, 0);
+    border-right-color: rgba(0, 0, 0, 0);
+    border-top-color: rgba(0, 0, 0, 0);
+    border-bottom-color: rgba(0, 0, 0, 0);
+    color: rgb(221, 221, 221);
+    -unity-text-outline-color: rgb(207, 207, 207);
+    transition-duration: 0.15s;
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.ingame-header-text {
+    font-size: 20px;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: auto;
+    -unity-text-align: middle-center;
+    color: rgba(255, 255, 255, 255);
+}
+
+.ingame-header-button {
+    width: 10%;
+    height: 47%;
+    font-size: 20px;
+}
+
+.options-text {
+    font-size: 20px;
+    color: rgb(255, 255, 255);
+    -unity-text-align: middle-center;
+    white-space: nowrap;
+    margin-left: 6px;
+    margin-right: 6px;
+    margin-top: 6px;
+    margin-bottom: 6px;
+}
+
+.emergin-menu {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 50%;
+    min-height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
 }

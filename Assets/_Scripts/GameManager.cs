@@ -154,7 +154,7 @@ public class GameManager : MonoBehaviour
 
     private void OnGUI()
     {
-        if (Game == null)
+        if (Game == null || false)
             return;
 
         int width = Screen.width / 8;
@@ -173,7 +173,7 @@ public class GameManager : MonoBehaviour
             StartCoroutine(Game.ShowAllMovesCoroutine());
         }
 
-        GUI.TextArea(new Rect(Screen.width - (3 * width) - space, space, 3 * width, 5 * height), _levelDescription);
+        GUI.TextArea(new Rect(Screen.width - (3 * width) - space, space * 2, 3 * width, 5 * height), _levelDescription);
 
         width = height;
         for (int i = 0; i < levels.Length; i++)
