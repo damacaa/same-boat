@@ -20,4 +20,6 @@ public class TransportableSO : ScriptableObject
         Omnivore,
         Carnivore
     }
+
+    public AudioClip[] Sounds;
 }

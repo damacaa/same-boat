@@ -4,6 +4,18 @@ using UnityEngine;
 
 public class SoundController : MonoBehaviour
 {
+    #region SINGLETON
+    public static SoundController Instace;
+    private void Awake()
+    {
+        if (!Instace)
+            Instace = this;
+        else
+            Destroy(this);
+    }
+
+    #endregion
+
     #region VARIABLES
     // Settings
     public float sfxVolume = 0.8f;
@@ -15,16 +27,6 @@ public class SoundController : MonoBehaviour
     private AudioClip game_sng;
     [SerializeField]
     private AudioClip menu_sng;
-    [SerializeField]
-    private AudioClip[] chicken_snd;
-    [SerializeField]
-    private AudioClip[] fox_snd;
-    [SerializeField]
-    private AudioClip[] corn_snd;
-    [SerializeField]
-    private AudioClip[] boat_snd;
-    [SerializeField]
-    private AudioClip[] man_snd;
     [SerializeField]
     private AudioClip ui_snd;
     [SerializeField]
@@ -40,6 +42,10 @@ public class SoundController : MonoBehaviour
     {
         sfxSource = GetComponents<AudioSource>()[0];
         bgmSource = GetComponents<AudioSource>()[1];
+
+        PlaySong(0);
+
+        DontDestroyOnLoad(gameObject);
     }
     #endregion
 
@@ -62,35 +68,31 @@ public class SoundController : MonoBehaviour
     /// </summary>
     /// <param name="name"></param>
     /// <param name="effect"></param>
-    public void PlaySound(string name)
+    /// 
+
+    public enum Sound
     {
-        switch (name)
+        Win,
+        Fail,
+        UI
+    }
+
+    public void PlaySound(Sound sound)
+    {
+        switch (sound)
         {
-            case "corn":
-                sfxSource.PlayOneShot(corn_snd[Random.Range(0, corn_snd.Length)], sfxVolume - 0.1f);
-                break;
-            case "chicken":
-                sfxSource.PlayOneShot(chicken_snd[Random.Range(0, chicken_snd.Length)], sfxVolume);
-                break;
-            case "fox":
-                sfxSource.PlayOneShot(fox_snd[Random.Range(0, fox_snd.Length)], sfxVolume);
-                break;
-            case "man":
-                sfxSource.PlayOneShot(man_snd[Random.Range(0, man_snd.Length)], sfxVolume);
-                break;
-            case "boat":
-                sfxSource.PlayOneShot(boat_snd[Random.Range(0, boat_snd.Length)], sfxVolume);
-                break;
-            case "win":
+            case Sound.Win:
                 StopSong();
                 sfxSource.PlayOneShot(win_snd, sfxVolume);
                 break;
-            case "fail":
+            case Sound.Fail:
                 StopSong();
                 sfxSource.PlayOneShot(lose_snd, sfxVolume);
                 break;
-            case "ui":
+            case Sound.UI:
                 sfxSource.PlayOneShot(ui_snd, sfxVolume);
+                break;
+            default:
                 break;
         }
     }
