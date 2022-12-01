@@ -23,7 +23,6 @@ public class GameUIManager : MonoBehaviour
     private Button _gameOverRetryButton;
 
     private Button _victoryReturnToMenuButton;
-    private Button _victoryNextLevelButton;
     private Button _victoryRetryButton;
 
     private void Awake()
@@ -49,7 +48,6 @@ public class GameUIManager : MonoBehaviour
         _gameOverRetryButton = _gameOverUICanvas.Q<Button>("RetryButton");
 
         _victoryReturnToMenuButton = _victoryUICanvas.Q<Button>("ReturnToMenuButton");
-        _victoryNextLevelButton = _victoryUICanvas.Q<Button>("NextLevelButton");
         _victoryRetryButton = _victoryUICanvas.Q<Button>("RetryButton");
 
         _gameOverReturnToMenuButton.clicked += () => { SceneManager.LoadScene(0); };
@@ -59,8 +57,6 @@ public class GameUIManager : MonoBehaviour
         _gameOverRetryButton.clicked += CloseGameOver;
 
         _victoryReturnToMenuButton.clicked += () => { SceneManager.LoadScene(0); };
-        // TO BE IMPLEMENTED
-        _victoryNextLevelButton.clicked += () => { };
         _victoryRetryButton.clicked += () => { GameManager.instance.Reset(); };
         _victoryRetryButton.clicked += CloseVictory;
 
