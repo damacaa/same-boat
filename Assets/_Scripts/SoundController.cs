@@ -126,13 +126,20 @@ public class SoundController : MonoBehaviour
     }
 
     /// <summary>
-    /// Sets the volume
+    /// Sets the volume of music
     /// </summary>
     /// <param name="volume"></param>
-    public void SetVolume(float volume)
+    public void SetMusicVolume(float volume)
+    {
+        bgmSource.volume = volume;
+    }
+    /// <summary>
+    /// Sets the volume of effects
+    /// </summary>
+    /// <param name="volume"></param>
+    public void SetSFXVolume(float volume)
     {
         sfxSource.volume = volume;
-        bgmSource.volume = volume;
     }
     #endregion
 }

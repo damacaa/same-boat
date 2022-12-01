@@ -28,6 +28,7 @@ public class UILevelSelect : MonoBehaviour
             button.text = $"Level {i + 1}";
             button.AddToClassList("level-list-button");
             Level level = _levels[i];
+            button.clicked += delegate { SoundController.Instace.PlaySound(SoundController.Sound.UI); };
             button.clicked += _uiManager.CloseLevelSelect;
             button.clicked += _uiManager.CloseMenu;
             button.clicked += () =>
@@ -45,6 +46,7 @@ public class UILevelSelect : MonoBehaviour
         }
 
         _backButton = _root.Q<Button>("Back");
+        _backButton.clicked += delegate { SoundController.Instace.PlaySound(SoundController.Sound.UI); };
         _backButton.clicked += _uiManager.CloseLevelSelect;
         _backButton.clicked += _uiManager.OpenMenu;
     }

@@ -11,9 +11,7 @@ public class UIOptions : MonoBehaviour
 
     private Button _closeOptionsButton;
     private Button _backToMenuButton;
-    private Button _musicButton;
     private Slider _musicSlider;
-    private Button _vfxButton;
     private Slider _vfxSlider;
 
     private void Awake()
@@ -23,9 +21,7 @@ public class UIOptions : MonoBehaviour
         _canvas.AddToClassList("hide");
 
         _closeOptionsButton = _canvas.Q<Button>("CloseOptionsButton");
-        _musicButton = _canvas.Q<Button>("MusicToggle");
         _musicSlider = _canvas.Q<Slider>("MusicSlider");
-        _vfxButton = _canvas.Q<Button>("VFXToggle");
         _vfxSlider = _canvas.Q<Slider>("VFXSlider");
 
         Debug.Log(_canvas.Q<Button>("CloseOptionsButton").text);
@@ -33,25 +29,26 @@ public class UIOptions : MonoBehaviour
         if (_isGameOptions)
         {
             _backToMenuButton = _canvas.Q<Button>("BackToMenuButton");
-            _closeOptionsButton.clicked += _gameUIManager.CloseOptions;
+            _backToMenuButton.clicked += delegate { SoundController.Instace.PlaySound(SoundController.Sound.UI); };
             _backToMenuButton.clicked += _gameUIManager.GoToMenuScene;
+
+            _closeOptionsButton.clicked += delegate { SoundController.Instace.PlaySound(SoundController.Sound.UI); };
+            _closeOptionsButton.clicked += _gameUIManager.CloseOptions;
         }
         else
         {
+            _closeOptionsButton.clicked += delegate { SoundController.Instace.PlaySound(SoundController.Sound.UI); };
             _closeOptionsButton.clicked += _menuUIManager.CloseOptions;
             _closeOptionsButton.clicked += _menuUIManager.OpenMenu;
         }
 
-        _musicButton.clicked += () => { };
-        _vfxButton.clicked += () => { };
-
         _musicSlider.RegisterValueChangedCallback(evt =>
         {
-            Debug.Log(evt.newValue);
+            SoundController.Instace.SetMusicVolume(evt.newValue);
         });
         _vfxSlider.RegisterValueChangedCallback(evt =>
         {
-            Debug.Log(evt.newValue);
+            SoundController.Instace.SetSFXVolume(evt.newValue);
         });
     }
 }

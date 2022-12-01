@@ -21,8 +21,11 @@ public class UIMenu : MonoBehaviour
         _optionsButton = _root.Q<Button>("OptionsButton");
         _playButton = _root.Q<Button>("PlayButton");
 
+        _optionsButton.clicked += delegate { SoundController.Instace.PlaySound(SoundController.Sound.UI); };
         _optionsButton.clicked += _uiManager.OpenOptions;
         _optionsButton.clicked += _uiManager.CloseMenu;
+
+        _playButton.clicked += delegate { SoundController.Instace.PlaySound(SoundController.Sound.UI); };
         _playButton.clicked += _uiManager.OpenLevelSelect;
         _playButton.clicked += _uiManager.CloseMenu;
     }

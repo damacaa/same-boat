@@ -31,6 +31,8 @@
     height: 8%;
     -unity-font-definition: url('project://database/Assets/UI/Fonts/Comfortaa-VariableFont_wght%20SDF.asset?fileID=11400000&guid=5e00c291ca1c09b4b8bc2a2e95dc9bca&type=2#Comfortaa-VariableFont_wght SDF');
     -unity-font: url('project://database/Assets/UI/Fonts/Comfortaa-VariableFont_wght.ttf?fileID=12800000&guid=2784d677bf816eb42b49fcbf8a636323&type=3#Comfortaa-VariableFont_wght');
+    background-color: rgba(0, 0, 0, 0);
+    -unity-text-outline-width: 0.5px;
 }
 
 .ingame-options-button {
