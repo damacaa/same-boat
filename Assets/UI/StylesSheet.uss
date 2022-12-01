@@ -21,11 +21,11 @@
 
 .ingame-header-text {
     font-size: 20px;
-    margin-left: 30px;
-    margin-right: 10px;
+    margin-left: 10px;
+    margin-right: 5px;
     margin-top: 10px;
     margin-bottom: 10px;
-    width: 10%;
+    width: auto;
     -unity-text-align: middle-center;
     color: rgb(255, 255, 255);
     height: 8%;

@@ -7,8 +7,19 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-
     public static GameManager instance { get; private set; }
+    public GameLogic Game { get; private set; }
+
+    [SerializeField]
+    Level[] levels;
+    [SerializeField]
+    int _currentLevel;
+
+    string _levelDescription = "";
+
+    public delegate void OnLevelLoadedDelegate();
+    public OnLevelLoadedDelegate OnLevelLoaded;
+
     private void Awake()
     {
         if (instance)
@@ -16,17 +27,6 @@ public class GameManager : MonoBehaviour
         else
             instance = this;
     }
-
-    [SerializeField]
-    Level[] levels;
-    [SerializeField]
-    int _currentLevel;
-
-
-    public GameLogic Game { get; private set; }
-
-    string _levelDescription = "";
-
 
     private void Start()
     {
@@ -62,6 +62,8 @@ public class GameManager : MonoBehaviour
         Game.GenerateGameObjects(level);
 
         _levelDescription = level.ToString();
+
+        if (OnLevelLoaded != null) OnLevelLoaded();
     }
 
     private void Update()
@@ -182,7 +184,7 @@ public class GameManager : MonoBehaviour
             Game.Execute();
         }
 
-        GUI.TextArea(new Rect(Screen.width - (3 * width) - space, space * 3, 3 * width, 10 * height), _levelDescription);
+        GUI.TextArea(new Rect(Screen.width - (3 * width) - space, space * 5, 3 * width, 5 * height), _levelDescription);
 
         width = height;
         for (int i = 0; i < levels.Length; i++)
@@ -193,7 +195,4 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-
 }
-
-

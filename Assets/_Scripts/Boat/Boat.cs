@@ -10,7 +10,18 @@ public class Boat
 
     public BoatBehaviour Behaviour { get { return _behaviour; } }
     public List<Transportable> Transportables { get { return _seats; } }
-    public int Crossings { get; private set; }
+
+    private int _crossings;
+    public int Crossings
+    {
+        get { return _crossings; }
+        private set
+        {
+            _crossings = value;
+            if (OnCrossingsChange != null)
+                OnCrossingsChange(value);
+        }
+    }
     public int Capacity { get; private set; }
     public int Occupied { get; private set; }
     public int MaxWeight { get; private set; }
@@ -21,6 +32,8 @@ public class Boat
     public bool OnlyHumansCanDrive { get; private set; }
     public Island Island { get; private set; }
 
+    public delegate void OnCrossingsChangeDelegate(int newValue);
+    public event OnCrossingsChangeDelegate OnCrossingsChange;
 
     public Boat(Island island, int capacity, int maxWeight, int maxTravelCost, bool onlyHumansCanDrive)
     {

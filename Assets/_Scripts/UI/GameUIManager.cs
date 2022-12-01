@@ -29,7 +29,7 @@ public class GameUIManager : MonoBehaviour
         _undoButton = _gameUICanvas.Q<Button>("UndoButton");
         _optionsButton = _gameUICanvas.Q<Button>("OptionsButton");
 
-        _undoButton.clicked += () => { };
+        _undoButton.clicked += delegate { GameManager.instance.Game.Undo(); };
         _optionsButton.clicked += OpenOptions;
     }
 

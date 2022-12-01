@@ -1,18 +1,21 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class UIGame : MonoBehaviour
 {
-    // Start is called before the first frame update
+    private VisualElement _root;
+    private Label _numberOfCrossings;
+
     void Start()
     {
-        
+        _root = GetComponent<UIDocument>().rootVisualElement;
+        _numberOfCrossings = _root.Q<Label>("NumberOfCrossingsValue");
+        GameManager.instance.OnLevelLoaded += SetCrossingsChangeListener;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void SetCrossingsChangeListener()
     {
-        
+        GameManager.instance.Game.Boat.OnCrossingsChange +=
+            (int v) => { _numberOfCrossings.text = v.ToString(); };
     }
 }
