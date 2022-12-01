@@ -18,7 +18,7 @@ public class GameManager : MonoBehaviour
     string _levelDescription = "";
 
     public delegate void OnLevelLoadedDelegate();
-    public OnLevelLoadedDelegate OnLevelLoaded;
+    public event OnLevelLoadedDelegate OnLevelLoaded;
 
     [SerializeField]
     bool _showDebugUI = false;

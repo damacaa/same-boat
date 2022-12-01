@@ -24,8 +24,6 @@ public class UIOptions : MonoBehaviour
         _musicSlider = _canvas.Q<Slider>("MusicSlider");
         _vfxSlider = _canvas.Q<Slider>("VFXSlider");
 
-        Debug.Log(_canvas.Q<Button>("CloseOptionsButton").text);
-
         if (_isGameOptions)
         {
             _backToMenuButton = _canvas.Q<Button>("BackToMenuButton");

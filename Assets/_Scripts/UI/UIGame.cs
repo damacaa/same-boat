@@ -6,7 +6,7 @@ public class UIGame : MonoBehaviour
     private VisualElement _root;
     private Label _numberOfCrossings;
 
-    void Start()
+    void Awake()
     {
         _root = GetComponent<UIDocument>().rootVisualElement;
         _numberOfCrossings = _root.Q<Label>("NumberOfCrossingsValue");

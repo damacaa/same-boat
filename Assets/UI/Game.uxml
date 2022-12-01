@@ -2,7 +2,7 @@
     <Style src="project://database/Assets/UI/StylesSheet.uss?fileID=7433441132597879392&amp;guid=4666eae0098cfec4f9d4e9423660d530&amp;type=3#StylesSheet" />
     <ui:VisualElement name="Canvas" style="width: 100%; height: 100%; flex-direction: row; justify-content: flex-start;">
         <ui:Label display-tooltip-when-elided="true" name="NumberOfCrossingsText" text="Number of crossings" class="ingame-header-text" />
-        <ui:Label display-tooltip-when-elided="true" name="NumberOfCrossingsValue" class="ingame-header-text" />
+        <ui:Label display-tooltip-when-elided="true" name="NumberOfCrossingsValue" class="ingame-header-text" style="width: 50px;" />
         <ui:Button text="Undo" display-tooltip-when-elided="true" name="UndoButton" class="ingame-header-button" style="margin-left: 10px; margin-right: 10px; margin-top: 10px; margin-bottom: 10px; width: auto; height: 7%; right: 20%; position: absolute;" />
         <ui:Button text="Options" display-tooltip-when-elided="true" name="OptionsButton" class="ingame-header-button" style="margin-left: 10px; margin-right: 20px; margin-top: 10px; margin-bottom: 10px; width: auto; height: 7%; position: absolute; left: auto; right: 0;" />
     </ui:VisualElement>
