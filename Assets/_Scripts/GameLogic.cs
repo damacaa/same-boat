@@ -207,9 +207,6 @@ public class GameLogic
         }
 
         _win = _win && _boat.IsEmpty;
-
-        if (_win)
-            Debug.Log("WIN!");
     }
 
 
@@ -275,6 +272,7 @@ public class GameLogic
             yield return new WaitForSeconds(1.1f * wait);
         }
 
+        CheckWin();
         _showingSolveAnimation = false;
 
         yield return null;

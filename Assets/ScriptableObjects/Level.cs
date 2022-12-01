@@ -8,9 +8,8 @@ using UnityEngine;
 public class Level : ScriptableObject
 {
     public new string name;
-    public string Intro = "";
-    [Range(1, 3)]
-    public int BoatCapacity = 1;
+    [Range(2, 4)]
+    public int BoatCapacity = 2;
     [Range(0, 10)]
     public int BoatMaxWeightAllowed = 0;
     [Range(0, 100)]

@@ -116,6 +116,7 @@ public class GameManager : MonoBehaviour
         if (Game.Win)
         {
             SoundController.Instace.PlaySound(SoundController.Sound.Win);
+            print(Game.Boat.Crossings);
         }
     }
 

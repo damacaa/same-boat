@@ -10,6 +10,7 @@ public class Boat
 
     public BoatBehaviour Behaviour { get { return _behaviour; } }
     public List<Transportable> Transportables { get { return _seats; } }
+    public int Crossings { get; private set; }
     public int Capacity { get; private set; }
     public int Occupied { get; private set; }
     public int MaxWeight { get; private set; }
@@ -31,6 +32,7 @@ public class Boat
         OnlyHumansCanDrive = onlyHumansCanDrive;
 
         CurrentTravelCost = 0;
+        Crossings = 0;
     }
 
     public bool LoadBoat(Transportable newTransportable, out int position, out float animationDuration, bool instant = false, bool backwards = false)
@@ -96,12 +98,13 @@ public class Boat
             travelCost = Math.Max(travelCost, t.ScripatableObject.TravelCost);
         }
 
-        if ((OnlyHumansCanDrive && _seats.Count(t => t != null && t.ScripatableObject.name == "Man") <= 0) || (!backwards && MaxTravelCost > 0 && (CurrentTravelCost + travelCost) > MaxTravelCost))
+        if (_seats.Count(t => t != null) <= 0 || (OnlyHumansCanDrive && _seats.Count(t => t != null && t.ScripatableObject.name == "Man") <= 0) || (!backwards && MaxTravelCost > 0 && (CurrentTravelCost + travelCost) > MaxTravelCost))
         {
             return false;
         }
 
         CurrentTravelCost += backwards ? -travelCost : travelCost;
+        Crossings += backwards ? -1 : 1;
 
         if (_behaviour)
             _behaviour.GoTo(newIsland, out animationDuration, instant, backwards);
