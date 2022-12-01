@@ -1,0 +1,19 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/StylesSheet.uss?fileID=7433441132597879392&amp;guid=4666eae0098cfec4f9d4e9423660d530&amp;type=3#StylesSheet" />
+    <ui:VisualElement name="Canvas" tabindex="-1" style="width: 100%; height: 100%; align-items: center; justify-content: center; min-width: auto; min-height: auto;">
+        <ui:VisualElement name="Menu" class="emergin-menu">
+            <ui:Button text="X" display-tooltip-when-elided="true" name="CloseOptionsButton" class="options-close-button options-button" style="position: absolute; right: 4%; top: 4%;" />
+            <ui:VisualElement name="Sound" style="justify-content: space-between; align-items: center; top: 24%; position: absolute;">
+                <ui:VisualElement name="MusicVolume" style="flex-direction: column; justify-content: space-around; align-items: center; max-width: 100%; margin-left: 6px; margin-right: 6px; margin-top: 6px; margin-bottom: 6px;">
+                    <ui:Label text="Music" display-tooltip-when-elided="true" class="options-text" />
+                    <ui:Slider picking-mode="Ignore" value="1" high-value="1" name="MusicSlider" style="align-items: center; justify-content: center; min-width: 100px; min-height: 40px; max-width: 200px; max-height: 80px; margin-left: 6px; margin-right: 6px; margin-top: 6px; margin-bottom: 6px;" />
+                </ui:VisualElement>
+                <ui:VisualElement name="VFXVolume" style="flex-direction: column; justify-content: space-around; align-items: center; max-width: 100%; margin-left: 6px; margin-right: 6px; margin-top: 6px; margin-bottom: 6px;">
+                    <ui:Label text="Effects" display-tooltip-when-elided="true" class="options-text" />
+                    <ui:Slider picking-mode="Ignore" value="1" high-value="1" name="VFXSlider" style="align-items: center; justify-content: center; min-width: 100px; min-height: 40px; max-width: 200px; max-height: 80px; margin-left: 6px; margin-right: 6px; margin-top: 6px; margin-bottom: 6px;" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+            <ui:Button text="Exit" display-tooltip-when-elided="true" name="BackToMenuButton" class="test-button ingame-options-button options-button" style="letter-spacing: -3px; position: absolute; bottom: 15%;" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

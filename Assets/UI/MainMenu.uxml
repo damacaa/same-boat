@@ -1,11 +1,7 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
-    <Style src="project://database/Assets/UI/MainMenu.uss?fileID=7433441132597879392&amp;guid=4666eae0098cfec4f9d4e9423660d530&amp;type=3#MainMenu" />
+    <Style src="project://database/Assets/UI/StylesSheet.uss?fileID=7433441132597879392&amp;guid=4666eae0098cfec4f9d4e9423660d530&amp;type=3#StylesSheet" />
     <ui:VisualElement name="Canvas" style="align-items: center; justify-content: center; width: 100%; height: 100%;">
-        <ui:VisualElement name="Header" style="height: 10%; margin-left: 0; margin-right: 0; padding-left: 0.5%; padding-right: 0.5%; padding-top: 0.5%; padding-bottom: 0.5%; margin-top: 0; margin-bottom: 0; background-color: rgb(180, 180, 180); width: 100%;" />
-        <ui:VisualElement name="Body" style="height: 100%; max-height: none; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 10px; padding-right: 10px; padding-top: 10px; padding-bottom: 10px; align-items: center; justify-content: center; flex-direction: row; width: 100%;">
-            <ui:VisualElement name="Buttons" style="width: 50%; height: 50%; justify-content: center; align-items: center;">
-                <ui:Button text="Play" display-tooltip-when-elided="true" name="PlayButton" class="menu-button" style="width: 30%; height: 20%; left: auto; align-items: center; justify-content: center; top: auto; position: relative; right: auto; font-size: 35%; -unity-font-style: normal; display: flex; visibility: visible;" />
-            </ui:VisualElement>
-        </ui:VisualElement>
+        <ui:Button display-tooltip-when-elided="true" name="OptionsButton" class="options-button" style="position: absolute; height: auto; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; max-width: 40px; max-height: 40px; min-width: 30px; min-height: 30px; right: 3%; top: 6%; background-image: url(&apos;project://database/Assets/UI/Icons/Settings.png?fileID=2800000&amp;guid=c54a88bbef9cfc443b7e50d34d740525&amp;type=3#Settings&apos;); background-color: rgba(255, 255, 255, 0); border-left-color: rgba(255, 255, 255, 0); border-right-color: rgba(255, 255, 255, 0); border-top-color: rgba(255, 255, 255, 0); border-bottom-color: rgba(255, 255, 255, 0); border-left-width: 0; border-right-width: 0; border-top-width: 0; border-bottom-width: 0; border-top-left-radius: 0; border-bottom-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; -unity-background-scale-mode: scale-and-crop;" />
+        <ui:Button text="START" display-tooltip-when-elided="true" name="PlayButton" class="menu-button" />
     </ui:VisualElement>
 </ui:UXML>
