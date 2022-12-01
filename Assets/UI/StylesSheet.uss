@@ -27,9 +27,13 @@
     -unity-text-outline-width: 0.7px;
     -unity-text-outline-color: rgba(0, 0, 0, 0.4);
     transition-duration: 0.15s;
-    color: rgba(255, 255, 255, 255);
+    color: rgb(255, 255, 255);
     -unity-font-style: bold;
     letter-spacing: -5px;
+    margin-left: 2%;
+    margin-right: 2%;
+    margin-top: 2%;
+    margin-bottom: 2%;
 }
 
 .ingame-header-button:hover {
@@ -220,7 +224,7 @@
 .options-button {
     -unity-font-definition: url('project://database/Assets/UI/Fonts/Comfortaa-VariableFont_wght%20SDF.asset?fileID=11400000&guid=5e00c291ca1c09b4b8bc2a2e95dc9bca&type=2#Comfortaa-VariableFont_wght SDF');
     -unity-font: url('project://database/Assets/UI/Fonts/Comfortaa-VariableFont_wght.ttf?fileID=12800000&guid=2784d677bf816eb42b49fcbf8a636323&type=3#Comfortaa-VariableFont_wght');
-    color: rgba(236, 236, 236, 255);
+    color: rgb(236, 236, 236);
     font-size: 20px;
     background-color: rgba(88, 88, 88, 0);
     border-left-color: rgba(255, 255, 255, 0);

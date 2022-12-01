@@ -87,7 +87,7 @@ public class GameManager : MonoBehaviour
         if (Game == null)
             return;
 
-        if (Input.GetKeyDown("right"))
+        /*if (Input.GetKeyDown("right"))
         {
             Game.Execute();
             print(Game);
@@ -104,7 +104,7 @@ public class GameManager : MonoBehaviour
             print(steps);
 
             StartCoroutine(Game.ShowAllMovesCoroutine());
-        }
+        }*/
 
         if (Input.GetKeyDown(KeyCode.W))
         {

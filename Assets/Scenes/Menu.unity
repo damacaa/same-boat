@@ -544,6 +544,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _emptyLevel: {fileID: 11400000, guid: a3319874bf14d8943a065f22b5ac7669, type: 2}
+  spritePrefab: {fileID: 6860657745597083196, guid: 9c4e6bb7108d8af49820c37c2dbd1b47, type: 3}
+  sprites:
+  - {fileID: 21300000, guid: f22f78ba9751bf44c984164c3e9a7777, type: 3}
+  - {fileID: 21300000, guid: dc05a20702feaba46b8641af949a8c56, type: 3}
+  - {fileID: 21300000, guid: 26e1e78666008ca439907232b7ff0d00, type: 3}
+  - {fileID: 21300000, guid: bf81e4ac928cda14292733782cb78de0, type: 3}
+  - {fileID: 21300000, guid: 9f27b725d69f6b445a201d1310c9f984, type: 3}
+  - {fileID: 21300000, guid: 021b03d52eb88b747a90f056f48288ca, type: 3}
+  - {fileID: 21300000, guid: bfb970366564eb34dadc7d56c614edbe, type: 3}
+  - {fileID: 21300000, guid: c855d098a15b72b49bd73ace24b84480, type: 3}
+  _spawnRate: 2
 --- !u!1001 &1406204226
 PrefabInstance:
   m_ObjectHideFlags: 0
