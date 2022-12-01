@@ -271,9 +271,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 225776f9d291c374f930688c6000e981, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _menu: {fileID: 405528317}
-  _levelSelect: {fileID: 1205457289}
-  _options: {fileID: 0}
+  _menuUI: {fileID: 405528317}
+  _levelSelectUI: {fileID: 1205457289}
+  _optionsUI: {fileID: 1123675545}
   GoStraightToGame: 0
   level: {fileID: 11400000, guid: 9fc1ac9099c05054d8707da8a018e462, type: 2}
 --- !u!4 &1013690887
@@ -290,6 +290,7 @@ Transform:
   m_Children:
   - {fileID: 405528318}
   - {fileID: 1205457290}
+  - {fileID: 1123675544}
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -337,6 +338,70 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1123675543
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1123675544}
+  - component: {fileID: 1123675545}
+  - component: {fileID: 1123675546}
+  m_Layer: 0
+  m_Name: Options
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1123675544
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1123675543}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1013690887}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1123675545
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1123675543}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_PanelSettings: {fileID: 11400000, guid: df4ccd377faf8b4458391230f93cd4bb, type: 2}
+  m_ParentUI: {fileID: 0}
+  sourceAsset: {fileID: 9197481963319205126, guid: e7f7bc75172fc134f98670c68eb38118, type: 3}
+  m_SortingOrder: 0
+--- !u!114 &1123675546
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1123675543}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8dd0eb29960c4b447a0073de81260ea1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _menuUIManager: {fileID: 1013690886}
+  _gameUIManager: {fileID: 0}
+  _isGameOptions: 0
 --- !u!1 &1205457287
 GameObject:
   m_ObjectHideFlags: 0
@@ -372,6 +437,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 9fc1ac9099c05054d8707da8a018e462, type: 2}
   - {fileID: 11400000, guid: b79d61c0547e3e54886413f2fcdede23, type: 2}
   - {fileID: 11400000, guid: 9d11f2d7f20891b488dbe7732b2500b2, type: 2}
+  - {fileID: 11400000, guid: ccc527afc36fe43498fdd7a14a3deb50, type: 2}
+  - {fileID: 11400000, guid: e7aa722d7f634624b83d5ef6fb0cc49e, type: 2}
+  - {fileID: 11400000, guid: e05fbfc1c4b77d64fb078329a80b2d4a, type: 2}
+  - {fileID: 11400000, guid: 294d16c47a36c8142ad022e5bd0cf112, type: 2}
 --- !u!114 &1205457289
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -476,6 +545,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _emptyLevel: {fileID: 11400000, guid: a3319874bf14d8943a065f22b5ac7669, type: 2}
+  spritePrefab: {fileID: 6860657745597083196, guid: 9c4e6bb7108d8af49820c37c2dbd1b47, type: 3}
+  sprites:
+  - {fileID: 21300000, guid: f22f78ba9751bf44c984164c3e9a7777, type: 3}
+  - {fileID: 21300000, guid: dc05a20702feaba46b8641af949a8c56, type: 3}
+  - {fileID: 21300000, guid: 26e1e78666008ca439907232b7ff0d00, type: 3}
+  - {fileID: 21300000, guid: bf81e4ac928cda14292733782cb78de0, type: 3}
+  - {fileID: 21300000, guid: 9f27b725d69f6b445a201d1310c9f984, type: 3}
+  - {fileID: 21300000, guid: 021b03d52eb88b747a90f056f48288ca, type: 3}
+  - {fileID: 21300000, guid: bfb970366564eb34dadc7d56c614edbe, type: 3}
+  - {fileID: 21300000, guid: c855d098a15b72b49bd73ace24b84480, type: 3}
+  _spawnRate: 2
 --- !u!1001 &1406204226
 PrefabInstance:
   m_ObjectHideFlags: 0

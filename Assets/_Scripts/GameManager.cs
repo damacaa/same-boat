@@ -7,8 +7,31 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-
     public static GameManager instance { get; private set; }
+    public GameLogic Game { get; private set; }
+
+    [SerializeField]
+    Level[] levels;
+    [SerializeField]
+    int _currentLevel;
+
+    string _levelDescription = "";
+    public string LevelDescription
+    {
+        get { return _levelDescription; }
+        private set { _levelDescription = value; }
+    }
+
+    public delegate void OnLevelLoadedDelegate();
+    public event OnLevelLoadedDelegate OnLevelLoaded;
+    public delegate void OnGameOverDelegate();
+    public event OnGameOverDelegate OnGameOver;
+    public delegate void OnVictoryDelegate();
+    public event OnVictoryDelegate OnVictory;
+
+    [SerializeField]
+    bool _showDebugUI = false;
+
     private void Awake()
     {
         if (instance)
@@ -16,16 +39,6 @@ public class GameManager : MonoBehaviour
         else
             instance = this;
     }
-
-    [SerializeField]
-    Level[] levels;
-    [SerializeField]
-    int _currentLevel;
-
-
-    public GameLogic Game { get; private set; }
-
-    string _levelDescription = "";
 
     [HideInInspector]
     public bool Win { get; private set; }
@@ -66,7 +79,9 @@ public class GameManager : MonoBehaviour
         Game = new GameLogic(level);
         Game.GenerateGameObjects(level);
 
-        _levelDescription = level.ToString();
+        LevelDescription = level.ToString();
+
+        if (OnLevelLoaded != null) OnLevelLoaded();
     }
 
     private void Update()
@@ -74,7 +89,7 @@ public class GameManager : MonoBehaviour
         if (Game == null)
             return;
 
-        if (Input.GetKeyDown("right"))
+        /*if (Input.GetKeyDown("right"))
         {
             Game.Execute();
             print(Game);
@@ -91,7 +106,7 @@ public class GameManager : MonoBehaviour
             print(steps);
 
             StartCoroutine(Game.ShowAllMovesCoroutine());
-        }
+        }*/
 
         if (Input.GetKeyDown(KeyCode.W))
         {
@@ -111,7 +126,10 @@ public class GameManager : MonoBehaviour
         {
             Fail = Game.Fail;
             if (Fail)
+            {
                 SoundController.Instace.PlaySound(SoundController.Sound.Fail);
+                if (OnGameOver != null) OnGameOver();
+            }
         }
 
         if (Win != Game.Win)
@@ -119,6 +137,7 @@ public class GameManager : MonoBehaviour
             Win = Game.Win;
             if (Win)
                 SoundController.Instace.PlaySound(SoundController.Sound.Win);
+            if (OnVictory != null) OnVictory();
         }
     }
 
@@ -193,7 +212,7 @@ public class GameManager : MonoBehaviour
 
     private void OnGUI()
     {
-        if (Game == null)
+        if (Game == null || !_showDebugUI)
             return;
 
         int width = Screen.width / 8;
@@ -218,7 +237,7 @@ public class GameManager : MonoBehaviour
             Game.Execute();
         }
 
-        GUI.TextArea(new Rect(Screen.width - (3 * width) - space, space, 3 * width, 10 * height), _levelDescription);
+        GUI.TextArea(new Rect(Screen.width - (3 * width) - space, space * 5, 3 * width, 5 * height), LevelDescription);
 
         width = height;
         for (int i = 0; i < levels.Length; i++)
@@ -229,7 +248,4 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-
 }
-
-

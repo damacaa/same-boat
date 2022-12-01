@@ -1,0 +1,26 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/StylesSheet.uss?fileID=7433441132597879392&amp;guid=4666eae0098cfec4f9d4e9423660d530&amp;type=3#StylesSheet" />
+    <ui:VisualElement name="Canvas" style="width: 100%; height: 100%; flex-direction: column; justify-content: flex-start;">
+        <ui:VisualElement name="Header" style="flex-direction: row; width: 100%; height: 10%; justify-content: space-between; padding-left: 0; padding-right: 3%; padding-top: 0; padding-bottom: 0;">
+            <ui:VisualElement name="CrossingFields" style="flex-direction: row;">
+                <ui:Label display-tooltip-when-elided="true" name="NumberOfCrossingsText" text="Number of crossings:" class="ingame-header-text" style="-unity-background-scale-mode: scale-to-fit;" />
+                <ui:Label display-tooltip-when-elided="true" name="NumberOfCrossingsValue" text="0" class="ingame-header-text" style="width: 40px; -unity-background-scale-mode: scale-to-fit;" />
+            </ui:VisualElement>
+            <ui:VisualElement name="Buttons" style="flex-direction: row; align-items: center; width: 14%; justify-content: space-between;">
+                <ui:Button display-tooltip-when-elided="true" name="UndoButton" class="ingame-header-button" style="background-image: url(&apos;project://database/Assets/UI/Icons/Undo.png?fileID=2800000&amp;guid=3eaaf3dd53087834a818e9001f8ff9bb&amp;type=3#Undo&apos;); -unity-background-scale-mode: scale-to-fit;" />
+                <ui:Button display-tooltip-when-elided="true" name="ShowLevelDescriptionButton" class="ingame-header-button" style="background-image: url(&apos;project://database/Assets/UI/Icons/Description.png?fileID=2800000&amp;guid=bf7f4e0a1ee74f34e964032ca732de4a&amp;type=3#Description&apos;); -unity-background-scale-mode: scale-to-fit;" />
+                <ui:Button display-tooltip-when-elided="true" name="OptionsButton" class="ingame-header-button" style="background-image: url(&apos;project://database/Assets/UI/Icons/Settings.png?fileID=2800000&amp;guid=c54a88bbef9cfc443b7e50d34d740525&amp;type=3#Settings&apos;); -unity-background-scale-mode: scale-to-fit;" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="Body" style="height: 100%; flex-direction: row;">
+            <ui:VisualElement name="LeftBar" style="width: 10%;" />
+            <ui:VisualElement name="Center" style="width: 100%; height: 100%; padding-left: 5px; padding-right: 5px; padding-top: 5px; padding-bottom: 5px; align-items: center; justify-content: space-around;">
+                <ui:VisualElement name="LevelDescriptionContainer" class="hide" style="-unity-font-definition: url(&apos;project://database/Assets/UI/Fonts/Comfortaa-VariableFont_wght%20SDF.asset?fileID=11400000&amp;guid=5e00c291ca1c09b4b8bc2a2e95dc9bca&amp;type=2#Comfortaa-VariableFont_wght SDF&apos;); -unity-font: url(&apos;project://database/Assets/UI/Fonts/Comfortaa-VariableFont_wght.ttf?fileID=12800000&amp;guid=2784d677bf816eb42b49fcbf8a636323&amp;type=3#Comfortaa-VariableFont_wght&apos;); width: 60%; max-height: none; height: auto; align-items: auto; background-color: rgba(0, 0, 0, 0.8); padding-left: 10px; padding-right: 10px; padding-top: 10px; padding-bottom: 10px; -unity-background-scale-mode: scale-to-fit;">
+                    <ui:Button text="X" display-tooltip-when-elided="true" name="CloseLevelDescriptionButton" class="ingame-level-description-button" />
+                    <ui:Label display-tooltip-when-elided="true" name="LevelDescription" style="-unity-text-align: middle-left; font-size: 16px; color: rgb(255, 255, 255); white-space: normal; background-color: rgba(0, 0, 0, 0); margin-left: 2px; margin-right: 2px; margin-top: 2px; margin-bottom: 2px; padding-top: 4px; letter-spacing: -5px; word-spacing: 2px;" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+            <ui:VisualElement name="RightBar" style="width: 10%;" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
