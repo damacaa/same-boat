@@ -20,6 +20,9 @@ public class GameManager : MonoBehaviour
     public delegate void OnLevelLoadedDelegate();
     public OnLevelLoadedDelegate OnLevelLoaded;
 
+    [SerializeField]
+    bool _showDebugUI = false;
+
     private void Awake()
     {
         if (instance)
@@ -159,7 +162,7 @@ public class GameManager : MonoBehaviour
 
     private void OnGUI()
     {
-        if (Game == null || false)
+        if (Game == null || !_showDebugUI)
             return;
 
         int width = Screen.width / 8;
