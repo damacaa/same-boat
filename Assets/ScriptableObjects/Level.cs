@@ -76,13 +76,7 @@ public class Level : ScriptableObject
             }
         }
 
-
-        s += $"{listOfTransportables} are traveling to an island in the north and must cross a river to get there.\n";
-
-        if (Islands.Length == 3)
-            s += "Luckyly, there is an extra island.\n";
-        else if (Islands.Length > 3)
-            s += $"Luckyly, there are {numbers[Islands.Length - 1]} extra islands.\n";
+        s += $"{listOfTransportables} want to get to the island in the north, but they must cross a river first.";
 
         // Boat
 
@@ -106,35 +100,20 @@ public class Level : ScriptableObject
             }
 
             if (hasMaxTravelCost)
+            {
                 s += $" it can only drive for {BoatMaxTravelCost} minutes.\n";
+
+            }
         }
         else
             s += ".\n";
-
-
-
-
-        /*s += Intro;
-
-        int l = Intro.Length;
-        if (l > 0 && (Intro[l - 2] != '\\' || Intro[l - 2] != 'n'))
-        {
-            s += "\n";
-        }*/
-
-        // Rules
-
-        foreach (var rule in Rules)
-        {
-            s += rule + "\n";
-        }
 
         foreach (var t in arrayOfAllKeys)
         {
             if (hasMaxWeight || hasMaxTravelCost)
             {
 
-                s += $"A {t.name.ToLower()}";
+                s += $"   - A {t.name.ToLower()}";
 
                 if (hasMaxWeight)
                 {
@@ -148,11 +127,38 @@ public class Level : ScriptableObject
 
                 if (hasMaxTravelCost)
                 {
-                    s += $" takes {t.TravelCost} {(t.TravelCost > 1 ? " minutes" : " minute")} to cross the river.\n";
+                    s += $" takes {t.TravelCost} {(t.TravelCost > 1 ? "minutes" : "minute")} to cross the river.\n";
                 }
             }
         }
 
+        s += $"The boat can’t be moved if there isn’t somebody driving it.";
+
+        if (OnlyHumansCanDrive)
+            s += $" However, the man won't allow anyone but himself to drive.\n";
+        else
+        {
+            s += "\n";
+        }
+
+        s += $"When two or more things are traveling together," +
+                    $" the time they will take to cross the river is equal to the time that the slowest one of them would take.\n";
+
+
+
+        // Rules
+
+        if (Rules.Length == 0)
+            return s;
+
+        s += $"Even though they all want everyone to get to the other side in one piece," +
+            $" the animal instincts of some of them will kick in if they are left unattended." +
+            $" Keep in mind that:\n";
+
+        foreach (var rule in Rules)
+        {
+            s += "   - " + rule + "\n";
+        }
 
         return s;
     }
