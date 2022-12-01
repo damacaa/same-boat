@@ -36,7 +36,7 @@ public class BoatBehaviour : MonoBehaviour
     internal void SetUp(Boat boat)
     {
         Data = boat;
-        if (!boat.CanMoveEmpty)
+        if (!boat.OnlyHumansCanDrive)
         {
             driver.SetActive(false);
         }

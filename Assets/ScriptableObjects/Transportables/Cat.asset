@@ -15,5 +15,6 @@ MonoBehaviour:
   name: Cat
   NamePlural: Cats
   Weight: 2
-  TravelCost: 1
+  TravelCost: 5
   sprite: {fileID: 21300000, guid: f22f78ba9751bf44c984164c3e9a7777, type: 3}
+  Sounds: []

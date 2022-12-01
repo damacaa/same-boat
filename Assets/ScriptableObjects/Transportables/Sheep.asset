@@ -15,6 +15,6 @@ MonoBehaviour:
   name: Sheep
   NamePlural: Sheep
   Weight: 4
-  TravelCost: 1
+  TravelCost: 8
   sprite: {fileID: 21300000, guid: bfb970366564eb34dadc7d56c614edbe, type: 3}
   Sounds: []

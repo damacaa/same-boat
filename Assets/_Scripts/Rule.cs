@@ -5,7 +5,6 @@ public class Rule
     public TransportableSO A;
     public RuleType comparison;
     public TransportableSO B;
-    public Result result;
 
     public enum RuleType
     {
@@ -27,30 +26,18 @@ public class Rule
         switch (comparison)
         {
             case RuleType.CantCoexist:
-                s = "Can't have a " + A.name.ToLower() + " and a " + B.name.ToLower() + " together in the same island";
+                s = "Can't have a " + A.name.ToLower() + " and a " + B.name.ToLower() + " together in the same island or it will be eaten.";
                 break;
             case RuleType.CountMustBeGreaterThan:
-                s = "Number of " + A.NamePlural.ToLower() + " must be greater than the number of " + B.NamePlural.ToLower();
+                s = "Number of " + A.NamePlural.ToLower() + " must be greater than the number of " + B.NamePlural.ToLower() + " or they will be eaten.";
                 break;
             case RuleType.CountMustBeGreaterEqualThan:
-                s = "Number of " + A.NamePlural.ToLower() + " must be greater than or equal to the number of " + B.NamePlural.ToLower();
+                s = "Number of " + A.NamePlural.ToLower() + " must be greater than or equal to the number of " + B.NamePlural.ToLower() + " or they will be eaten.";
                 break;
             default:
                 break;
         }
 
-        switch (result)
-        {
-            case Result.AWillEatB:
-                s += " or it will be eaten.";
-                break;
-            case Result.AWillFightWithB:
-                s += " or they will fight.";
-                break;
-            default:
-                s += ".\n";
-                break;
-        }
 
         return s;
     }

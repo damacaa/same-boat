@@ -13,7 +13,7 @@ public class Level : ScriptableObject
     public int BoatMaxWeightAllowed = 0;
     [Range(0, 100)]
     public int BoatMaxTravelCost = 0;
-    public bool CanMoveEmpyBoat = true;
+    public bool OnlyHumansCanDrive = false;
     public Texture2D Map;
     public Level.Island[] Islands;
     public Rule[] rules;

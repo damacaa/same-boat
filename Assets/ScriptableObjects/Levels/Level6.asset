@@ -23,15 +23,14 @@ MonoBehaviour:
     - {fileID: 11400000, guid: cec013bbd6b087046b857f5414739136, type: 2}
     - {fileID: 11400000, guid: cec013bbd6b087046b857f5414739136, type: 2}
     - {fileID: 11400000, guid: cec013bbd6b087046b857f5414739136, type: 2}
-    - {fileID: 11400000, guid: 8bb208a2f8e4d454ebc0ff9967aeed9c, type: 2}
-    - {fileID: 11400000, guid: 8bb208a2f8e4d454ebc0ff9967aeed9c, type: 2}
-    - {fileID: 11400000, guid: 8bb208a2f8e4d454ebc0ff9967aeed9c, type: 2}
+    - {fileID: 11400000, guid: 9c173236f3b917043b185990f60b7614, type: 2}
+    - {fileID: 11400000, guid: 9c173236f3b917043b185990f60b7614, type: 2}
+    - {fileID: 11400000, guid: 9c173236f3b917043b185990f60b7614, type: 2}
   - transportables:
-    - {fileID: 11400000, guid: 8bb208a2f8e4d454ebc0ff9967aeed9c, type: 2}
     - {fileID: 11400000, guid: cec013bbd6b087046b857f5414739136, type: 2}
+    - {fileID: 11400000, guid: 9c173236f3b917043b185990f60b7614, type: 2}
   - transportables: []
   rules:
-  - A: {fileID: 11400000, guid: 8bb208a2f8e4d454ebc0ff9967aeed9c, type: 2}
+  - A: {fileID: 11400000, guid: 9c173236f3b917043b185990f60b7614, type: 2}
     comparison: 2
     B: {fileID: 11400000, guid: cec013bbd6b087046b857f5414739136, type: 2}
-    result: 1
