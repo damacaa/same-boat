@@ -33,6 +33,18 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _GatherTexture2D_08c473e79448409ab6315694579ba265_Texture_1:
+        m_Texture: {fileID: 2800000, guid: b92b288a429d95e4cbfc7b615cc246e6, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_b2cf9cd27e5145659cd0ec614784b2ca_Texture_1:
+        m_Texture: {fileID: 2800000, guid: b92b288a429d95e4cbfc7b615cc246e6, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Texture2DAsset_a8819493354a43658c47e638d64c1ba4_Out_0:
+        m_Texture: {fileID: 2800000, guid: fc5485795219e3044b7d8c225e362015, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -48,21 +60,27 @@ Material:
     m_Ints: []
     m_Floats:
     - Vector1_2FD033EB: 0.1
-    - Vector1_5BF1605B: 4
-    - Vector1_6860A0AD: -1
+    - Vector1_5BF1605B: 0.7
+    - Vector1_6860A0AD: 1
     - Vector1_81312F8E: 1
-    - Vector1_8165557B: 4.5
-    - Vector1_8539E70F: 0
+    - Vector1_8165557B: 1.4
+    - Vector1_8539E70F: 13.33
     - Vector1_CFD69044: 100
-    - Vector1_E093B457: 2
+    - Vector1_E093B457: 0.7
+    - _Choppiness: 0.02
     - _Depth: 0.65
     - _FoamAmount: 0.5
     - _QueueControl: 0
     - _QueueOffset: 0
     - _Strength: 0.85
+    - _WaveAlpha: 0.48
+    - _WaveSpeed: 0.1
+    - _WaveThickness: 0.01
+    - _WavesScale: 18.5
     m_Colors:
     - Color_9386996F: {r: 0, g: 0, b: 0, a: 0.7882353}
-    - Color_F07C5062: {r: 0, g: 0, b: 0, a: 0.72156864}
+    - Color_F07C5062: {r: 0.032395873, g: 0.041508306, b: 0.0754717, a: 0.72156864}
     - _DeepWater: {r: 0.11372547, g: 0.5617131, b: 0.77254903, a: 1}
     - _ShallowWater: {r: 0.4481132, g: 0.77924526, b: 1, a: 1}
+    - _WaveVelocity: {r: 0.05, g: -0.03, b: 0, a: 0}
   m_BuildTextureStacks: []

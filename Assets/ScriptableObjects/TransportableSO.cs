@@ -10,7 +10,6 @@ public class TransportableSO : ScriptableObject
 
     public int Weight = 1;
     public int TravelCost = 1;
-    public bool CanDrive = true;
 
     public Sprite sprite;
     public enum DietType
@@ -20,4 +19,6 @@ public class TransportableSO : ScriptableObject
         Omnivore,
         Carnivore
     }
+
+    public AudioClip[] Sounds;
 }
