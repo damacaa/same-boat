@@ -36,7 +36,7 @@ public class GameUIManager : MonoBehaviour
         _levelDescription = _gameUICanvas.Q<Label>("LevelDescription");
         _numberOfCrossings = _gameUICanvas.Q<Label>("NumberOfCrossingsValue");
 
-        _gameUICanvas.Q<Button>("UndoButton").clicked += () => { GameManager.instance.Game.Undo(); };
+        _gameUICanvas.Q<Button>("UndoButton").clicked += () => { GameManager.instance.Undo(); };
         _gameUICanvas.Q<Button>("OptionsButton").clicked += OpenOptions;
         _gameUICanvas.Q<Button>("CloseLevelDescriptionButton").clicked +=
             delegate { _levelDescriptionCanvas.ToggleInClassList("hide"); };
@@ -51,7 +51,7 @@ public class GameUIManager : MonoBehaviour
         _victoryRetryButton = _victoryUICanvas.Q<Button>("RetryButton");
 
         _gameOverReturnToMenuButton.clicked += () => { SceneManager.LoadScene(0); };
-        _gameOverUndoButtonButton.clicked += () => { GameManager.instance.Game.Undo(); };
+        _gameOverUndoButtonButton.clicked += () => { GameManager.instance.Undo(); };
         _gameOverUndoButtonButton.clicked += CloseGameOver;
         _gameOverRetryButton.clicked += () => { GameManager.instance.Reset(); };
         _gameOverRetryButton.clicked += CloseGameOver;
