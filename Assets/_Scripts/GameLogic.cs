@@ -156,7 +156,7 @@ public class GameLogic
     {
         // Could be optimized by counting each only once, using a dictionary maybe
 
-        foreach (var r in _level.rules)
+        foreach (var r in _level.Rules)
         {
             int aCount = 0, bCount = 0;
 
