@@ -24,6 +24,8 @@ public class GameManager : MonoBehaviour
 
     public delegate void OnLevelLoadedDelegate();
     public event OnLevelLoadedDelegate OnLevelLoaded;
+    public delegate void OnGameFinishedDelegate();
+    public event OnGameFinishedDelegate OnGameFinished;
 
     [SerializeField]
     bool _showDebugUI = false;
@@ -35,16 +37,6 @@ public class GameManager : MonoBehaviour
         else
             instance = this;
     }
-
-    [SerializeField]
-    Level[] levels;
-    [SerializeField]
-    int _currentLevel;
-
-
-    public GameLogic Game { get; private set; }
-
-    string _levelDescription = "";
 
     [HideInInspector]
     public bool Win { get; private set; }
@@ -132,7 +124,10 @@ public class GameManager : MonoBehaviour
         {
             Fail = Game.Fail;
             if (Fail)
+            {
                 SoundController.Instace.PlaySound(SoundController.Sound.Fail);
+                if (OnGameFinished != null) OnGameFinished();
+            }
         }
 
         if (Win != Game.Win)
