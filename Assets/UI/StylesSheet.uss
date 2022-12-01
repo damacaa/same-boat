@@ -61,7 +61,6 @@
     margin-right: 5px;
     margin-top: 5px;
     margin-bottom: 5px;
-    width: auto;
     -unity-text-align: middle-center;
     color: rgb(255, 255, 255);
     -unity-font-definition: url('project://database/Assets/UI/Fonts/Comfortaa-VariableFont_wght%20SDF.asset?fileID=11400000&guid=5e00c291ca1c09b4b8bc2a2e95dc9bca&type=2#Comfortaa-VariableFont_wght SDF');
@@ -71,8 +70,6 @@
     -unity-font-style: bold;
     -unity-text-outline-color: rgba(0, 0, 0, 0.4);
     letter-spacing: -5px;
-    position: absolute;
-    bottom: 2%;
 }
 
 .ingame-level-description-button {
