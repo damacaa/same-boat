@@ -116,6 +116,7 @@ public class GameManager : MonoBehaviour
         if (Game.Win)
         {
             SoundController.Instace.PlaySound(SoundController.Sound.Win);
+            print(Game.Boat.Crossings);
         }
     }
 
@@ -175,12 +176,18 @@ public class GameManager : MonoBehaviour
             StartCoroutine(Game.ShowAllMovesCoroutine());
         }
 
-        GUI.TextArea(new Rect(Screen.width - (3 * width) - space, space * 2, 3 * width, 5 * height), _levelDescription);
+        if (GUI.Button(new Rect(space, 3 * (space + height) + space, width, height), "Clue"))
+        {
+            Solver.Solver.SolveWidth(Game);
+            Game.Execute();
+        }
+
+        GUI.TextArea(new Rect(Screen.width - (3 * width) - space, space * 3, 3 * width, 10 * height), _levelDescription);
 
         width = height;
         for (int i = 0; i < levels.Length; i++)
         {
-            if (GUI.Button(new Rect(space + i * (space + width), Screen.height - space - height, width, height), i.ToString()))
+            if (GUI.Button(new Rect(space + i * (space + width), Screen.height - space - height, width, height), (i + 1).ToString()))
             {
                 LoadLevel(levels[i]);
             }

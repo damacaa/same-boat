@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Boat
@@ -9,6 +10,7 @@ public class Boat
 
     public BoatBehaviour Behaviour { get { return _behaviour; } }
     public List<Transportable> Transportables { get { return _seats; } }
+    public int Crossings { get; private set; }
     public int Capacity { get; private set; }
     public int Occupied { get; private set; }
     public int MaxWeight { get; private set; }
@@ -16,20 +18,21 @@ public class Boat
     public int MaxTravelCost { get; private set; }
     public int CurrentTravelCost { get; private set; }
     public bool IsEmpty { get { return Occupied == 0; } }
-    public bool CanMoveEmpty { get; private set; }
+    public bool OnlyHumansCanDrive { get; private set; }
     public Island Island { get; private set; }
 
 
-    public Boat(Island island, int capacity, int maxWeight, int maxTravelCost, bool canMoveEmpty)
+    public Boat(Island island, int capacity, int maxWeight, int maxTravelCost, bool onlyHumansCanDrive)
     {
         Island = island;
 
         Capacity = capacity;
         MaxWeight = maxWeight;
         MaxTravelCost = maxTravelCost;
-        CanMoveEmpty = canMoveEmpty;
+        OnlyHumansCanDrive = onlyHumansCanDrive;
 
         CurrentTravelCost = 0;
+        Crossings = 0;
     }
 
     public bool LoadBoat(Transportable newTransportable, out int position, out float animationDuration, bool instant = false, bool backwards = false)
@@ -95,12 +98,13 @@ public class Boat
             travelCost = Math.Max(travelCost, t.ScripatableObject.TravelCost);
         }
 
-        if ((!CanMoveEmpty && Occupied == 0) || (!backwards && MaxTravelCost > 0 && (CurrentTravelCost + travelCost) > MaxTravelCost))
+        if (_seats.Count(t => t != null) <= 0 || (OnlyHumansCanDrive && _seats.Count(t => t != null && t.ScripatableObject.name == "Man") <= 0) || (!backwards && MaxTravelCost > 0 && (CurrentTravelCost + travelCost) > MaxTravelCost))
         {
             return false;
         }
 
         CurrentTravelCost += backwards ? -travelCost : travelCost;
+        Crossings += backwards ? -1 : 1;
 
         if (_behaviour)
             _behaviour.GoTo(newIsland, out animationDuration, instant, backwards);
