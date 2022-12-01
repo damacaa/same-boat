@@ -2,51 +2,79 @@
     display: none;
 }
 
-.menu-button {
-    width: 30%;
-    height: 20%;
-    left: auto;
+.emergin-menu {
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    top: auto;
-    position: relative;
-    right: auto;
-    font-size: 300%;
-    -unity-font-style: normal;
-    display: flex;
-    visibility: visible;
+    min-width: 100%;
+    min-height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+}
+
+.ingame-header-button {
+    width: 8%;
+    height: 14%;
+    font-size: 20px;
+    -unity-font-definition: url('project://database/Assets/UI/Fonts/Comfortaa-VariableFont_wght%20SDF.asset?fileID=11400000&guid=5e00c291ca1c09b4b8bc2a2e95dc9bca&type=2#Comfortaa-VariableFont_wght SDF');
+    -unity-font: url('project://database/Assets/UI/Fonts/Comfortaa-VariableFont_wght.ttf?fileID=12800000&guid=2784d677bf816eb42b49fcbf8a636323&type=3#Comfortaa-VariableFont_wght');
+}
+
+.ingame-header-text {
+    font-size: 20px;
+    margin-left: 30px;
+    margin-right: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 10%;
+    -unity-text-align: middle-center;
+    color: rgb(255, 255, 255);
+    height: 8%;
+    -unity-font-definition: url('project://database/Assets/UI/Fonts/Comfortaa-VariableFont_wght%20SDF.asset?fileID=11400000&guid=5e00c291ca1c09b4b8bc2a2e95dc9bca&type=2#Comfortaa-VariableFont_wght SDF');
+    -unity-font: url('project://database/Assets/UI/Fonts/Comfortaa-VariableFont_wght.ttf?fileID=12800000&guid=2784d677bf816eb42b49fcbf8a636323&type=3#Comfortaa-VariableFont_wght');
+}
+
+.ingame-options-button {
+    width: auto;
+    height: 6%;
+    font-size: 25px;
+    -unity-font-style: bold;
     -unity-text-align: middle-center;
     background-color: rgba(0, 0, 0, 0);
     border-left-color: rgba(0, 0, 0, 0);
     border-right-color: rgba(0, 0, 0, 0);
     border-top-color: rgba(0, 0, 0, 0);
     border-bottom-color: rgba(0, 0, 0, 0);
-    color: rgb(221, 221, 221);
-    -unity-text-outline-color: rgb(207, 207, 207);
+    color: rgb(236, 236, 236);
+    -unity-text-outline-color: rgba(0, 0, 0, 0.8);
     transition-duration: 0.15s;
+    -unity-text-outline-width: 1px;
+    letter-spacing: 5px;
+    -unity-font-definition: url('project://database/Assets/UI/Fonts/Comfortaa-VariableFont_wght%20SDF.asset?fileID=11400000&guid=5e00c291ca1c09b4b8bc2a2e95dc9bca&type=2#Comfortaa-VariableFont_wght SDF');
+    -unity-font: url('project://database/Assets/UI/Fonts/Comfortaa-VariableFont_wght.ttf?fileID=12800000&guid=2784d677bf816eb42b49fcbf8a636323&type=3#Comfortaa-VariableFont_wght');
+    top: 11%;
+    align-items: center;
 }
 
-.menu-button:hover {
-    width: 30%;
-    height: 20%;
-    left: auto;
-    align-items: center;
-    justify-content: center;
-    top: auto;
-    position: relative;
-    right: auto;
-    font-size: 400%;
-    -unity-font-style: normal;
-    display: flex;
-    visibility: visible;
+.ingame-options-button:hover {
+    width: auto;
+    height: 6%;
+    font-size: 30px;
+    -unity-font-style: bold;
     -unity-text-align: middle-center;
-    background-color: rgba(255, 255, 255, 0);
-    color: rgb(255, 255, 255);
+    background-color: rgba(0, 0, 0, 0);
     border-left-color: rgba(0, 0, 0, 0);
     border-right-color: rgba(0, 0, 0, 0);
     border-top-color: rgba(0, 0, 0, 0);
     border-bottom-color: rgba(0, 0, 0, 0);
+    color: rgb(236, 236, 236);
+    -unity-text-outline-color: rgba(0, 0, 0, 0.8);
     transition-duration: 0.15s;
+    -unity-text-outline-width: 1px;
+    letter-spacing: 5px;
+    -unity-font-definition: url('project://database/Assets/UI/Fonts/Comfortaa-VariableFont_wght%20SDF.asset?fileID=11400000&guid=5e00c291ca1c09b4b8bc2a2e95dc9bca&type=2#Comfortaa-VariableFont_wght SDF');
+    -unity-font: url('project://database/Assets/UI/Fonts/Comfortaa-VariableFont_wght.ttf?fileID=12800000&guid=2784d677bf816eb42b49fcbf8a636323&type=3#Comfortaa-VariableFont_wght');
+    top: 11%;
+    align-items: center;
 }
 
 .level-list-button {
@@ -58,7 +86,7 @@
     top: auto;
     position: relative;
     right: auto;
-    font-size: 30px;
+    font-size: 25px;
     -unity-font-style: normal;
     display: flex;
     visibility: visible;
@@ -75,6 +103,8 @@
     margin-right: 5px;
     margin-top: 5px;
     margin-bottom: 5px;
+    -unity-font-definition: url('project://database/Assets/UI/Fonts/Comfortaa-VariableFont_wght%20SDF.asset?fileID=11400000&guid=5e00c291ca1c09b4b8bc2a2e95dc9bca&type=2#Comfortaa-VariableFont_wght SDF');
+    -unity-font: url('project://database/Assets/UI/Fonts/Comfortaa-VariableFont_wght.ttf?fileID=12800000&guid=2784d677bf816eb42b49fcbf8a636323&type=3#Comfortaa-VariableFont_wght');
 }
 
 .level-list-button:hover {
@@ -86,7 +116,7 @@
     top: auto;
     position: relative;
     right: auto;
-    font-size: 40px;
+    font-size: 35px;
     -unity-font-style: normal;
     display: flex;
     visibility: visible;
@@ -103,27 +133,65 @@
     margin-right: 5px;
     margin-top: 5px;
     margin-bottom: 5px;
+    -unity-font-definition: url('project://database/Assets/UI/Fonts/Comfortaa-VariableFont_wght%20SDF.asset?fileID=11400000&guid=5e00c291ca1c09b4b8bc2a2e95dc9bca&type=2#Comfortaa-VariableFont_wght SDF');
+    -unity-font: url('project://database/Assets/UI/Fonts/Comfortaa-VariableFont_wght.ttf?fileID=12800000&guid=2784d677bf816eb42b49fcbf8a636323&type=3#Comfortaa-VariableFont_wght');
 }
 
-.ingame-header-text {
-    font-size: 20px;
-    margin-left: 10px;
-    margin-right: 10px;
-    margin-top: 10px;
-    margin-bottom: 10px;
+.menu-button {
     width: auto;
+    height: auto;
+    left: auto;
+    align-items: center;
+    justify-content: center;
+    top: auto;
+    position: relative;
+    right: auto;
+    font-size: 50px;
+    -unity-font-style: bold;
+    display: flex;
+    visibility: visible;
     -unity-text-align: middle-center;
-    color: rgba(255, 255, 255, 255);
+    background-color: rgba(0, 0, 0, 0);
+    border-left-color: rgba(0, 0, 0, 0);
+    border-right-color: rgba(0, 0, 0, 0);
+    border-top-color: rgba(0, 0, 0, 0);
+    border-bottom-color: rgba(0, 0, 0, 0);
+    color: rgb(236, 236, 236);
+    -unity-text-outline-color: rgba(0, 0, 0, 0.8);
+    transition-duration: 0.15s;
+    -unity-text-outline-width: 1px;
+    letter-spacing: 5px;
+    -unity-font-definition: url('project://database/Assets/UI/Fonts/Comfortaa-VariableFont_wght%20SDF.asset?fileID=11400000&guid=5e00c291ca1c09b4b8bc2a2e95dc9bca&type=2#Comfortaa-VariableFont_wght SDF');
+    -unity-font: url('project://database/Assets/UI/Fonts/Comfortaa-VariableFont_wght.ttf?fileID=12800000&guid=2784d677bf816eb42b49fcbf8a636323&type=3#Comfortaa-VariableFont_wght');
 }
 
-.ingame-header-button {
-    width: 10%;
-    height: 47%;
-    font-size: 20px;
+.menu-button:hover {
+    width: 30%;
+    height: 20%;
+    left: auto;
+    align-items: center;
+    justify-content: center;
+    top: auto;
+    position: relative;
+    right: auto;
+    font-size: 60px;
+    -unity-font-style: bold;
+    display: flex;
+    visibility: visible;
+    -unity-text-align: middle-center;
+    background-color: rgba(255, 255, 255, 0);
+    color: rgb(255, 255, 255);
+    border-left-color: rgba(0, 0, 0, 0);
+    border-right-color: rgba(0, 0, 0, 0);
+    border-top-color: rgba(0, 0, 0, 0);
+    border-bottom-color: rgba(0, 0, 0, 0);
+    transition-duration: 0.15s;
+    -unity-font-definition: url('project://database/Assets/UI/Fonts/Comfortaa-VariableFont_wght%20SDF.asset?fileID=11400000&guid=5e00c291ca1c09b4b8bc2a2e95dc9bca&type=2#Comfortaa-VariableFont_wght SDF');
+    -unity-font: url('project://database/Assets/UI/Fonts/Comfortaa-VariableFont_wght.ttf?fileID=12800000&guid=2784d677bf816eb42b49fcbf8a636323&type=3#Comfortaa-VariableFont_wght');
 }
 
 .options-text {
-    font-size: 20px;
+    font-size: 30px;
     color: rgb(255, 255, 255);
     -unity-text-align: middle-center;
     white-space: nowrap;
@@ -131,13 +199,6 @@
     margin-right: 6px;
     margin-top: 6px;
     margin-bottom: 6px;
-}
-
-.emergin-menu {
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-width: 50%;
-    min-height: 100%;
-    background-color: rgba(0, 0, 0, 0.9);
+    -unity-font-definition: url('project://database/Assets/UI/Fonts/Comfortaa-VariableFont_wght%20SDF.asset?fileID=11400000&guid=5e00c291ca1c09b4b8bc2a2e95dc9bca&type=2#Comfortaa-VariableFont_wght SDF');
+    -unity-font: url('project://database/Assets/UI/Fonts/Comfortaa-VariableFont_wght.ttf?fileID=12800000&guid=2784d677bf816eb42b49fcbf8a636323&type=3#Comfortaa-VariableFont_wght');
 }
