@@ -16,6 +16,7 @@ public class LevelGenerator : MonoBehaviour
 
     public void Generate()
     {
+#if UNITY_EDITOR
         int maxIter = 100;
         int iter = 0;
 
@@ -97,5 +98,6 @@ public class LevelGenerator : MonoBehaviour
         AssetDatabase.CreateAsset(level, "Assets/ScriptableObjects/Levels/Random.asset");
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
+#endif
     }
 }

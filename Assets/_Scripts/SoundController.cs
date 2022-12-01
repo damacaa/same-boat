@@ -6,13 +6,6 @@ public class SoundController : MonoBehaviour
 {
     #region SINGLETON
     public static SoundController Instace;
-    private void Awake()
-    {
-        if (!Instace)
-            Instace = this;
-        else
-            Destroy(this);
-    }
 
     #endregion
 
@@ -38,8 +31,16 @@ public class SoundController : MonoBehaviour
     #endregion
 
     #region UNITY CALLBACKS
-    private void Start()
+    private void Awake()
     {
+        if (!Instace)
+            Instace = this;
+        else
+        {
+            Destroy(this);
+            return;
+        }
+
         sfxSource = GetComponents<AudioSource>()[0];
         bgmSource = GetComponents<AudioSource>()[1];
 
