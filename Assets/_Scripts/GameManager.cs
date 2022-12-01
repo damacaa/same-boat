@@ -24,8 +24,10 @@ public class GameManager : MonoBehaviour
 
     public delegate void OnLevelLoadedDelegate();
     public event OnLevelLoadedDelegate OnLevelLoaded;
-    public delegate void OnGameFinishedDelegate();
-    public event OnGameFinishedDelegate OnGameFinished;
+    public delegate void OnGameOverDelegate();
+    public event OnGameOverDelegate OnGameOver;
+    public delegate void OnVictoryDelegate();
+    public event OnVictoryDelegate OnVictory;
 
     [SerializeField]
     bool _showDebugUI = false;
@@ -126,7 +128,7 @@ public class GameManager : MonoBehaviour
             if (Fail)
             {
                 SoundController.Instace.PlaySound(SoundController.Sound.Fail);
-                if (OnGameFinished != null) OnGameFinished();
+                if (OnGameOver != null) OnGameOver();
             }
         }
 
@@ -135,6 +137,7 @@ public class GameManager : MonoBehaviour
             Win = Game.Win;
             if (Win)
                 SoundController.Instace.PlaySound(SoundController.Sound.Win);
+            if (OnVictory != null) OnVictory();
         }
     }
 
