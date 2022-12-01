@@ -20,13 +20,25 @@ public class LevelGenerator : MonoBehaviour
         int iter = 0;
 
         Level level = null;
+        int steps = -1;
+
         do
         {
             Dictionary<TransportableSO, int> count = new Dictionary<TransportableSO, int>();
 
             level = ScriptableObject.CreateInstance<Level>();
             level.name = "Random";
-            level.Islands = new Level.Island[2];
+            level.Islands = new Level.Island[Random.Range(2, 5)];
+
+            if (Random.value > 0.75f)
+                level.BoatCapacity = Random.Range(2, 4);
+
+            if (Random.value > 0.75f)
+                level.BoatMaxWeightAllowed = Random.Range(0, 20);
+
+            if (Random.value > 0.75f)
+                level.BoatMaxTravelCost = Random.Range(0, 30);
+
             for (int i = 0; i < level.Islands.Length; i++)
             {
                 level.Islands[i] = new Level.Island();
@@ -41,7 +53,7 @@ public class LevelGenerator : MonoBehaviour
                 island.transportables = new TransportableSO[Random.Range(0, 6)];
                 for (int j = 0; j < island.transportables.Length; j++)
                 {
-                    TransportableSO t = _transportables[Random.Range(0, _transportables.Length)];
+                    TransportableSO t = _transportables[Random.Range(level.OnlyHumansCanDrive ? 1 : 0, _transportables.Length)];
 
                     if (count.TryGetValue(t, out int value))
                     {
@@ -64,7 +76,7 @@ public class LevelGenerator : MonoBehaviour
 
             foreach (var rule in _rules)
             {
-                if(count[rule.A] > 0 && count[rule.B] > 0)
+                if (count.ContainsKey(rule.A) && count.ContainsKey(rule.A))
                 {
                     rules.Add(rule);
                 }
@@ -74,10 +86,16 @@ public class LevelGenerator : MonoBehaviour
 
             iter++;
 
-        } while (iter < maxIter && Solver.Solver.SolveWidth(new GameLogic(level)) < _desiredSteps);
+            steps = Solver.Solver.SolveWidth(new GameLogic(level));
+            print($"{iter}: {steps}");
 
+        } while (iter < maxIter && steps < _desiredSteps);
+
+        if (iter == maxIter)
+            Debug.Log("Need more steps");
 
         AssetDatabase.CreateAsset(level, "Assets/ScriptableObjects/Levels/Random.asset");
         AssetDatabase.SaveAssets();
+        AssetDatabase.Refresh();
     }
 }
