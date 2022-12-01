@@ -73,10 +73,10 @@ Material:
     - _QueueControl: 0
     - _QueueOffset: 0
     - _Strength: 0.85
-    - _WaveAlpha: 0.5
+    - _WaveAlpha: 0.48
     - _WaveSpeed: 0.1
     - _WaveThickness: 0.01
-    - _WavesScale: 19.9
+    - _WavesScale: 18.5
     m_Colors:
     - Color_9386996F: {r: 0, g: 0, b: 0, a: 0.7882353}
     - Color_F07C5062: {r: 0.032395873, g: 0.041508306, b: 0.0754717, a: 0.72156864}

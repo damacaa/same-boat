@@ -71,16 +71,16 @@ Material:
     - Vector1_8539E70F: 0
     - Vector1_CFD69044: 100
     - Vector1_E093B457: 0.7
-    - _Choppiness: 1.5
+    - _Choppiness: 1.52
     - _Depth: 0.65
     - _FoamAmount: 0.5
     - _QueueControl: 0
     - _QueueOffset: 0
     - _Strength: 0.85
-    - _WaveAlpha: 1
+    - _WaveAlpha: 0.3
     - _WaveSpeed: 0.1
     - _WaveThickness: 12
-    - _WavesScale: 30
+    - _WavesScale: 58.97
     m_Colors:
     - Color_9386996F: {r: 0, g: 0, b: 0, a: 0.7882353}
     - Color_F07C5062: {r: 0.032395873, g: 0.041508306, b: 0.0754717, a: 0.72156864}
