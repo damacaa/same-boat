@@ -16,7 +16,7 @@ MonoBehaviour:
   BoatCapacity: 2
   BoatMaxWeightAllowed: 0
   BoatMaxTravelCost: 0
-  OnlyHumansCanDrive: 0
+  CanMoveEmpyBoat: 0
   Map: {fileID: 2800000, guid: f944d0c065e6cf44fb2c6180bcf8d17a, type: 3}
   Islands:
   - transportables:
@@ -27,7 +27,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 9c173236f3b917043b185990f60b7614, type: 2}
     - {fileID: 11400000, guid: 9c173236f3b917043b185990f60b7614, type: 2}
   - transportables: []
-  Rules:
+  rules:
   - A: {fileID: 11400000, guid: 9c173236f3b917043b185990f60b7614, type: 2}
-    comparison: 1
+    comparison: 2
     B: {fileID: 11400000, guid: cec013bbd6b087046b857f5414739136, type: 2}
