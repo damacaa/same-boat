@@ -16,6 +16,11 @@ public class GameManager : MonoBehaviour
     int _currentLevel;
 
     string _levelDescription = "";
+    public string LevelDescription
+    {
+        get { return _levelDescription; }
+        private set { _levelDescription = value; }
+    }
 
     public delegate void OnLevelLoadedDelegate();
     public event OnLevelLoadedDelegate OnLevelLoaded;
@@ -64,7 +69,7 @@ public class GameManager : MonoBehaviour
         Game = new GameLogic(level);
         Game.GenerateGameObjects(level);
 
-        _levelDescription = level.ToString();
+        LevelDescription = level.ToString();
 
         if (OnLevelLoaded != null) OnLevelLoaded();
     }
@@ -187,7 +192,7 @@ public class GameManager : MonoBehaviour
             Game.Execute();
         }
 
-        GUI.TextArea(new Rect(Screen.width - (3 * width) - space, space * 5, 3 * width, 5 * height), _levelDescription);
+        GUI.TextArea(new Rect(Screen.width - (3 * width) - space, space * 5, 3 * width, 5 * height), LevelDescription);
 
         width = height;
         for (int i = 0; i < levels.Length; i++)

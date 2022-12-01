@@ -9,48 +9,32 @@ public class GameUIManager : MonoBehaviour
 
     private VisualElement _gameUICanvas;
     private VisualElement _optionsUICanvas;
+    private VisualElement _levelDescriptionCanvas;
 
-    private Label _numberOfMovementsLabel;
-    private Label _animalsDelivered;
-    private Label _currentLevel;
-
-    private Button _undoButton;
-    private Button _optionsButton;
+    private Label _numberOfCrossings;
+    private Label _levelDescription;
 
     private void Awake()
     {
         _gameUICanvas = _gameUI.rootVisualElement.Q("Canvas");
         _optionsUICanvas = _optionsUI.rootVisualElement.Q("Canvas");
 
-        _numberOfMovementsLabel = _gameUICanvas.Q<Label>("NumberOfMovements");
-        _animalsDelivered = _gameUICanvas.Q<Label>("AnimalsDelivered");
-        _currentLevel = _gameUICanvas.Q<Label>("CurrentLevel");
+        _levelDescriptionCanvas = _gameUICanvas.Q<VisualElement>("LevelDescriptionContainer");
+        _levelDescription = _gameUICanvas.Q<Label>("LevelDescription");
 
-        _undoButton = _gameUICanvas.Q<Button>("UndoButton");
-        _optionsButton = _gameUICanvas.Q<Button>("OptionsButton");
+        _gameUICanvas.Q<Button>("UndoButton").clicked += delegate { GameManager.instance.Game.Undo(); };
+        _gameUICanvas.Q<Button>("OptionsButton").clicked += OpenOptions;
+        _gameUICanvas.Q<Button>("CloseLevelDescriptionButton").clicked +=
+            delegate { _levelDescriptionCanvas.ToggleInClassList("hide"); };
+        _gameUICanvas.Q<Button>("ShowLevelDescriptionButton").clicked +=
+            delegate { _levelDescriptionCanvas.ToggleInClassList("hide"); };
 
-        _undoButton.clicked += delegate { GameManager.instance.Game.Undo(); };
-        _optionsButton.clicked += OpenOptions;
-    }
-
-    private void Start()
-    {
-
+        _numberOfCrossings = _gameUICanvas.Q<Label>("NumberOfCrossingsValue");
+        GameManager.instance.OnLevelLoaded += SetCrossingsChangeListener;
+        GameManager.instance.OnLevelLoaded += ShowLevelDescription;
     }
 
     #region Buttons Actions
-    public void SetNumberOfMovements(int num)
-    {
-        _numberOfMovementsLabel.text = num.ToString();
-    }
-    public void SetNumberOfAnimalsDelivered(int num, int max)
-    {
-        _animalsDelivered.text = $"{num}/{max}";
-    }
-    public void SetCurrentLevelNumber(int num)
-    {
-        _currentLevel.text = num.ToString();
-    }
     public void OpenOptions()
     {
         _optionsUICanvas.ToggleInClassList("hide");
@@ -64,4 +48,15 @@ public class GameUIManager : MonoBehaviour
         SceneManager.LoadScene(0);
     }
     #endregion
+
+    public void SetCrossingsChangeListener()
+    {
+        GameManager.instance.Game.Boat.OnCrossingsChange +=
+            (int v) => { _numberOfCrossings.text = v.ToString(); };
+    }
+    public void ShowLevelDescription()
+    {
+        _levelDescription.text = GameManager.instance.LevelDescription;
+        _levelDescriptionCanvas.ToggleInClassList("hide");
+    }
 }
