@@ -10,13 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6ad458b35b1b62145bbf2e385dc9ecb5, type: 3}
-  m_Name: Chicken
+  m_Name: Cat
   m_EditorClassIdentifier: 
-  name: Chicken
-  NamePlural: Chickens
+  name: Cat
+  NamePlural: Cats
   Weight: 2
-  TravelCost: 2
-  sprite: {fileID: 21300000, guid: dc05a20702feaba46b8641af949a8c56, type: 3}
-  Sounds:
-  - {fileID: 8300000, guid: 9bcfdf91b6f047d42b671c20c49a5a52, type: 3}
-  - {fileID: 8300000, guid: 27a311a87b53b314e9bbb5ca87afad18, type: 3}
+  TravelCost: 5
+  sprite: {fileID: 21300000, guid: f22f78ba9751bf44c984164c3e9a7777, type: 3}
+  Sounds: []

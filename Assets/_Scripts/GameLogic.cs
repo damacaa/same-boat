@@ -49,7 +49,7 @@ public class GameLogic
         }
 
         //Boat
-        _boat = new Boat(_islands[0], level.BoatCapacity, level.BoatMaxWeightAllowed, level.BoatMaxTravelCost, level.CanMoveEmpyBoat);
+        _boat = new Boat(_islands[0], level.BoatCapacity, level.BoatMaxWeightAllowed, level.BoatMaxTravelCost, level.OnlyHumansCanDrive);
     }
 
     internal void Reset()
@@ -207,9 +207,6 @@ public class GameLogic
         }
 
         _win = _win && _boat.IsEmpty;
-
-        if (_win)
-            Debug.Log("WIN!");
     }
 
 
@@ -254,7 +251,7 @@ public class GameLogic
         currentState.BoatOccupiedSeats = _boat.Occupied;
         currentState.BoatMaxWeight = _boat.MaxWeight;
         currentState.BoatCurrentWeight = _boat.CurrentWeight;
-        currentState.BoatCanMoveEmpty = _boat.CanMoveEmpty;
+        currentState.BoatCanMoveEmpty = _boat.OnlyHumansCanDrive;
         currentState.BoatMaxTravelCost = _boat.MaxTravelCost;
         currentState.BoatTravelCost = _boat.CurrentTravelCost;
 
@@ -275,6 +272,7 @@ public class GameLogic
             yield return new WaitForSeconds(1.1f * wait);
         }
 
+        CheckWin();
         _showingSolveAnimation = false;
 
         yield return null;
