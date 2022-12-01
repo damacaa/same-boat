@@ -1,20 +1,20 @@
+
+using System;
 using System.Collections;
 using System.Collections.Generic;
+
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+
     public static GameManager instance { get; private set; }
     private void Awake()
     {
         if (instance)
-        {
             Destroy(this);
-        }
         else
-        {
             instance = this;
-        }
     }
 
     [SerializeField]
@@ -22,22 +22,51 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     int _currentLevel;
 
+
     public GameLogic Game { get; private set; }
-    Transportable _selectedTransportable;
-    Boat _boat;
+
+    string _levelDescription = "";
+
+    [HideInInspector]
+    public bool Win { get; private set; }
+    [HideInInspector]
+    public bool Fail { get; private set; }
+
 
     private void Start()
     {
-        if (!SceneLoader.Instance)
+        SoundController.Instace.PlaySong(1);
+
+        if (!ProgressManager.Instance)
             LoadLevel(levels[_currentLevel]);
     }
 
     public void LoadLevel(Level level)
     {
+        if (Game != null)
+        {
+            var transportables = FindObjectsOfType<TransportableBehaviour>();
+            foreach (var t in transportables)
+            {
+                Destroy(t.gameObject);
+            }
+
+            var boat = FindObjectOfType<BoatBehaviour>();
+            Destroy(boat.gameObject);
+
+            var map = FindObjectOfType<MapGenerator>();
+            for (int i = 0; i < map.transform.childCount; i++)
+            {
+                Destroy(map.transform.GetChild(i).gameObject);
+            }
+
+            Game = null;
+        }
+
         Game = new GameLogic(level);
         Game.GenerateGameObjects(level);
-        _boat = Game.Boat;
-        _boat.GoTo(Game.FirstIsland, out float animationDuration, true);
+
+        _levelDescription = level.ToString();
     }
 
     private void Update()
@@ -53,9 +82,7 @@ public class GameManager : MonoBehaviour
 
         if (Input.GetKeyDown("left"))
         {
-            Game.Undo();
-            print(Game);
-            _selectedTransportable = null;
+            Undo();
         }
 
         if (Input.GetKeyDown(KeyCode.S))
@@ -71,66 +98,138 @@ public class GameManager : MonoBehaviour
             int steps = Solver.Solver.SolveWidth(Game);
             print(steps + " steps");
 
-            StartCoroutine(Game.ShowAllMovesCoroutine());
+            if (steps != -1)
+                StartCoroutine(Game.ShowAllMovesCoroutine());
         }
 
         if (Input.GetKeyDown(KeyCode.R))
         {
-            Game.Reset();
+            Reset();
         }
 
-        if (Input.GetKeyDown(KeyCode.T))
+        if (Fail != Game.Fail)
         {
-            Game.Test();
+            Fail = Game.Fail;
+            if (Fail)
+                SoundController.Instace.PlaySound(SoundController.Sound.Fail);
+        }
+
+        if (Win != Game.Win)
+        {
+            Win = Game.Win;
+            if (Win)
+                SoundController.Instace.PlaySound(SoundController.Sound.Win);
         }
     }
 
-    public void IslandInteraction(Island island)
+    public void Undo()
     {
-        //print(island.Name);
-        if (_boat.GetCurrentIsland() != island)
+        if (Win)
+            return;
+
+        if (Fail)
         {
-            _selectedTransportable = null;
-            Game.MoveBoatToIsland(island);
+            print("Undo fail");
+            Fail = false;
+            SoundController.Instace.PlaySong(1);
         }
-        else
+
+        Game.Undo();
+    }
+
+    public void Reset()
+    {
+        Game.Reset();
+
+        Win = false;
+        Fail = false;
+        SoundController.Instace.PlaySong(1);
+    }
+
+
+    internal bool MoveBoatTo(BoatBehaviour boat, IslandBehaviour island)
+    {
+        if (Win || Fail)
+            return false;
+
+        return Game.MoveBoatToIsland(island.Data);
+    }
+
+    internal bool MoveTransportableTo(TransportableBehaviour transportable, IslandBehaviour island)
+    {
+        if (Win || Fail)
+            return false;
+
+        if (island.Data != Game.Boat.Island)
         {
-            if (_selectedTransportable != null && _boat.Contains(_selectedTransportable))
+            if (!Game.MoveBoatToIsland(island.Data, true))
+                return false;
+
+            if (!Game.UnloadFromBoat(transportable.Data, true))
             {
-                Game.UnloadFromBoat(_selectedTransportable);
-                _selectedTransportable = null;
+                Game.Undo(true);
+                return false;
+            }
+
+            Game.Undo(true);
+            Game.Undo(true);
+
+            StartCoroutine(Game.ShowAllMovesCoroutine());
+
+            return true;
+        }
+        //return false; // Game.MoveBoatToIsland(island.Data)
+
+        return Game.UnloadFromBoat(transportable.Data);
+    }
+
+    internal bool MoveTransportableTo(TransportableBehaviour transportable, BoatBehaviour boat)
+    {
+        if (Win || Fail)
+            return false;
+
+        return Game.LoadOnBoat(transportable.Data);
+    }
+
+    private void OnGUI()
+    {
+        if (Game == null)
+            return;
+
+        int width = Screen.width / 8;
+        int height = Screen.height / 20;
+        int space = Screen.height / 50;
+
+        if (GUI.Button(new Rect(space, space, width, height), "Undo"))
+            Game.Undo();
+
+        if (GUI.Button(new Rect(space, space + height + space, width, height), "Reset"))
+            Game.Reset();
+
+        if (GUI.Button(new Rect(space, 2 * (space + height) + space, width, height), "Solve"))
+        {
+            Solver.Solver.SolveWidth(Game);
+            StartCoroutine(Game.ShowAllMovesCoroutine());
+        }
+
+        if (GUI.Button(new Rect(space, 3 * (space + height) + space, width, height), "Clue"))
+        {
+            Solver.Solver.SolveWidth(Game);
+            Game.Execute();
+        }
+
+        GUI.TextArea(new Rect(Screen.width - (3 * width) - space, space, 3 * width, 10 * height), _levelDescription);
+
+        width = height;
+        for (int i = 0; i < levels.Length; i++)
+        {
+            if (GUI.Button(new Rect(space + i * (space + width), Screen.height - space - height, width, height), (i + 1).ToString()))
+            {
+                LoadLevel(levels[i]);
             }
         }
     }
 
-    public void TransportableInteraction(Transportable transportable)
-    {
-        if (_boat.GetCurrentIsland().Contains(transportable))
-        {
-            _selectedTransportable = transportable;
-            print("Select " + _selectedTransportable);
-        }
-        else if (_boat.Contains(transportable))
-        {
-            _selectedTransportable = transportable;
-            print("Select " + _selectedTransportable);
-        }
-        else
-        {
-            Game.MoveBoatToIsland(transportable.Island);
-            //_boat.GetCurrentIsland() = transportable.Island;
-            //game.LoadOnBoat(transportable);
-        }
-    }
-
-    public void BoatInteraction(Boat boat)
-    {
-        _boat = boat;
-        if (_selectedTransportable != null && Game.LoadOnBoat(_selectedTransportable))
-        {
-            //print("Load " + _selectedTransportable);
-            _selectedTransportable = null;
-        }
-    }
-
 }
+
+

@@ -7,6 +7,8 @@ using UnityEngine;
 
 public class GameLogic
 {
+    Level _level;
+
     //Entities
     Boat _boat;
     List<Island> _islands = new List<Island>();
@@ -31,6 +33,8 @@ public class GameLogic
 
     public GameLogic(Level level)
     {
+        _level = level;
+
         //Desearialize transportables
         foreach (var island in level.Islands)
         {
@@ -45,7 +49,7 @@ public class GameLogic
         }
 
         //Boat
-        _boat = new Boat(_islands[0], level.BoatCapacity, level.BoatMaxWeightAllowed, level.CanMoveEmpyBoat);
+        _boat = new Boat(_islands[0], level.BoatCapacity, level.BoatMaxWeightAllowed, level.BoatMaxTravelCost, level.OnlyHumansCanDrive);
     }
 
     internal void Reset()
@@ -130,10 +134,10 @@ public class GameLogic
         bool fail = false;
         foreach (var island in _islands)
         {
-            if (island == _boat.GetCurrentIsland())
+            if (island == _boat.Island)
                 continue;
 
-            if (Solver.Solver.CheckFail(island.Transportables))
+            if (!CheckRules(island.Transportables))
             {
                 fail = true;
 
@@ -148,6 +152,49 @@ public class GameLogic
         return fail;
     }
 
+    public bool CheckRules(List<Transportable> transportables)
+    {
+        // Could be optimized by counting each only once, using a dictionary maybe
+
+        foreach (var r in _level.Rules)
+        {
+            int aCount = 0, bCount = 0;
+
+            // Count how many transportables of each type in rule
+            foreach (var t in transportables)
+            {
+                if (t == null)
+                    continue;
+
+                if (t.ScripatableObject == r.A)
+                    aCount++;
+                else if (t.ScripatableObject == r.B)
+                    bCount++;
+            }
+
+            switch (r.comparison)
+            {
+                case Rule.RuleType.CantCoexist:
+                    if (aCount > 0 && bCount > 0)
+                        return false;
+                    break;
+                case Rule.RuleType.CountMustBeGreaterThan:
+                    if (aCount > 0 && aCount <= bCount)
+                        return false;
+                    break;
+                case Rule.RuleType.CountMustBeGreaterEqualThan:
+                    if (aCount > 0 && aCount < bCount)
+                        return false;
+                    break;
+                default:
+                    Debug.Log("Rule not implemented");
+                    break;
+            }
+        }
+
+        return true;
+    }
+
     void CheckWin()
     {
         _win = true;
@@ -160,9 +207,6 @@ public class GameLogic
         }
 
         _win = _win && _boat.IsEmpty;
-
-        if (_win)
-            Debug.Log("WIN!");
     }
 
 
@@ -200,14 +244,16 @@ public class GameLogic
         {
             currentState.AddIsland(island);
         }
-        currentState.CurrentIsland = _boat.GetCurrentIsland();
+        currentState.CurrentIsland = _boat.Island;
 
         currentState.BoatTransportables = _boat.Transportables.FindAll(t => t != null).OrderBy(t => t.ToString()).ToArray();
         currentState.BoatCapacity = _boat.Capacity;
         currentState.BoatOccupiedSeats = _boat.Occupied;
         currentState.BoatMaxWeight = _boat.MaxWeight;
         currentState.BoatCurrentWeight = _boat.CurrentWeight;
-        currentState.BoatCanMoveEmpty = _boat.CanMoveEmpty;
+        currentState.BoatCanMoveEmpty = _boat.OnlyHumansCanDrive;
+        currentState.BoatMaxTravelCost = _boat.MaxTravelCost;
+        currentState.BoatTravelCost = _boat.CurrentTravelCost;
 
         if (_commands.Count > 0 && _currentCommand > 0 && _currentCommand - 1 < _commands.Count)
             currentState.Bommand = _commands[_currentCommand - 1];
@@ -226,6 +272,7 @@ public class GameLogic
             yield return new WaitForSeconds(1.1f * wait);
         }
 
+        CheckWin();
         _showingSolveAnimation = false;
 
         yield return null;

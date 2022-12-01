@@ -6,9 +6,11 @@ using UnityEngine;
 public class TransportableSO : ScriptableObject
 {
     public new string name;
+    public string NamePlural;
+
     public int Weight = 1;
-    public bool IsAlive = true;
-    public DietType Diet = DietType.None;
+    public int TravelCost = 1;
+
     public Sprite sprite;
     public enum DietType
     {
@@ -17,4 +19,6 @@ public class TransportableSO : ScriptableObject
         Omnivore,
         Carnivore
     }
+
+    public AudioClip[] Sounds;
 }

@@ -1,0 +1,44 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43576c3ff47158b4580a126f4cf8a5e2, type: 3}
+  m_Name: Random
+  m_EditorClassIdentifier: 
+  name: Random
+  BoatCapacity: 2
+  BoatMaxWeightAllowed: 0
+  BoatMaxTravelCost: 0
+  OnlyHumansCanDrive: 0
+  Map: {fileID: 2800000, guid: f944d0c065e6cf44fb2c6180bcf8d17a, type: 3}
+  Islands:
+  - transportables:
+    - {fileID: 11400000, guid: e63010679b2421748bab0e9218e3bd99, type: 2}
+    - {fileID: 11400000, guid: cec013bbd6b087046b857f5414739136, type: 2}
+    - {fileID: 11400000, guid: c93da487864c90f4897ed27019024def, type: 2}
+    - {fileID: 11400000, guid: 8bb208a2f8e4d454ebc0ff9967aeed9c, type: 2}
+    - {fileID: 11400000, guid: cec013bbd6b087046b857f5414739136, type: 2}
+  - transportables: []
+  Rules:
+  - A: {fileID: 11400000, guid: c93da487864c90f4897ed27019024def, type: 2}
+    comparison: 0
+    B: {fileID: 11400000, guid: 8bb208a2f8e4d454ebc0ff9967aeed9c, type: 2}
+  - A: {fileID: 11400000, guid: 8bb208a2f8e4d454ebc0ff9967aeed9c, type: 2}
+    comparison: 0
+    B: {fileID: 11400000, guid: cec013bbd6b087046b857f5414739136, type: 2}
+  - A: {fileID: 11400000, guid: 8bb208a2f8e4d454ebc0ff9967aeed9c, type: 2}
+    comparison: 0
+    B: {fileID: 11400000, guid: e63010679b2421748bab0e9218e3bd99, type: 2}
+  - A: {fileID: 11400000, guid: 8bb208a2f8e4d454ebc0ff9967aeed9c, type: 2}
+    comparison: 1
+    B: {fileID: 11400000, guid: 715219d6dc8b18847890caab79708628, type: 2}
+  - A: {fileID: 11400000, guid: cec013bbd6b087046b857f5414739136, type: 2}
+    comparison: 1
+    B: {fileID: 11400000, guid: e63010679b2421748bab0e9218e3bd99, type: 2}

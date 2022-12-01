@@ -14,18 +14,19 @@ public class BoatTravelCommand : BoatCommand
 
     public override bool Execute(out float animationDuration, bool instant = false)
     {
-        _previousIsland = _boat.GetCurrentIsland();
-        _success = _boat.GoTo(_island, out animationDuration, instant);
+        _previousIsland = _boat.Island;
+        _success = _boat.GoTo(_island, out animationDuration, instant, false);
         return _success;
     }
 
     public override void Undo(out float animationDuration, bool instant = false)
     {
-        if (!_success) {
+        if (!_success)
+        {
             animationDuration = 0;
             return;
         }
-        _boat.GoTo(_previousIsland, out animationDuration, instant);
+        _boat.GoTo(_previousIsland, out animationDuration, instant, true);
     }
 
     public override string ToString()

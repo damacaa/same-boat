@@ -16,23 +16,27 @@ public class BoatBehaviour : MonoBehaviour
     [SerializeField]
     GameObject driver;
 
-    Boat _boat;
+    Outline _outline;
+    AudioSource _audioSource;
+
+    public Boat Data { get; private set; }
     // Start is called before the first frame update
     void Start()
     {
-
+        _outline = GetComponent<Outline>();
+        _audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        _outline.enabled = false;
     }
 
     internal void SetUp(Boat boat)
     {
-        _boat = boat;
-        if (!boat.CanMoveEmpty)
+        Data = boat;
+        if (!boat.OnlyHumansCanDrive)
         {
             driver.SetActive(false);
         }
@@ -40,7 +44,7 @@ public class BoatBehaviour : MonoBehaviour
 
     private void OnMouseDown()
     {
-        GameManager.instance.BoatInteraction(_boat);
+        //GameManager.instance.BoatInteraction(Data);
     }
 
     internal Transform GetSeat(int pos)
@@ -49,7 +53,7 @@ public class BoatBehaviour : MonoBehaviour
         return _seats[pos];
     }
 
-    internal void GoTo(Island newIsland, out float animationDuration, bool instant)
+    internal void GoTo(Island newIsland, out float animationDuration, bool instant, bool backwards)
     {
         animationDuration = 0;
         StopAllCoroutines();
@@ -61,17 +65,17 @@ public class BoatBehaviour : MonoBehaviour
         else
         {
             animationDuration = Vector2.Distance(transform.position, destination) / _speed;
-            StartCoroutine(MovementCoroutine(destination, animationDuration));
+            StartCoroutine(MovementCoroutine(destination, animationDuration, backwards));
         }
     }
 
-    IEnumerator MovementCoroutine(Vector3 destination, float duration)
+    IEnumerator MovementCoroutine(Vector3 destination, float duration, bool backwards)
     {
         yield return new WaitForEndOfFrame();
 
 
         Quaternion rot = transform.rotation;
-        Quaternion targetRot = Quaternion.LookRotation(Vector3.forward, destination - transform.position);
+        Quaternion targetRot = Quaternion.LookRotation(Vector3.forward, backwards ? transform.position - destination : destination - transform.position);
 
         Vector2 pos = transform.position;
         float t = 0;
@@ -92,5 +96,16 @@ public class BoatBehaviour : MonoBehaviour
 
 
         yield return null;
+    }
+
+    internal Transform FindSeat()
+    {
+        for (int i = 0; i < _seats.Length; i++)
+        {
+            if (_seats[i].childCount == 0)
+                return _seats[i];
+        }
+
+        return transform;
     }
 }

@@ -28,16 +28,21 @@ public class MapGenerator : MonoBehaviour
     Color _darkColor;
 
     [SerializeField]
-    Texture2D map;
+    Texture2D _map;
     [SerializeField]
     float _threshold = .5f;
 
     [SerializeField]
     GameObject[] _boatPrefabs;
 
+    [SerializeField]
+    GameObject[] _floorDecorations;
+
     public void GenerateMap(Island[] islands, Level level)
     {
-        Random.InitState(42);
+        //Random.InitState(42);
+
+        _map = level.Map;
 
         // Read data from file
         int[,] tiles = new int[size.x * resolution, size.y * resolution];
@@ -46,11 +51,16 @@ public class MapGenerator : MonoBehaviour
         {
             for (int j = 0; j < tiles.GetLength(1); j++)
             {
-                var color = map.GetPixelBilinear(((float)i) / tiles.GetLength(0), ((float)j) / tiles.GetLength(1));
+                var color = _map.GetPixelBilinear(((float)i) / tiles.GetLength(0), ((float)j) / tiles.GetLength(1));
                 float average = (color.r + color.b + color.b) / 3f;
                 tiles[i, j] = average > _threshold ? 1 : 0;
             }
         }
+
+        // Size of a voxel
+        float blockSize = 1f / resolution;
+        // Decorations
+        AddDecorations(new Map((int[,])tiles.Clone()));
 
         // Split data in multiple maps
         List<Map> maps = new List<Map>();
@@ -63,10 +73,8 @@ public class MapGenerator : MonoBehaviour
         }
 
         // Order maps based on size
-        maps = maps.OrderByDescending(m => m.Occupied).ToList();
+        maps = maps.OrderBy(m => m.MaxY).ToList();
 
-        // Size of a voxel
-        float blockSize = 1f / resolution;
 
         for (int i = 0; i < islands.Length; i++)
         {
@@ -78,6 +86,13 @@ public class MapGenerator : MonoBehaviour
             g.name = "Island " + i;
             g.transform.parent = transform;
             IslandBehaviour behaviour = g.AddComponent<IslandBehaviour>();
+            Outline outline = g.AddComponent<Outline>();
+            outline.enabled = false;
+            outline.OutlineWidth = 2f;
+            outline.OutlineColor = colors[i];
+            outline.OutlineMode = Outline.Mode.OutlineVisible;
+            outline.UpdateMaterialProperties();
+            maps[i].GameObject = g;
 
             // Port
             var portTransform = GeneratePort(maps[i]);
@@ -88,7 +103,7 @@ public class MapGenerator : MonoBehaviour
             spotsTransform.parent = g.transform;
 
             // Spots
-            Transform[] spots = FindSpots(maps[i], 5);
+            Transform[] spots = FindSpots(maps[i]);
             foreach (var s in spots)
             {
                 if (!s)
@@ -97,6 +112,8 @@ public class MapGenerator : MonoBehaviour
                 s.transform.parent = spotsTransform;
                 behaviour.AddSpot(s);
             }
+
+
 
             // Link data with behaviour
             islands[i].AssignGameObject(g);
@@ -166,9 +183,9 @@ public class MapGenerator : MonoBehaviour
             return t;
         }
 
-        Transform[] FindSpots(Map map, int v)
+        Transform[] FindSpots(Map map)
         {
-            Transform[] spots = new Transform[v];
+            List<Transform> spots = new List<Transform>();
 
             float offsetX = (-blockSize * map.Width / 2f);
             float offsetY = (-blockSize * map.Height / 2f);
@@ -180,10 +197,9 @@ public class MapGenerator : MonoBehaviour
 
             Vector2Int curr = new Vector2Int();
 
-            int spotsFound = 0;
             int iter = 0;
             int spacing = 1;
-            while (openList.Count > 0 && iter < 10000)
+            while (openList.Count > 0 && iter < 1000)
             {
                 iter++;
                 curr = openList[0];
@@ -218,7 +234,7 @@ public class MapGenerator : MonoBehaviour
 
                     if (!tooCloseToWater)
                     {
-                        Transform t = new GameObject(spotsFound.ToString()).transform;
+                        Transform t = new GameObject(spots.Count.ToString()).transform;
 
                         t.position = new Vector3(offsetX + ((curr.x + .5f) * blockSize), offsetY + ((curr.y + .5f) * blockSize), 0);
 
@@ -239,10 +255,7 @@ public class MapGenerator : MonoBehaviour
                             }
                         }
 
-                        spots[spotsFound++] = t;
-
-                        if (spotsFound == v)
-                            break;
+                        spots.Add(t);
                     }
                 }
 
@@ -273,10 +286,61 @@ public class MapGenerator : MonoBehaviour
                 }
             }
 
-            return spots;
+            return spots.ToArray();
         }
 
+        void AddDecorations(Map map)
+        {
+            GameObject root = new GameObject("Decorations");
+            root.transform.parent = transform;
+
+            float offsetX = (-blockSize * (map.Width) / 2f);
+            float offsetY = (-blockSize * (map.Height) / 2f);
+
+            /*for (int i = 0; i < 50; i++)
+            {
+
+                int x = 0, y = 0;
+
+                int iter = 0;
+                int maxIter = 1000;
+                while (map[x, y] == 0 && iter < maxIter)
+                {
+                    x = Random.Range(0, map.Width);
+                    y = Random.Range(0, map.Height);
+                    iter++;
+                }
+
+                map[x, y] = 0;
+
+
+                var g = GameObject.Instantiate(_floorDecorations[0]);
+                g.transform.position = new Vector3(offsetX + ((x + 1) * blockSize), offsetY + ((y + 1) * blockSize), 0);
+                g.transform.parent = root.transform;
+
+            }*/
+
+            float scale = 3 * Mathf.PI;
+
+            for (int x = 1; x < map.Width - 1; x++)
+            {
+                for (int y = 1; y < map.Height - 1; y++)
+                {
+                    if (map[x, y] == 0)
+                        continue;
+
+                    if (Mathf.PerlinNoise(scale * (x / (float)map.Width), scale * (y / (float)map.Height)) < 0.5f)
+                        continue;
+
+                    var g = GameObject.Instantiate(_floorDecorations[0]);
+                    Vector2 variation = .25f * Random.insideUnitCircle;
+                    g.transform.position = new Vector3(variation.x + offsetX + ((x + 1) * blockSize), variation.y + offsetY + ((y + 1) * blockSize), 0);
+                    g.transform.parent = root.transform;
+                }
+            }
+        }
     }
+
 
     Map ExtractIslandMap(ref int[,] world)
     {
@@ -302,6 +366,11 @@ public class MapGenerator : MonoBehaviour
         List<Vector2Int> openList = new List<Vector2Int>();
         openList.Add(new Vector2Int(x, y));
 
+        int maxNorth = 0;
+        int maxSouth = height;
+        int maxEast = 0;
+        int maxWest = width;
+
         int counter = 0;
         while (openList.Count > 0)
         {
@@ -312,6 +381,12 @@ public class MapGenerator : MonoBehaviour
 
             world[v.x, v.y] = 0;
             tiles[v.x, v.y] = 1;
+
+            maxNorth = System.Math.Max(maxNorth, v.y);
+            maxSouth = System.Math.Min(maxSouth, v.y);
+            maxEast = System.Math.Max(maxEast, v.x);
+            maxWest = System.Math.Min(maxWest, v.y);
+
 
             for (int i = -1; i <= 1; i++)
             {
@@ -334,6 +409,11 @@ public class MapGenerator : MonoBehaviour
 
         Map map = new Map(tiles, counter);
 
+        map.MaxY = maxNorth;
+        map.MinY = maxSouth;
+        map.MaxX = maxEast;
+        map.MinX = maxWest;
+
         return map;
     }
 
@@ -349,6 +429,11 @@ public class MapGenerator : MonoBehaviour
         public int Width { get; private set; }
         public int Height { get; private set; }
         public int Occupied { get; private set; }
+        public int MaxY { get; internal set; }
+        public int MinY { get; internal set; }
+        public int MaxX { get; internal set; }
+        public int MinX { get; internal set; }
+        public GameObject GameObject { get; internal set; }
 
         public Vector2 Port;
 
