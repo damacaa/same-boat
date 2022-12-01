@@ -26,4 +26,9 @@ public class UIMenu : MonoBehaviour
         _playButton.clicked += _uiManager.OpenLevelSelect;
         _playButton.clicked += _uiManager.CloseMenu;
     }
+
+    private void Start()
+    {
+        SoundController.Instace.PlaySong(0);
+    }
 }

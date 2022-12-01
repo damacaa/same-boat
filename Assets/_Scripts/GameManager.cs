@@ -30,6 +30,8 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        SoundController.Instace.PlaySong(1);
+
         if (!ProgressManager.Instance)
             LoadLevel(levels[_currentLevel]);
     }
@@ -108,12 +110,12 @@ public class GameManager : MonoBehaviour
 
         if (Game.Fail)
         {
-
+            SoundController.Instace.PlaySound(SoundController.Sound.Fail);
         }
 
         if (Game.Win)
         {
-
+            SoundController.Instace.PlaySound(SoundController.Sound.Win);
         }
     }
 
