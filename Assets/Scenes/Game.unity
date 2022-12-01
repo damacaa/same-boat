@@ -983,10 +983,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Water
       objectReference: {fileID: 0}
-    - target: {fileID: 1038315558315163884, guid: 8b165993f324ef941960ed45f528f00c, type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 99dd1588f80592c44852cad1c76f2d7b, type: 2}
     - target: {fileID: 1038315558315163886, guid: 8b165993f324ef941960ed45f528f00c, type: 3}
       propertyPath: m_RootOrder
       value: 5
