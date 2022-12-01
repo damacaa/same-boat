@@ -71,6 +71,8 @@
     -unity-font-style: bold;
     -unity-text-outline-color: rgba(0, 0, 0, 0.4);
     letter-spacing: -5px;
+    position: absolute;
+    bottom: 2%;
 }
 
 .ingame-level-description-button {
@@ -172,18 +174,8 @@
 }
 
 .menu-button {
-    width: auto;
-    height: auto;
-    left: auto;
-    align-items: center;
-    justify-content: center;
-    top: auto;
-    position: relative;
-    right: auto;
     font-size: 50px;
     -unity-font-style: bold;
-    display: flex;
-    visibility: visible;
     -unity-text-align: middle-center;
     background-color: rgba(0, 0, 0, 0);
     border-left-color: rgba(0, 0, 0, 0);
