@@ -14,22 +14,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Boat capacity
   BoatCapacity: 2
-  BoatMaxWeightAllowed: 2
+  BoatMaxWeightAllowed: 3
   BoatMaxTravelCost: 0
-  CanMoveEmpyBoat: 0
-  Map: {fileID: 2800000, guid: 1a025abf17839894bacee0519cdbca9e, type: 3}
+  OnlyHumansCanDrive: 0
+  Map: {fileID: 2800000, guid: f944d0c065e6cf44fb2c6180bcf8d17a, type: 3}
   Islands:
   - transportables:
     - {fileID: 11400000, guid: cec013bbd6b087046b857f5414739136, type: 2}
     - {fileID: 11400000, guid: 8bb208a2f8e4d454ebc0ff9967aeed9c, type: 2}
     - {fileID: 11400000, guid: c93da487864c90f4897ed27019024def, type: 2}
   - transportables: []
-  rules:
+  Rules:
   - A: {fileID: 11400000, guid: cec013bbd6b087046b857f5414739136, type: 2}
     comparison: 0
     B: {fileID: 11400000, guid: 8bb208a2f8e4d454ebc0ff9967aeed9c, type: 2}
-    result: 1
   - A: {fileID: 11400000, guid: 8bb208a2f8e4d454ebc0ff9967aeed9c, type: 2}
     comparison: 0
     B: {fileID: 11400000, guid: c93da487864c90f4897ed27019024def, type: 2}
-    result: 0

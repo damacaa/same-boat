@@ -1,21 +1,20 @@
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
+
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+
     public static GameManager instance { get; private set; }
     private void Awake()
     {
         if (instance)
-        {
             Destroy(this);
-        }
         else
-        {
             instance = this;
-        }
     }
 
     [SerializeField]
@@ -23,19 +22,28 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     int _currentLevel;
 
+
     public GameLogic Game { get; private set; }
 
     string _levelDescription = "";
 
+    [HideInInspector]
+    public bool Win { get; private set; }
+    [HideInInspector]
+    public bool Fail { get; private set; }
+
+
     private void Start()
     {
-        if (!SceneLoader.Instance)
+        SoundController.Instace.PlaySong(1);
+
+        if (!ProgressManager.Instance)
             LoadLevel(levels[_currentLevel]);
     }
 
     public void LoadLevel(Level level)
     {
-        if(Game != null)
+        if (Game != null)
         {
             var transportables = FindObjectsOfType<TransportableBehaviour>();
             foreach (var t in transportables)
@@ -74,8 +82,7 @@ public class GameManager : MonoBehaviour
 
         if (Input.GetKeyDown("left"))
         {
-            Game.Undo();
-            print(Game);
+            Undo();
         }
 
         if (Input.GetKeyDown(KeyCode.S))
@@ -97,32 +104,62 @@ public class GameManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.R))
         {
-            Game.Reset();
+            Reset();
         }
 
-        if (Input.GetKeyDown(KeyCode.T))
+        if (Fail != Game.Fail)
         {
-            Game.Test();
+            Fail = Game.Fail;
+            if (Fail)
+                SoundController.Instace.PlaySound(SoundController.Sound.Fail);
         }
 
-        if (Game.Fail)
+        if (Win != Game.Win)
         {
-
-        }
-
-        if (Game.Win)
-        {
-
+            Win = Game.Win;
+            if (Win)
+                SoundController.Instace.PlaySound(SoundController.Sound.Win);
         }
     }
 
+    public void Undo()
+    {
+        if (Win)
+            return;
+
+        if (Fail)
+        {
+            print("Undo fail");
+            Fail = false;
+            SoundController.Instace.PlaySong(1);
+        }
+
+        Game.Undo();
+    }
+
+    public void Reset()
+    {
+        Game.Reset();
+
+        Win = false;
+        Fail = false;
+        SoundController.Instace.PlaySong(1);
+    }
+
+
     internal bool MoveBoatTo(BoatBehaviour boat, IslandBehaviour island)
     {
+        if (Win || Fail)
+            return false;
+
         return Game.MoveBoatToIsland(island.Data);
     }
 
     internal bool MoveTransportableTo(TransportableBehaviour transportable, IslandBehaviour island)
     {
+        if (Win || Fail)
+            return false;
+
         if (island.Data != Game.Boat.Island)
         {
             if (!Game.MoveBoatToIsland(island.Data, true))
@@ -148,6 +185,9 @@ public class GameManager : MonoBehaviour
 
     internal bool MoveTransportableTo(TransportableBehaviour transportable, BoatBehaviour boat)
     {
+        if (Win || Fail)
+            return false;
+
         return Game.LoadOnBoat(transportable.Data);
     }
 
@@ -172,15 +212,24 @@ public class GameManager : MonoBehaviour
             StartCoroutine(Game.ShowAllMovesCoroutine());
         }
 
-        GUI.TextArea(new Rect(Screen.width - (3 * width) - space, space, 3 * width, 5 * height), _levelDescription);
+        if (GUI.Button(new Rect(space, 3 * (space + height) + space, width, height), "Clue"))
+        {
+            Solver.Solver.SolveWidth(Game);
+            Game.Execute();
+        }
+
+        GUI.TextArea(new Rect(Screen.width - (3 * width) - space, space, 3 * width, 10 * height), _levelDescription);
 
         width = height;
         for (int i = 0; i < levels.Length; i++)
         {
-            if (GUI.Button(new Rect(space + i * (space + width), Screen.height - space - height, width, height), i.ToString()))
+            if (GUI.Button(new Rect(space + i * (space + width), Screen.height - space - height, width, height), (i + 1).ToString()))
             {
                 LoadLevel(levels[i]);
             }
         }
     }
+
 }
+
+

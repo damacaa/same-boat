@@ -17,12 +17,14 @@ public class BoatBehaviour : MonoBehaviour
     GameObject driver;
 
     Outline _outline;
+    AudioSource _audioSource;
 
     public Boat Data { get; private set; }
     // Start is called before the first frame update
     void Start()
     {
         _outline = GetComponent<Outline>();
+        _audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -34,7 +36,7 @@ public class BoatBehaviour : MonoBehaviour
     internal void SetUp(Boat boat)
     {
         Data = boat;
-        if (!boat.CanMoveEmpty)
+        if (!boat.OnlyHumansCanDrive)
         {
             driver.SetActive(false);
         }
@@ -73,7 +75,7 @@ public class BoatBehaviour : MonoBehaviour
 
 
         Quaternion rot = transform.rotation;
-        Quaternion targetRot = Quaternion.LookRotation(backwards ? -Vector3.forward : Vector3.forward, destination - transform.position);
+        Quaternion targetRot = Quaternion.LookRotation(Vector3.forward, backwards ? transform.position - destination : destination - transform.position);
 
         Vector2 pos = transform.position;
         float t = 0;
