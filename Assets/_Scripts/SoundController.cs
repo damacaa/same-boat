@@ -47,7 +47,6 @@ public class SoundController : MonoBehaviour
 
         DontDestroyOnLoad(gameObject);
     }
-    #endregion
 
     private void Update()
     {
@@ -60,11 +59,12 @@ public class SoundController : MonoBehaviour
             }
         }
     }
+    #endregion
 
     #region PUBLIC METHODS
     /// <summary>
     /// Plays a sound effect.
-    /// NAMES: corn, chicken, fox, boat, win, fail, ui
+    /// NAMES: boat, win, fail, ui
     /// </summary>
     /// <param name="name"></param>
     /// <param name="effect"></param>
@@ -74,7 +74,8 @@ public class SoundController : MonoBehaviour
     {
         Win,
         Fail,
-        UI
+        UI,
+        Boat
     }
 
     public void PlaySound(Sound sound)
@@ -104,6 +105,7 @@ public class SoundController : MonoBehaviour
     /// <param name="index"></param>
     public void PlaySong(int index)
     {
+        bgmSource.volume = 1;
         switch (index)
         {
             case 0:
