@@ -36,6 +36,22 @@ public class GameManager : MonoBehaviour
             instance = this;
     }
 
+    [SerializeField]
+    Level[] levels;
+    [SerializeField]
+    int _currentLevel;
+
+
+    public GameLogic Game { get; private set; }
+
+    string _levelDescription = "";
+
+    [HideInInspector]
+    public bool Win { get; private set; }
+    [HideInInspector]
+    public bool Fail { get; private set; }
+
+
     private void Start()
     {
         SoundController.Instace.PlaySong(1);
@@ -87,8 +103,7 @@ public class GameManager : MonoBehaviour
 
         if (Input.GetKeyDown("left"))
         {
-            Game.Undo();
-            print(Game);
+            Undo();
         }
 
         if (Input.GetKeyDown(KeyCode.S))
@@ -110,33 +125,62 @@ public class GameManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.R))
         {
-            Game.Reset();
+            Reset();
         }
 
-        if (Input.GetKeyDown(KeyCode.T))
+        if (Fail != Game.Fail)
         {
-            Game.Test();
+            Fail = Game.Fail;
+            if (Fail)
+                SoundController.Instace.PlaySound(SoundController.Sound.Fail);
         }
 
-        if (Game.Fail)
+        if (Win != Game.Win)
         {
-            SoundController.Instace.PlaySound(SoundController.Sound.Fail);
-        }
-
-        if (Game.Win)
-        {
-            SoundController.Instace.PlaySound(SoundController.Sound.Win);
-            print(Game.Boat.Crossings);
+            Win = Game.Win;
+            if (Win)
+                SoundController.Instace.PlaySound(SoundController.Sound.Win);
         }
     }
 
+    public void Undo()
+    {
+        if (Win)
+            return;
+
+        if (Fail)
+        {
+            print("Undo fail");
+            Fail = false;
+            SoundController.Instace.PlaySong(1);
+        }
+
+        Game.Undo();
+    }
+
+    public void Reset()
+    {
+        Game.Reset();
+
+        Win = false;
+        Fail = false;
+        SoundController.Instace.PlaySong(1);
+    }
+
+
     internal bool MoveBoatTo(BoatBehaviour boat, IslandBehaviour island)
     {
+        if (Win || Fail)
+            return false;
+
         return Game.MoveBoatToIsland(island.Data);
     }
 
     internal bool MoveTransportableTo(TransportableBehaviour transportable, IslandBehaviour island)
     {
+        if (Win || Fail)
+            return false;
+
         if (island.Data != Game.Boat.Island)
         {
             if (!Game.MoveBoatToIsland(island.Data, true))
@@ -162,6 +206,9 @@ public class GameManager : MonoBehaviour
 
     internal bool MoveTransportableTo(TransportableBehaviour transportable, BoatBehaviour boat)
     {
+        if (Win || Fail)
+            return false;
+
         return Game.LoadOnBoat(transportable.Data);
     }
 
