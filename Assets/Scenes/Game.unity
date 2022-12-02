@@ -217,6 +217,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _desiredSteps: 10
+  _desiredCapacity: 2
+  _desiredWeightLimit: 0
+  _desiredMaxTravelCost: 0
   _transportables:
   - {fileID: 11400000, guid: 715219d6dc8b18847890caab79708628, type: 2}
   - {fileID: 11400000, guid: 8bb208a2f8e4d454ebc0ff9967aeed9c, type: 2}

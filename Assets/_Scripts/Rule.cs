@@ -26,13 +26,13 @@ public class Rule
         switch (comparison)
         {
             case RuleType.CantCoexist:
-                s = "Can't have a " + A.name.ToLower() + " and a " + B.name.ToLower() + " together in the same island or it will be eaten.";
+                s = $"You can't leave a {A.name.ToLower()} and a {B.name.ToLower()} together in the same island or it will be eaten.";
                 break;
             case RuleType.CountMustBeGreaterThan:
-                s = "Number of " + A.NamePlural.ToLower() + " must be greater than the number of " + B.NamePlural.ToLower() + " or they will be eaten.";
+                s = $"The number of {A.NamePlural.ToLower()} must be greater than the number of {B.NamePlural.ToLower()}.";
                 break;
             case RuleType.CountMustBeGreaterEqualThan:
-                s = "Number of " + A.NamePlural.ToLower() + " must be greater than or equal to the number of " + B.NamePlural.ToLower() + " or they will be eaten.";
+                s = $"The number of {A.NamePlural.ToLower()} must be greater than or equal to the number of {B.NamePlural.ToLower()}.";
                 break;
             default:
                 break;

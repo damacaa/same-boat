@@ -89,39 +89,6 @@ public class GameManager : MonoBehaviour
         if (Game == null)
             return;
 
-        /*if (Input.GetKeyDown("right"))
-        {
-            Game.Execute();
-            print(Game);
-        }
-
-        if (Input.GetKeyDown("left"))
-        {
-            Undo();
-        }
-
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            int steps = Solver.Solver.Solve(Game);
-            print(steps);
-
-            StartCoroutine(Game.ShowAllMovesCoroutine());
-        }*/
-
-        if (Input.GetKeyDown(KeyCode.W))
-        {
-            int steps = Solver.Solver.SolveWidth(Game);
-            print(steps + " steps");
-
-            if (steps != -1)
-                StartCoroutine(Game.ShowAllMovesCoroutine());
-        }
-
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            Reset();
-        }
-
         if (Fail != Game.Fail)
         {
             Fail = Game.Fail;
@@ -139,6 +106,42 @@ public class GameManager : MonoBehaviour
                 SoundController.Instace.PlaySound(SoundController.Sound.Win);
             if (OnVictory != null) OnVictory();
         }
+
+#if UNITY_EDITOR
+
+        if (Input.GetKeyDown("right"))
+        {
+            Game.Execute();
+            print(Game);
+        }
+
+        if (Input.GetKeyDown("left"))
+        {
+            Undo();
+        }
+
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            int steps = Solver.Solver.Solve(Game);
+            print(steps);
+
+            StartCoroutine(Game.ShowAllMovesCoroutine());
+        }
+
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            int steps = Solver.Solver.SolveWidth(Game);
+            print(steps + " steps");
+
+            if (steps != -1)
+                StartCoroutine(Game.ShowAllMovesCoroutine());
+        }
+
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            Reset();
+        }
+#endif
     }
 
     public void Undo()
