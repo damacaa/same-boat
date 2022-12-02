@@ -76,14 +76,14 @@ public class Level : ScriptableObject
             }
         }
 
-        s += $"{listOfTransportables} want to get to the island in the north, but they must cross a river first.";
+        s += $"\n{listOfTransportables} want to get to the island in the north, but they must cross a river first.\n";
 
         // Boat
 
         bool hasMaxWeight = BoatMaxWeightAllowed > 0;
         bool hasMaxTravelCost = BoatMaxTravelCost > 0;
 
-        s += $"They have a boat with {numbers[BoatCapacity].ToLower()}{(BoatCapacity == 1 ? " seat" : " seats")}";
+        s += $"\nThey have a boat with {numbers[BoatCapacity].ToLower()}{(BoatCapacity == 1 ? " seat" : " seats")}";
 
         if (hasMaxWeight || hasMaxTravelCost)
         {
@@ -132,7 +132,11 @@ public class Level : ScriptableObject
             }
         }
 
-        s += $"The boat can’t be moved if there isn’t somebody driving it.";
+        if (hasMaxTravelCost)
+            s += $"When two or more things are traveling together," +
+                    $" the time they will take to cross the river is equal to the time that the slowest one of them would take.\n";
+
+        s += $"\nThe boat can’t be moved if there isn’t somebody driving it.";
 
         if (OnlyHumansCanDrive)
             s += $" However, the man won't allow anyone but himself to drive.\n";
@@ -141,19 +145,14 @@ public class Level : ScriptableObject
             s += "\n";
         }
 
-        s += $"When two or more things are traveling together," +
-                    $" the time they will take to cross the river is equal to the time that the slowest one of them would take.\n";
-
-
-
         // Rules
 
         if (Rules.Length == 0)
             return s;
 
-        s += $"Even though they all want everyone to get to the other side in one piece," +
+        s += $"\nEven though they all want everyone to get to the other side in one piece," +
             $" the animal instincts of some of them will kick in if they are left unattended." +
-            $" Keep in mind that:\n";
+            $" Keep in mind that:\n\n";
 
         foreach (var rule in Rules)
         {

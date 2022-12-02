@@ -217,6 +217,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _desiredSteps: 10
+  _desiredCapacity: 2
+  _desiredWeightLimit: 0
+  _desiredMaxTravelCost: 0
   _transportables:
   - {fileID: 11400000, guid: 715219d6dc8b18847890caab79708628, type: 2}
   - {fileID: 11400000, guid: 8bb208a2f8e4d454ebc0ff9967aeed9c, type: 2}
@@ -983,10 +986,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Water
       objectReference: {fileID: 0}
-    - target: {fileID: 1038315558315163884, guid: 8b165993f324ef941960ed45f528f00c, type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 99dd1588f80592c44852cad1c76f2d7b, type: 2}
     - target: {fileID: 1038315558315163886, guid: 8b165993f324ef941960ed45f528f00c, type: 3}
       propertyPath: m_RootOrder
       value: 5

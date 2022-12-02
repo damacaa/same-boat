@@ -8,14 +8,24 @@ public class LevelGenerator : MonoBehaviour
     [SerializeField]
     int _desiredSteps = 10;
     [SerializeField]
+    int _desiredCapacity = 2;
+    [SerializeField]
+    int _desiredWeightLimit = 0;
+    [SerializeField]
+    int _desiredMaxTravelCost = 0;
+
+    [Space]
+    [SerializeField]
     TransportableSO[] _transportables;
     [SerializeField]
     Rule[] _rules;
     [SerializeField]
     Texture2D[] maps;
 
+
     public void Generate()
     {
+
 #if UNITY_EDITOR
         int maxIter = 100;
         int iter = 0;
@@ -25,19 +35,26 @@ public class LevelGenerator : MonoBehaviour
 
         do
         {
+
             Dictionary<TransportableSO, int> count = new Dictionary<TransportableSO, int>();
 
             level = ScriptableObject.CreateInstance<Level>();
             level.name = "Random";
             level.Islands = new Level.Island[Random.Range(2, 5)];
 
-            if (Random.value > 0.75f)
+            if (_desiredCapacity != level.BoatCapacity)
+                level.BoatCapacity = _desiredCapacity;
+            else
                 level.BoatCapacity = Random.Range(2, 4);
 
-            if (Random.value > 0.75f)
+            if (_desiredWeightLimit != level.BoatMaxWeightAllowed)
+                level.BoatMaxWeightAllowed = _desiredWeightLimit;
+            else
                 level.BoatMaxWeightAllowed = Random.Range(0, 20);
 
-            if (Random.value > 0.75f)
+            if (_desiredMaxTravelCost != level.BoatMaxTravelCost)
+                level.BoatMaxTravelCost = _desiredMaxTravelCost;
+            else
                 level.BoatMaxTravelCost = Random.Range(0, 30);
 
             for (int i = 0; i < level.Islands.Length; i++)
@@ -99,5 +116,6 @@ public class LevelGenerator : MonoBehaviour
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
 #endif
+
     }
 }
