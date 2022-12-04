@@ -159,7 +159,6 @@ public class SoundController : MonoBehaviour
     /// <param name="volume"></param>
     public void SetSFXVolume(float volume)
     {
-        print("Volume");
         _sfxMixer.SetFloat("Volume", Mathf.Log10(Mathf.Max(0.0001f, volume)) * 20);
         //sfxSource.volume = volume;
     }
