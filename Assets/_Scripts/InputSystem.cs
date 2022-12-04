@@ -129,17 +129,17 @@ public class InputSystem : MonoBehaviour
             if (_boat && g.TryGetComponent<IslandBehaviour>(out IslandBehaviour island))
             {
                 _line.End(g.transform.GetChild(0));
-                fail = !GameManager.instance.MoveBoatTo(_boat, island);
+                fail = !GameManager.Instance.MoveBoatTo(_boat, island);
             }
             else if (_transportable && g.TryGetComponent<IslandBehaviour>(out island))
             {
                 _line.End(island.FindSpot(out int index));
-                fail = !GameManager.instance.MoveTransportableTo(_transportable, island);
+                fail = !GameManager.Instance.MoveTransportableTo(_transportable, island);
             }
             else if (_transportable && g.TryGetComponent<BoatBehaviour>(out BoatBehaviour boat))
             {
                 _line.End(boat.FindSeat());
-                fail = !GameManager.instance.MoveTransportableTo(_transportable, boat);
+                fail = !GameManager.Instance.MoveTransportableTo(_transportable, boat);
             }
             else
             {
