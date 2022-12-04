@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class SoundController : MonoBehaviour
 {
@@ -11,17 +12,32 @@ public class SoundController : MonoBehaviour
 
     #region VARIABLES
     // Settings
+    [Header("Volume")]
     public float sfxVolume = 0.8f;
+
     // Pointers
+    [Header("Audio mixers")]
+    [SerializeField]
+    AudioMixer _sfxMixer;
+    [SerializeField]
+    AudioMixer _bgmMixer;
+
+    [Header("Audio sources")]
+    [SerializeField]
     private AudioSource sfxSource;
+    [SerializeField]
     private AudioSource bgmSource;
-    // Clips
+
+
+    [Header("Clips")]
     [SerializeField]
     private AudioClip game_sng;
     [SerializeField]
     private AudioClip menu_sng;
     [SerializeField]
-    private AudioClip ui_snd;
+    private AudioClip ui_snd; 
+    [SerializeField]
+    private AudioClip boat_snd;
     [SerializeField]
     private AudioClip win_snd;
     [SerializeField]
@@ -40,9 +56,6 @@ public class SoundController : MonoBehaviour
             Destroy(this);
             return;
         }
-
-        sfxSource = GetComponents<AudioSource>()[0];
-        bgmSource = GetComponents<AudioSource>()[1];
 
         PlaySong(0);
 
@@ -94,6 +107,9 @@ public class SoundController : MonoBehaviour
             case Sound.UI:
                 sfxSource.PlayOneShot(ui_snd, sfxVolume);
                 break;
+            case Sound.Boat:
+                sfxSource.PlayOneShot(boat_snd, sfxVolume);
+                break;
             default:
                 break;
         }
@@ -134,7 +150,8 @@ public class SoundController : MonoBehaviour
     /// <param name="volume"></param>
     public void SetMusicVolume(float volume)
     {
-        bgmSource.volume = volume;
+        _bgmMixer.SetFloat("Volume", Mathf.Log10(Mathf.Max(0.0001f, volume)) * 20);
+        //bgmSource.volume = volume;
     }
     /// <summary>
     /// Sets the volume of effects
@@ -142,7 +159,8 @@ public class SoundController : MonoBehaviour
     /// <param name="volume"></param>
     public void SetSFXVolume(float volume)
     {
-        sfxSource.volume = volume;
+        _sfxMixer.SetFloat("Volume", Mathf.Log10(Mathf.Max(0.0001f, volume)) * 20);
+        //sfxSource.volume = volume;
     }
     #endregion
 }
