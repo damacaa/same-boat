@@ -187,6 +187,9 @@ public class TransportableBehaviour : MonoBehaviour
 
         transform.parent = target;
 
+        if (target.parent.parent.gameObject.TryGetComponent<BoatBehaviour>(out BoatBehaviour boat))
+            SoundController.Instace.PlaySound(SoundController.Sound.Boat);
+
         yield return null;
     }
 }

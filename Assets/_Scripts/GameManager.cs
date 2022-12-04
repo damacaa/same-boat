@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager instance { get; private set; }
+    public static GameManager Instance { get; private set; }
     public GameLogic Game { get; private set; }
 
     [SerializeField]
@@ -34,10 +34,10 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        if (instance)
+        if (Instance)
             Destroy(this);
         else
-            instance = this;
+            Instance = this;
     }
 
     [HideInInspector]
