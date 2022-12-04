@@ -13,9 +13,6 @@ public class BoatBehaviour : MonoBehaviour
     [SerializeField]
     Transform[] _seats;
 
-    [SerializeField]
-    GameObject driver;
-
     Outline _outline;
     AudioSource _audioSource;
 
@@ -36,10 +33,6 @@ public class BoatBehaviour : MonoBehaviour
     internal void SetUp(Boat boat)
     {
         Data = boat;
-        if (!boat.OnlyHumansCanDrive)
-        {
-            driver.SetActive(false);
-        }
     }
 
     private void OnMouseDown()
@@ -86,6 +79,9 @@ public class BoatBehaviour : MonoBehaviour
             yield return null;
         }
 
+
+        _audioSource.Play();
+
         t = 0;
         while (t < 1)
         {
@@ -94,6 +90,7 @@ public class BoatBehaviour : MonoBehaviour
             yield return null;
         }
 
+        _audioSource.Stop();
 
         yield return null;
     }
