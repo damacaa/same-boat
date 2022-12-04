@@ -36,7 +36,7 @@ public class GameUIManager : MonoBehaviour
         _levelDescription = _gameUICanvas.Q<Label>("LevelDescription");
         _numberOfCrossings = _gameUICanvas.Q<Label>("NumberOfCrossingsValue");
 
-        _gameUICanvas.Q<Button>("UndoButton").clicked += () => { GameManager.instance.Undo(); };
+        _gameUICanvas.Q<Button>("UndoButton").clicked += () => { GameManager.Instance.Undo(); };
         _gameUICanvas.Q<Button>("OptionsButton").clicked += OpenOptions;
         _gameUICanvas.Q<Button>("CloseLevelDescriptionButton").clicked +=
             delegate { _levelDescriptionCanvas.ToggleInClassList("hide"); };
@@ -51,19 +51,19 @@ public class GameUIManager : MonoBehaviour
         _victoryRetryButton = _victoryUICanvas.Q<Button>("RetryButton");
 
         _gameOverReturnToMenuButton.clicked += () => { SceneManager.LoadScene(0); };
-        _gameOverUndoButtonButton.clicked += () => { GameManager.instance.Undo(); };
+        _gameOverUndoButtonButton.clicked += () => { GameManager.Instance.Undo(); };
         _gameOverUndoButtonButton.clicked += CloseGameOver;
-        _gameOverRetryButton.clicked += () => { GameManager.instance.Reset(); };
+        _gameOverRetryButton.clicked += () => { GameManager.Instance.Reset(); };
         _gameOverRetryButton.clicked += CloseGameOver;
 
         _victoryReturnToMenuButton.clicked += () => { SceneManager.LoadScene(0); };
-        _victoryRetryButton.clicked += () => { GameManager.instance.Reset(); };
+        _victoryRetryButton.clicked += () => { GameManager.Instance.Reset(); };
         _victoryRetryButton.clicked += CloseVictory;
 
-        GameManager.instance.OnLevelLoaded += SetCrossingsChangeListener;
-        GameManager.instance.OnLevelLoaded += ShowLevelDescription;
-        GameManager.instance.OnGameOver += ShowEndGame;
-        GameManager.instance.OnVictory += ShowVictory;
+        GameManager.Instance.OnLevelLoaded += SetCrossingsChangeListener;
+        GameManager.Instance.OnLevelLoaded += ShowLevelDescription;
+        GameManager.Instance.OnGameOver += ShowEndGame;
+        GameManager.Instance.OnVictory += ShowVictory;
     }
 
     #region Buttons Actions
@@ -91,12 +91,12 @@ public class GameUIManager : MonoBehaviour
 
     public void SetCrossingsChangeListener()
     {
-        GameManager.instance.Game.Boat.OnCrossingsChange +=
+        GameManager.Instance.Game.Boat.OnCrossingsChange +=
             (int v) => { _numberOfCrossings.text = v.ToString(); };
     }
     public void ShowLevelDescription()
     {
-        _levelDescription.text = GameManager.instance.LevelDescription;
+        _levelDescription.text = GameManager.Instance.LevelDescription;
         _levelDescriptionCanvas.ToggleInClassList("hide");
     }
     public void ShowEndGame()
