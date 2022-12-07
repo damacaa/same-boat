@@ -97,7 +97,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ee943684a361b646ae44c6a6d2fb0db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _desiredSteps: 20
+  _desiredCrossings: 1
+  _desiredCapacity: 2
+  _desiredWeightLimit: 0
+  _desiredMaxTravelCost: 0
   _transportables:
   - {fileID: 11400000, guid: eedba2dfd80b3a440950af3b4a393562, type: 2}
   - {fileID: 11400000, guid: 715219d6dc8b18847890caab79708628, type: 2}

@@ -22,13 +22,13 @@ public class GameManager : MonoBehaviour
         private set { _levelDescription = value; }
     }
 
-    public delegate void OnLevelLoadedDelegate();
-    public event OnLevelLoadedDelegate OnLevelLoaded;
-    public delegate void OnGameOverDelegate();
-    public event OnGameOverDelegate OnGameOver;
-    public delegate void OnVictoryDelegate();
-    public event OnVictoryDelegate OnVictory;
+    public delegate void Delegate();
+    public event Delegate OnLevelLoaded;
+    public event Delegate OnSolverStarted;
+    public event Delegate OnSolverEnded;
 
+    [SerializeField]
+    bool _useHeuristicForSolver = false;
     [SerializeField]
     bool _showDebugUI = false;
 
@@ -48,6 +48,10 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+#if !UNITY_EDITOR
+        _showDebugUI = false;
+#endif
+
         SoundController.Instace.PlaySong(1);
 
         if (!ProgressManager.Instance)
@@ -79,6 +83,9 @@ public class GameManager : MonoBehaviour
         Game = new GameLogic(level);
         Game.GenerateGameObjects(level);
 
+        Game.OnWin += delegate { SoundController.Instace.PlaySound(SoundController.Sound.Win); };
+        Game.OnFail += delegate { SoundController.Instace.PlaySound(SoundController.Sound.Fail); };
+
         LevelDescription = level.ToString();
 
         if (OnLevelLoaded != null) OnLevelLoaded();
@@ -95,7 +102,7 @@ public class GameManager : MonoBehaviour
             if (Fail)
             {
                 SoundController.Instace.PlaySound(SoundController.Sound.Fail);
-                if (OnGameOver != null) OnGameOver();
+                //if (OnGameOver != null) OnGameOver();
             }
         }
 
@@ -104,7 +111,7 @@ public class GameManager : MonoBehaviour
             Win = Game.Win;
             if (Win)
                 SoundController.Instace.PlaySound(SoundController.Sound.Win);
-            if (OnVictory != null) OnVictory();
+            //if (OnVictory != null) OnVictory();
         }
 
 #if UNITY_EDITOR
@@ -122,19 +129,17 @@ public class GameManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.S))
         {
-            int steps = Solver.Solver.Solve(Game);
-            print(steps);
-
-            StartCoroutine(Game.ShowAllMovesCoroutine());
+            ScreenCapture.CaptureScreenshot("screen.png");
         }
 
         if (Input.GetKeyDown(KeyCode.W))
         {
-            int steps = Solver.Solver.SolveWidth(Game);
+            /*int steps = Solver.Solver.SolveWidth(Game);
             print(steps + " steps");
 
             if (steps != -1)
-                StartCoroutine(Game.ShowAllMovesCoroutine());
+                StartCoroutine(Game.ShowAllMovesCoroutine());*/
+            StartCoroutine(SolveCoroutine());
         }
 
         if (Input.GetKeyDown(KeyCode.R))
@@ -142,6 +147,27 @@ public class GameManager : MonoBehaviour
             Reset();
         }
 #endif
+    }
+
+    IEnumerator SolveCoroutine()
+    {
+        if (OnSolverStarted != null)
+            OnSolverStarted();
+
+        float startTime = Time.realtimeSinceStartup;
+        yield return Solver.Solver.SolveWidthCoroutine(Game, _useHeuristicForSolver);
+        float elapsedTime = Time.realtimeSinceStartup - startTime;
+
+        if (OnSolverEnded != null)
+            OnSolverEnded();
+        yield return Game.ShowAllMovesCoroutine();
+
+        //print($"Used heuristic: {_useHeuristicForSolver}\n" +
+        //    $"Time elapsed: {elapsedTime}s\n" +
+        //    $"Crossings: {Game.Boat.Crossings}\n" +
+        //    $"Travel cost: {Game.Boat.CurrentTravelCost}");
+
+        yield return null;
     }
 
     public void Undo()
@@ -230,17 +256,16 @@ public class GameManager : MonoBehaviour
 
         if (GUI.Button(new Rect(space, 2 * (space + height) + space, width, height), "Solve"))
         {
-            Solver.Solver.SolveWidth(Game);
-            StartCoroutine(Game.ShowAllMovesCoroutine());
+            StartCoroutine(SolveCoroutine());
         }
 
         if (GUI.Button(new Rect(space, 3 * (space + height) + space, width, height), "Clue"))
         {
-            Solver.Solver.SolveWidth(Game);
+            Solver.Solver.SolveWidthCoroutine(Game);
             Game.Execute();
         }
 
-        GUI.TextArea(new Rect(Screen.width - (3 * width) - space, space * 5, 3 * width, 5 * height), LevelDescription);
+        // GUI.TextArea(new Rect(Screen.width - (3 * width) - space, space * 5, 3 * width, 5 * height), LevelDescription);
 
         width = height;
         for (int i = 0; i < levels.Length; i++)

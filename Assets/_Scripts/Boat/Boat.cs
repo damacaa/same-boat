@@ -82,7 +82,7 @@ public class Boat
         Occupied++;
         CurrentWeight += newTransportable.Weight;
 
-        if (_behaviour)
+        if (_behaviour && !instant)
         {
             newTransportable.GoTo(_behaviour.GetSeat(pos), out animationDuration, instant, backwards);
         }
@@ -119,7 +119,7 @@ public class Boat
         CurrentTravelCost += backwards ? -travelCost : travelCost;
         Crossings += backwards ? -1 : 1;
 
-        if (_behaviour)
+        if (_behaviour && !instant)
             _behaviour.GoTo(newIsland, out animationDuration, instant, backwards);
 
         Island = newIsland;

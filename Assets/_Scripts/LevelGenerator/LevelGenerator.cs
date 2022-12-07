@@ -6,7 +6,7 @@ using UnityEngine;
 public class LevelGenerator : MonoBehaviour
 {
     [SerializeField]
-    int _desiredSteps = 10;
+    int _desiredCrossings = 10;
     [SerializeField]
     int _desiredCapacity = 2;
     [SerializeField]
@@ -30,17 +30,18 @@ public class LevelGenerator : MonoBehaviour
         int maxIter = 100;
         int iter = 0;
 
+        GameLogic game = null;
         Level level = null;
-        int steps = -1;
 
-        do
+        while (iter < maxIter)
         {
 
             Dictionary<TransportableSO, int> count = new Dictionary<TransportableSO, int>();
 
             level = ScriptableObject.CreateInstance<Level>();
             level.name = "Random";
-            level.Islands = new Level.Island[Random.Range(2, 5)];
+            //level.Islands = new Level.Island[Random.Range(2, 5)];
+            level.Islands = new Level.Island[2];
 
             if (_desiredCapacity != level.BoatCapacity)
                 level.BoatCapacity = _desiredCapacity;
@@ -55,7 +56,7 @@ public class LevelGenerator : MonoBehaviour
             if (_desiredMaxTravelCost != level.BoatMaxTravelCost)
                 level.BoatMaxTravelCost = _desiredMaxTravelCost;
             else
-                level.BoatMaxTravelCost = Random.Range(0, 30);
+                level.BoatMaxTravelCost = Random.Range(0, 100);
 
             for (int i = 0; i < level.Islands.Length; i++)
             {
@@ -94,7 +95,7 @@ public class LevelGenerator : MonoBehaviour
 
             foreach (var rule in _rules)
             {
-                if (count.ContainsKey(rule.A) && count.ContainsKey(rule.A))
+                if (count.ContainsKey(rule.A) && count.ContainsKey(rule.B))
                 {
                     rules.Add(rule);
                 }
@@ -104,10 +105,24 @@ public class LevelGenerator : MonoBehaviour
 
             iter++;
 
-            steps = Solver.Solver.SolveWidth(new GameLogic(level));
-            print($"{iter}: {steps}");
+            game = new GameLogic(level);
+            var state = Solver.Solver.SolveWidth(game, true);
 
-        } while (iter < maxIter && steps < _desiredSteps);
+            if (state == null || game.Boat.Crossings < _desiredCrossings)
+                continue;
+
+            level.BoatMaxTravelCost = state.BoatTravelCost;
+
+        };
+
+        Level levelWithSmallerWeightLimit = level;
+        levelWithSmallerWeightLimit.BoatMaxWeightAllowed--;
+
+        while (Solver.Solver.SolveWidth(new GameLogic(levelWithSmallerWeightLimit), true) != null)
+        {
+            level = levelWithSmallerWeightLimit;
+            levelWithSmallerWeightLimit.BoatMaxWeightAllowed--;
+        }
 
         if (iter == maxIter)
             Debug.Log("Need more steps");

@@ -62,8 +62,15 @@ public class GameUIManager : MonoBehaviour
 
         GameManager.Instance.OnLevelLoaded += SetCrossingsChangeListener;
         GameManager.Instance.OnLevelLoaded += ShowLevelDescription;
-        GameManager.Instance.OnGameOver += ShowEndGame;
-        GameManager.Instance.OnVictory += ShowVictory;
+
+        GameManager.Instance.OnSolverStarted += delegate { print("Show loading"); };
+        GameManager.Instance.OnSolverEnded += delegate { print("Hide loading"); };
+
+        GameManager.Instance.OnLevelLoaded += delegate
+        {
+            GameManager.Instance.Game.OnFail += ShowEndGame;
+            GameManager.Instance.Game.OnWin += ShowVictory;
+        };
     }
 
     #region Buttons Actions

@@ -6,6 +6,10 @@ public class ProgressManager : MonoBehaviour
 {
     public static ProgressManager Instance { get; private set; }
 
+    [SerializeField]
+    Level[] _levels;
+    public Level[] Levels { get { return _levels;  } }
+
     private void Awake()
     {
         if (Instance)
