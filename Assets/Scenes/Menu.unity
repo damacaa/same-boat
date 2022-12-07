@@ -323,6 +323,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4352c6ecdcee574a849c9ca75043ffe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _levels:
+  - {fileID: 11400000, guid: 9fc1ac9099c05054d8707da8a018e462, type: 2}
+  - {fileID: 11400000, guid: 4d8dbc005f9bfc3439639dc01ecfe999, type: 2}
+  - {fileID: 11400000, guid: b79d61c0547e3e54886413f2fcdede23, type: 2}
+  - {fileID: 11400000, guid: 9d11f2d7f20891b488dbe7732b2500b2, type: 2}
+  - {fileID: 11400000, guid: ccc527afc36fe43498fdd7a14a3deb50, type: 2}
+  - {fileID: 11400000, guid: e7aa722d7f634624b83d5ef6fb0cc49e, type: 2}
+  - {fileID: 11400000, guid: e05fbfc1c4b77d64fb078329a80b2d4a, type: 2}
+  - {fileID: 11400000, guid: 294d16c47a36c8142ad022e5bd0cf112, type: 2}
 --- !u!4 &1086378336
 Transform:
   m_ObjectHideFlags: 0
@@ -433,15 +442,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _uiManager: {fileID: 1013690886}
-  _levels:
-  - {fileID: 11400000, guid: 9fc1ac9099c05054d8707da8a018e462, type: 2}
-  - {fileID: 11400000, guid: b79d61c0547e3e54886413f2fcdede23, type: 2}
-  - {fileID: 11400000, guid: 4d8dbc005f9bfc3439639dc01ecfe999, type: 2}
-  - {fileID: 11400000, guid: 9d11f2d7f20891b488dbe7732b2500b2, type: 2}
-  - {fileID: 11400000, guid: ccc527afc36fe43498fdd7a14a3deb50, type: 2}
-  - {fileID: 11400000, guid: e7aa722d7f634624b83d5ef6fb0cc49e, type: 2}
-  - {fileID: 11400000, guid: e05fbfc1c4b77d64fb078329a80b2d4a, type: 2}
-  - {fileID: 11400000, guid: 294d16c47a36c8142ad022e5bd0cf112, type: 2}
 --- !u!114 &1205457289
 MonoBehaviour:
   m_ObjectHideFlags: 0

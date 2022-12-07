@@ -28,6 +28,8 @@ public class GameManager : MonoBehaviour
     public event Delegate OnSolverEnded;
 
     [SerializeField]
+    bool _useHeuristicForSolver = false;
+    [SerializeField]
     bool _showDebugUI = false;
 
     private void Awake()
@@ -46,6 +48,10 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+#if !UNITY_EDITOR
+        _showDebugUI = false;
+#endif
+
         SoundController.Instace.PlaySong(1);
 
         if (!ProgressManager.Instance)
@@ -123,10 +129,7 @@ public class GameManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.S))
         {
-            int steps = Solver.Solver.Solve(Game);
-            print(steps);
-
-            StartCoroutine(Game.ShowAllMovesCoroutine());
+            ScreenCapture.CaptureScreenshot("screen.png");
         }
 
         if (Input.GetKeyDown(KeyCode.W))
@@ -150,11 +153,19 @@ public class GameManager : MonoBehaviour
     {
         if (OnSolverStarted != null)
             OnSolverStarted();
-        yield return Solver.Solver.SolveWidth(Game);
+
+        float startTime = Time.realtimeSinceStartup;
+        yield return Solver.Solver.SolveWidthCoroutine(Game, _useHeuristicForSolver);
+        float elapsedTime = Time.realtimeSinceStartup - startTime;
 
         if (OnSolverEnded != null)
             OnSolverEnded();
         yield return Game.ShowAllMovesCoroutine();
+
+        //print($"Used heuristic: {_useHeuristicForSolver}\n" +
+        //    $"Time elapsed: {elapsedTime}s\n" +
+        //    $"Crossings: {Game.Boat.Crossings}\n" +
+        //    $"Travel cost: {Game.Boat.CurrentTravelCost}");
 
         yield return null;
     }
@@ -245,13 +256,12 @@ public class GameManager : MonoBehaviour
 
         if (GUI.Button(new Rect(space, 2 * (space + height) + space, width, height), "Solve"))
         {
-            Solver.Solver.SolveWidth(Game);
-            StartCoroutine(Game.ShowAllMovesCoroutine());
+            StartCoroutine(SolveCoroutine());
         }
 
         if (GUI.Button(new Rect(space, 3 * (space + height) + space, width, height), "Clue"))
         {
-            Solver.Solver.SolveWidth(Game);
+            Solver.Solver.SolveWidthCoroutine(Game);
             Game.Execute();
         }
 

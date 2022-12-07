@@ -260,9 +260,10 @@ public class GameLogic
         currentState.BoatOccupiedSeats = _boat.Occupied;
         currentState.BoatMaxWeight = _boat.MaxWeight;
         currentState.BoatCurrentWeight = _boat.CurrentWeight;
-        currentState.BoatCanMoveEmpty = _boat.OnlyHumansCanDrive;
         currentState.BoatMaxTravelCost = _boat.MaxTravelCost;
         currentState.BoatTravelCost = _boat.CurrentTravelCost;
+
+        currentState.Crossings = _boat.Crossings;
 
         if (_commands.Count > 0 && _currentCommand > 0 && _currentCommand - 1 < _commands.Count)
             currentState.Bommand = _commands[_currentCommand - 1];
