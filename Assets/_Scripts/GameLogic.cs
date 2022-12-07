@@ -31,6 +31,11 @@ public class GameLogic
     public Boat Boat { get { return _boat; } }
     public Island FirstIsland { get { return _islands[0]; } }
 
+    // Events
+    public delegate void Delegate();
+    public event Delegate OnFail;
+    public event Delegate OnWin;
+
     public GameLogic(Level level)
     {
         _level = level;
@@ -52,11 +57,11 @@ public class GameLogic
         _boat = new Boat(_islands[0], level.BoatCapacity, level.BoatMaxWeightAllowed, level.BoatMaxTravelCost, level.OnlyHumansCanDrive);
     }
 
-    internal void Reset()
+    internal void Reset(bool instant = false)
     {
         for (int i = 0; i <= _commands.Count; i++) //Have to figure out how many undos are needed
         {
-            Undo(true);
+            Undo(instant);
         }
         _commands.Clear();
         _currentCommand = 0;
@@ -72,11 +77,11 @@ public class GameLogic
 
     public bool Execute(bool instant = false)
     {
-        if (!instant && (_showingSolveAnimation || (_waitForEnd && Time.time < _nextTime)))
+        /*if (!instant && (_showingSolveAnimation || (_waitForEnd && Time.time < _nextTime)))
         {
             //instant = true;//Should make current animation skipeable
             return false;
-        }
+        }*/
 
         if (!_fail && _currentCommand < _commands.Count)
         {
@@ -96,10 +101,14 @@ public class GameLogic
             //Debug.Log(_commands[_currentCommand]);
 
             _fail = CheckFail(!instant);
+            if (!instant && _fail && OnFail != null)
+                OnFail();
 
             if (!_fail)
             {
                 CheckWin();
+                if (!instant && Win && OnWin != null)
+                    OnWin();
             }
 
             return _commands[_currentCommand++].Success;
@@ -110,11 +119,11 @@ public class GameLogic
 
     public void Undo(bool instant = false)
     {
-        if (!instant && (_showingSolveAnimation || (_waitForEnd && Time.time < _nextTime)))
+        /*if (!instant && (_showingSolveAnimation || (_waitForEnd && Time.time < _nextTime)))
         {
             //instant = true;
             return;
-        }
+        }*/
 
         if (_currentCommand > 0 && _commands.Count > 0)
         {
@@ -273,6 +282,8 @@ public class GameLogic
         }
 
         CheckWin();
+        if (Win && OnWin != null)
+            OnWin();
         _showingSolveAnimation = false;
 
         yield return null;

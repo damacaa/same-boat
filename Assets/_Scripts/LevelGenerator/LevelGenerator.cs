@@ -104,7 +104,7 @@ public class LevelGenerator : MonoBehaviour
 
             iter++;
 
-            steps = Solver.Solver.SolveWidth(new GameLogic(level));
+            //steps = Solver.Solver.SolveWidth(new GameLogic(level));
             print($"{iter}: {steps}");
 
         } while (iter < maxIter && steps < _desiredSteps);

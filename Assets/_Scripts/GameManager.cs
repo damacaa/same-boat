@@ -22,12 +22,10 @@ public class GameManager : MonoBehaviour
         private set { _levelDescription = value; }
     }
 
-    public delegate void OnLevelLoadedDelegate();
-    public event OnLevelLoadedDelegate OnLevelLoaded;
-    public delegate void OnGameOverDelegate();
-    public event OnGameOverDelegate OnGameOver;
-    public delegate void OnVictoryDelegate();
-    public event OnVictoryDelegate OnVictory;
+    public delegate void Delegate();
+    public event Delegate OnLevelLoaded;
+    public event Delegate OnSolverStarted;
+    public event Delegate OnSolverEnded;
 
     [SerializeField]
     bool _showDebugUI = false;
@@ -79,6 +77,9 @@ public class GameManager : MonoBehaviour
         Game = new GameLogic(level);
         Game.GenerateGameObjects(level);
 
+        Game.OnWin += delegate { SoundController.Instace.PlaySound(SoundController.Sound.Win); };
+        Game.OnFail += delegate { SoundController.Instace.PlaySound(SoundController.Sound.Fail); };
+
         LevelDescription = level.ToString();
 
         if (OnLevelLoaded != null) OnLevelLoaded();
@@ -95,7 +96,7 @@ public class GameManager : MonoBehaviour
             if (Fail)
             {
                 SoundController.Instace.PlaySound(SoundController.Sound.Fail);
-                if (OnGameOver != null) OnGameOver();
+                //if (OnGameOver != null) OnGameOver();
             }
         }
 
@@ -104,7 +105,7 @@ public class GameManager : MonoBehaviour
             Win = Game.Win;
             if (Win)
                 SoundController.Instace.PlaySound(SoundController.Sound.Win);
-            if (OnVictory != null) OnVictory();
+            //if (OnVictory != null) OnVictory();
         }
 
 #if UNITY_EDITOR
@@ -130,11 +131,12 @@ public class GameManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.W))
         {
-            int steps = Solver.Solver.SolveWidth(Game);
+            /*int steps = Solver.Solver.SolveWidth(Game);
             print(steps + " steps");
 
             if (steps != -1)
-                StartCoroutine(Game.ShowAllMovesCoroutine());
+                StartCoroutine(Game.ShowAllMovesCoroutine());*/
+            StartCoroutine(SolveCoroutine());
         }
 
         if (Input.GetKeyDown(KeyCode.R))
@@ -142,6 +144,19 @@ public class GameManager : MonoBehaviour
             Reset();
         }
 #endif
+    }
+
+    IEnumerator SolveCoroutine()
+    {
+        if (OnSolverStarted != null)
+            OnSolverStarted();
+        yield return Solver.Solver.SolveWidth(Game);
+
+        if (OnSolverEnded != null)
+            OnSolverEnded();
+        yield return Game.ShowAllMovesCoroutine();
+
+        yield return null;
     }
 
     public void Undo()
@@ -240,7 +255,7 @@ public class GameManager : MonoBehaviour
             Game.Execute();
         }
 
-        GUI.TextArea(new Rect(Screen.width - (3 * width) - space, space * 5, 3 * width, 5 * height), LevelDescription);
+        // GUI.TextArea(new Rect(Screen.width - (3 * width) - space, space * 5, 3 * width, 5 * height), LevelDescription);
 
         width = height;
         for (int i = 0; i < levels.Length; i++)

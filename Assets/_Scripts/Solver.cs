@@ -157,7 +157,7 @@ namespace Solver
             }
         }
 
-        public static int SolveWidth(GameLogic game)
+        public static IEnumerator SolveWidth(GameLogic game)
         {
             List<State> openList = new List<State>();
             List<State> closedList = new List<State>();
@@ -260,6 +260,8 @@ namespace Solver
 
                     game.Undo(true);
                 }
+
+                yield return null;
             }
 
             if (!game.Win)
@@ -267,7 +269,7 @@ namespace Solver
                 if (iter == maxIter)
                     Debug.Log("Need more iter");
 
-                return -1;
+                yield return null;
             }
 
             int requiredSteps = 0;
@@ -278,7 +280,7 @@ namespace Solver
                 game.Undo(true);
             }
 
-            return requiredSteps;
+            yield return null;
 
             ///////////////////////////////////////////////////////////
 
@@ -309,7 +311,7 @@ namespace Solver
                      aux = aux.PreviousState;
                  }*/
 
-                game.Reset();
+                game.Reset(true);
 
                 for (int i = 1; i < states.Count; i++)
                 {
