@@ -15,33 +15,8 @@ public class TransportableManager : MonoBehaviour
         instace = this;
     }
 
-
-    [SerializeField]
-    List<TransportableSO> transportables;
-
-
-
     [SerializeField]
     GameObject transportablePrefab;
-
-
-
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
-    public TransportableSO GetTransportable(string name)
-    {
-        return transportables.Find(i => i.name.ToLower() == name.ToLower());
-    }
 
     internal void GenerateSprites(Island[] islands)
     {

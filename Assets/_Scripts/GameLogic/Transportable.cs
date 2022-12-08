@@ -15,12 +15,6 @@ public class Transportable
     public int Weight { get { return ScripatableObject.Weight; } }
     public int PositionIndexInIsland { get; internal set; }
 
-    [Obsolete("")]
-    public Transportable(string key)
-    {
-        ScripatableObject = TransportableManager.instace.GetTransportable(key);
-    }
-
     public Transportable(TransportableSO scripatableObject)
     {
         ScripatableObject = scripatableObject;
