@@ -442,6 +442,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _uiManager: {fileID: 1013690886}
+  ListSpacing: 59
 --- !u!114 &1205457289
 MonoBehaviour:
   m_ObjectHideFlags: 0

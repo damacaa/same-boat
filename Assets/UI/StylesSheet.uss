@@ -111,63 +111,54 @@
 }
 
 .level-list-button {
-    width: auto;
-    height: auto;
-    left: auto;
-    align-items: center;
-    justify-content: center;
-    top: auto;
-    position: relative;
-    right: auto;
-    font-size: 25px;
-    -unity-font-style: normal;
-    display: flex;
-    visibility: visible;
-    -unity-text-align: middle-center;
+    font-size: 200%;
+    color: rgb(221, 221, 221);
+    transition-duration: 0.15s;
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    -unity-font-definition: url('project://database/Assets/UI/Fonts/Comfortaa-VariableFont_wght%20SDF.asset?fileID=11400000&guid=5e00c291ca1c09b4b8bc2a2e95dc9bca&type=2#Comfortaa-VariableFont_wght SDF');
+    -unity-font: url('project://database/Assets/UI/Fonts/Comfortaa-VariableFont_wght.ttf?fileID=12800000&guid=2784d677bf816eb42b49fcbf8a636323&type=3#Comfortaa-VariableFont_wght');
+    margin-top: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 10px;
+    padding-bottom: 10px;
     background-color: rgba(0, 0, 0, 0);
     border-left-color: rgba(0, 0, 0, 0);
     border-right-color: rgba(0, 0, 0, 0);
     border-top-color: rgba(0, 0, 0, 0);
     border-bottom-color: rgba(0, 0, 0, 0);
-    color: rgb(221, 221, 221);
-    -unity-text-outline-color: rgb(207, 207, 207);
-    transition-duration: 0.15s;
-    margin-left: 5px;
-    margin-right: 5px;
-    margin-top: 5px;
-    margin-bottom: 5px;
-    -unity-font-definition: url('project://database/Assets/UI/Fonts/Comfortaa-VariableFont_wght%20SDF.asset?fileID=11400000&guid=5e00c291ca1c09b4b8bc2a2e95dc9bca&type=2#Comfortaa-VariableFont_wght SDF');
-    -unity-font: url('project://database/Assets/UI/Fonts/Comfortaa-VariableFont_wght.ttf?fileID=12800000&guid=2784d677bf816eb42b49fcbf8a636323&type=3#Comfortaa-VariableFont_wght');
 }
 
 .level-list-button:hover {
-    width: auto;
-    height: auto;
-    left: auto;
-    align-items: center;
-    justify-content: center;
-    top: auto;
-    position: relative;
-    right: auto;
-    font-size: 35px;
-    -unity-font-style: normal;
-    display: flex;
-    visibility: visible;
-    -unity-text-align: middle-center;
+    font-size: 200%;
+    color: rgb(255, 255, 255);
+    transition-duration: 0.15s;
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    -unity-font-definition: url('project://database/Assets/UI/Fonts/Comfortaa-VariableFont_wght%20SDF.asset?fileID=11400000&guid=5e00c291ca1c09b4b8bc2a2e95dc9bca&type=2#Comfortaa-VariableFont_wght SDF');
+    -unity-font: url('project://database/Assets/UI/Fonts/Comfortaa-VariableFont_wght.ttf?fileID=12800000&guid=2784d677bf816eb42b49fcbf8a636323&type=3#Comfortaa-VariableFont_wght');
+    margin-top: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 10px;
+    padding-bottom: 10px;
     background-color: rgba(0, 0, 0, 0);
     border-left-color: rgba(0, 0, 0, 0);
     border-right-color: rgba(0, 0, 0, 0);
     border-top-color: rgba(0, 0, 0, 0);
     border-bottom-color: rgba(0, 0, 0, 0);
-    color: rgb(221, 221, 221);
-    -unity-text-outline-color: rgb(207, 207, 207);
-    transition-duration: 0.15s;
-    margin-left: 5px;
-    margin-right: 5px;
-    margin-top: 5px;
-    margin-bottom: 5px;
-    -unity-font-definition: url('project://database/Assets/UI/Fonts/Comfortaa-VariableFont_wght%20SDF.asset?fileID=11400000&guid=5e00c291ca1c09b4b8bc2a2e95dc9bca&type=2#Comfortaa-VariableFont_wght SDF');
-    -unity-font: url('project://database/Assets/UI/Fonts/Comfortaa-VariableFont_wght.ttf?fileID=12800000&guid=2784d677bf816eb42b49fcbf8a636323&type=3#Comfortaa-VariableFont_wght');
+    scale: 1.1 1.1;
+}
+
+.level-preview {
+}
+
+.levels-list {
+    width: 100%;
+    height: 100%;
 }
 
 .menu-button {
@@ -205,7 +196,7 @@
     -unity-font-definition: url('project://database/Assets/UI/Fonts/Comfortaa-VariableFont_wght%20SDF.asset?fileID=11400000&guid=5e00c291ca1c09b4b8bc2a2e95dc9bca&type=2#Comfortaa-VariableFont_wght SDF');
     -unity-font: url('project://database/Assets/UI/Fonts/Comfortaa-VariableFont_wght.ttf?fileID=12800000&guid=2784d677bf816eb42b49fcbf8a636323&type=3#Comfortaa-VariableFont_wght');
     color: rgb(236, 236, 236);
-    font-size: 20px;
+    font-size: 180%;
     background-color: rgba(88, 88, 88, 0);
     border-left-color: rgba(255, 255, 255, 0);
     border-right-color: rgba(255, 255, 255, 0);
@@ -219,8 +210,8 @@
 .options-button:hover {
     -unity-font-definition: url('project://database/Assets/UI/Fonts/Comfortaa-VariableFont_wght%20SDF.asset?fileID=11400000&guid=5e00c291ca1c09b4b8bc2a2e95dc9bca&type=2#Comfortaa-VariableFont_wght SDF');
     -unity-font: url('project://database/Assets/UI/Fonts/Comfortaa-VariableFont_wght.ttf?fileID=12800000&guid=2784d677bf816eb42b49fcbf8a636323&type=3#Comfortaa-VariableFont_wght');
-    color: rgb(236, 236, 236);
-    font-size: 20px;
+    color: rgb(255, 255, 255);
+    font-size: 180%;
     background-color: rgba(88, 88, 88, 0);
     border-left-color: rgba(255, 255, 255, 0);
     border-right-color: rgba(255, 255, 255, 0);
@@ -228,7 +219,8 @@
     border-bottom-color: rgba(255, 255, 255, 0);
     transition-duration: 0.15s;
     -unity-text-align: middle-center;
-    scale: 1.3 1.3;
+    -unity-font-style: bold;
+    scale: 1.1 1.1;
 }
 
 .options-text {
