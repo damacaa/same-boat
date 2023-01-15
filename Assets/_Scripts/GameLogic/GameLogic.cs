@@ -266,7 +266,7 @@ public class GameLogic
         currentState.Crossings = _boat.Crossings;
 
         if (_commands.Count > 0 && _currentCommand > 0 && _currentCommand - 1 < _commands.Count)
-            currentState.Bommand = _commands[_currentCommand - 1];
+            currentState.Command = _commands[_currentCommand - 1];
 
         return currentState;
     }
