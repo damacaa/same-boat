@@ -170,6 +170,23 @@ public class GameManager : MonoBehaviour
         yield return null;
     }
 
+    IEnumerator ClueCoroutine()
+    {
+        if (OnSolverStarted != null)
+            OnSolverStarted();
+
+        yield return Solver.Solver.SolveWidthCoroutine(Game, _useHeuristicForSolver);
+
+        if (OnSolverEnded != null)
+            OnSolverEnded();
+
+        yield return null;
+
+        Game.Execute();
+
+        yield return null;
+    }
+
     public void Undo()
     {
         if (Win)
@@ -256,13 +273,14 @@ public class GameManager : MonoBehaviour
 
         if (GUI.Button(new Rect(space, 2 * (space + height) + space, width, height), "Solve"))
         {
-            StartCoroutine(SolveCoroutine());
+            //StartCoroutine(SolveCoroutine());
+            Solver.Solver.SolveWidth(Game, false);
+            StartCoroutine(Game.ShowAllMovesCoroutine());
         }
 
         if (GUI.Button(new Rect(space, 3 * (space + height) + space, width, height), "Clue"))
         {
-            Solver.Solver.SolveWidthCoroutine(Game);
-            Game.Execute();
+            StartCoroutine(ClueCoroutine());
         }
 
         // GUI.TextArea(new Rect(Screen.width - (3 * width) - space, space * 5, 3 * width, 5 * height), LevelDescription);
