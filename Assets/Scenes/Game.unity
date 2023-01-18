@@ -216,7 +216,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ee943684a361b646ae44c6a6d2fb0db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _desiredSteps: 10
+  _desiredCrossings: 10
   _desiredCapacity: 2
   _desiredWeightLimit: 0
   _desiredMaxTravelCost: 0
@@ -761,6 +761,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levels:
   - {fileID: 11400000, guid: 9fc1ac9099c05054d8707da8a018e462, type: 2}
+  - {fileID: 11400000, guid: 4d8dbc005f9bfc3439639dc01ecfe999, type: 2}
   - {fileID: 11400000, guid: b79d61c0547e3e54886413f2fcdede23, type: 2}
   - {fileID: 11400000, guid: 9d11f2d7f20891b488dbe7732b2500b2, type: 2}
   - {fileID: 11400000, guid: ccc527afc36fe43498fdd7a14a3deb50, type: 2}
@@ -768,7 +769,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: e05fbfc1c4b77d64fb078329a80b2d4a, type: 2}
   - {fileID: 11400000, guid: 294d16c47a36c8142ad022e5bd0cf112, type: 2}
   _currentLevel: 0
-  _showDebugUI: 0
+  _useHeuristicForSolver: 0
+  _showDebugUI: 1
 --- !u!1 &1627458008
 GameObject:
   m_ObjectHideFlags: 0
@@ -898,10 +900,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d4fcb5e36aa919429826a5024bc93f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  transportables:
-  - {fileID: 11400000, guid: cec013bbd6b087046b857f5414739136, type: 2}
-  - {fileID: 11400000, guid: 8bb208a2f8e4d454ebc0ff9967aeed9c, type: 2}
-  - {fileID: 11400000, guid: c93da487864c90f4897ed27019024def, type: 2}
   transportablePrefab: {fileID: 7502746412398851891, guid: ee9c6e7059959b14cbba23de2f9ef574, type: 3}
 --- !u!4 &1971991504
 Transform:

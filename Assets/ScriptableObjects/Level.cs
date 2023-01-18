@@ -10,7 +10,7 @@ public class Level : ScriptableObject
     public new string name;
     [Range(2, 4)]
     public int BoatCapacity = 2;
-    [Range(0, 10)]
+    [Range(0, 20)]
     public int BoatMaxWeightAllowed = 0;
     [Range(0, 100)]
     public int BoatMaxTravelCost = 0;

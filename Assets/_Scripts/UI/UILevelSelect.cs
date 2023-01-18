@@ -5,7 +5,6 @@ using UnityEngine.UIElements;
 public class UILevelSelect : MonoBehaviour
 {
     [SerializeField] private MenuUIManager _uiManager;
-    [SerializeField] Level[] _levels;
 
     private VisualElement _root;
     private VisualElement _canvas;
@@ -21,12 +20,12 @@ public class UILevelSelect : MonoBehaviour
 
         _buttonsList = _root.Q<ListView>("ButtonsList").hierarchy;
 
-        for (int i = 0; i < _levels.Length; i++)
+        for (int i = 0; i < ProgressManager.Instance.Levels.Length; i++)
         {
             Button button = new Button();
             button.text = $"Level {i + 1}";
             button.AddToClassList("level-list-button");
-            Level level = _levels[i];
+            Level level = ProgressManager.Instance.Levels[i];
             button.clicked += delegate { SoundController.Instace.PlaySound(SoundController.Sound.UI); };
             button.clicked += _uiManager.CloseLevelSelect;
             button.clicked += _uiManager.CloseMenu;
