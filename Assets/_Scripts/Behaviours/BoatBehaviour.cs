@@ -42,7 +42,10 @@ public class BoatBehaviour : MonoBehaviour
 
     internal Transform GetSeat(int pos)
     {
-        //Needs work
+        while(_seats[pos].transform.childCount != 0)
+        {
+            pos = (pos + 1) % _seats.Length;
+        }
         return _seats[pos];
     }
 
