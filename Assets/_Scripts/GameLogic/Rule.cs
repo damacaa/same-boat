@@ -10,7 +10,8 @@ public class Rule
     {
         CantCoexist,
         CountMustBeGreaterThan,
-        CountMustBeGreaterEqualThan
+        CountMustBeGreaterEqualThan,
+        Requires,
     }
 
     public enum Result
@@ -34,10 +35,12 @@ public class Rule
             case RuleType.CountMustBeGreaterEqualThan:
                 s = $"The number of {A.NamePlural.ToLower()} must be greater than or equal to the number of {B.NamePlural.ToLower()}.";
                 break;
+            case RuleType.Requires:
+                s = $"A {A.NamePlural.ToLower()} must always be accompanied by a {B.NamePlural.ToLower()}.";
+                break;
             default:
                 break;
         }
-
 
         return s;
     }

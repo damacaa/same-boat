@@ -14,7 +14,10 @@ public class Level : ScriptableObject
     public int BoatMaxWeightAllowed = 0;
     [Range(0, 100)]
     public int BoatMaxTravelCost = 0;
+    [Space()]
+    public bool StrictMode = false;
     public bool OnlyHumansCanDrive = false;
+    [Space()]
     public Texture2D Map;
     public Level.Island[] Islands;
     public Rule[] Rules;
@@ -25,7 +28,7 @@ public class Level : ScriptableObject
         string s = "";
 
         if (name != "")
-            s += $"{name}:\n";
+            s += $"{name}{(StrictMode?" (strict mode)":"")}:\n";
 
         Dictionary<TransportableSO, int> count = new Dictionary<TransportableSO, int>();
 
