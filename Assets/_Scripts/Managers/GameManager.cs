@@ -204,6 +204,8 @@ public class GameManager : MonoBehaviour
 
     public void Reset()
     {
+        StopAllCoroutines();
+
         Game.Reset();
 
         Win = false;
