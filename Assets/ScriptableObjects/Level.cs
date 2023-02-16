@@ -28,7 +28,7 @@ public class Level : ScriptableObject
         string s = "";
 
         if (name != "")
-            s += $"{name}:\n";
+            s += $"{name}{(StrictMode?" (strict mode)":"")}:\n";
 
         Dictionary<TransportableSO, int> count = new Dictionary<TransportableSO, int>();
 
