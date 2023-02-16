@@ -25,6 +25,8 @@ public class GameLogic
     private bool _showingSolveAnimation = false;
     float _nextTime = 0;
 
+    bool _strictMode = false;
+
     public bool Win { get { return _win; } }
     public bool Fail { get { return _fail; } }
 
@@ -39,6 +41,8 @@ public class GameLogic
     public GameLogic(Level level)
     {
         _level = level;
+
+        _strictMode = level.StrictMode;
 
         //Desearialize transportables
         foreach (var island in level.Islands)
@@ -143,17 +147,30 @@ public class GameLogic
         bool fail = false;
         foreach (var island in _islands)
         {
-            if (island == _boat.Island)
+            if (!_strictMode && island == _boat.Island)
                 continue;
 
-            if (!CheckRules(island.Transportables))
+            List<Transportable> group = island.Transportables.Where(item => item != null).Select(item => item).ToList();
+
+            if (_strictMode && island == _boat.Island)
+            {
+                group.AddRange(_boat.Transportables.Where(item => item != null));
+            }
+
+            if (!CheckRules(group))
             {
                 fail = true;
-
                 if (showMessage)
                     Debug.Log("Fail in island " + island.Name);
             }
         }
+
+        /*if (_checkBoatForMistakes && !CheckRules(_boat.Transportables))
+        {
+            fail = true;
+            if (showMessage)
+                Debug.Log("Fail in boat.");
+        }*
 
         /*if (Solver.Solver.CheckFail(_boat.Transportables))
             Debug.Log("Fail in boat");*/
@@ -193,6 +210,10 @@ public class GameLogic
                     break;
                 case Rule.RuleType.CountMustBeGreaterEqualThan:
                     if (aCount > 0 && aCount < bCount)
+                        return false;
+                    break;
+                case Rule.RuleType.Requires:
+                    if (aCount > 0 && aCount > bCount)
                         return false;
                     break;
                 default:
