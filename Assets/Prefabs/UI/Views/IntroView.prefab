@@ -125,7 +125,7 @@ GameObject:
   - component: {fileID: 1295608437736775275}
   - component: {fileID: 8049610838385436573}
   m_Layer: 0
-  m_Name: Layout
+  m_Name: VerticalLayout
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
