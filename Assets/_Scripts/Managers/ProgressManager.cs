@@ -1,14 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ProgressManager : MonoBehaviour
 {
     public static ProgressManager Instance { get; private set; }
 
+    public Level[] Levels { get { return _levels; } }
+
     [SerializeField]
-    Level[] _levels;
-    public Level[] Levels { get { return _levels;  } }
+    private Level[] _levels;
 
     private void Awake()
     {
@@ -18,15 +17,8 @@ public class ProgressManager : MonoBehaviour
             Instance = this;
     }
 
-    // Start is called before the first frame update
     void Start()
     {
         DontDestroyOnLoad(this);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 }
