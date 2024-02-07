@@ -52,6 +52,8 @@ public class GameManager : MonoBehaviour
         _showDebugUI = false;
 #endif
 
+        Application.targetFrameRate = 60;
+
         SoundController.Instace.PlaySong(1);
 
         if (!ProgressManager.Instance)
@@ -60,6 +62,7 @@ public class GameManager : MonoBehaviour
 
     public void LoadLevel(Level level)
     {
+        // Clear previous game
         if (Game != null)
         {
             var transportables = FindObjectsOfType<TransportableBehaviour>();
@@ -155,7 +158,7 @@ public class GameManager : MonoBehaviour
             OnSolverStarted();
 
         float startTime = Time.realtimeSinceStartup;
-        yield return Solver.Solver.SolveWidthCoroutine(Game, _useHeuristicForSolver);
+        yield return Solver.Solver.SolveWidthAndResetCoroutine(Game, _useHeuristicForSolver);
         float elapsedTime = Time.realtimeSinceStartup - startTime;
 
         if (OnSolverEnded != null)
@@ -175,7 +178,7 @@ public class GameManager : MonoBehaviour
         if (OnSolverStarted != null)
             OnSolverStarted();
 
-        yield return Solver.Solver.SolveWidthCoroutine(Game, _useHeuristicForSolver);
+        yield return Solver.Solver.SolveWidthAndResetCoroutine(Game, _useHeuristicForSolver);
 
         if (OnSolverEnded != null)
             OnSolverEnded();
@@ -276,7 +279,7 @@ public class GameManager : MonoBehaviour
         if (GUI.Button(new Rect(space, 2 * (space + height) + space, width, height), "Solve"))
         {
             //StartCoroutine(SolveCoroutine());
-            Solver.Solver.SolveWidth(Game, false);
+            Solver.Solver.SolveWidthAndReset(Game, _useHeuristicForSolver);
             StartCoroutine(Game.ShowAllMovesCoroutine());
         }
 

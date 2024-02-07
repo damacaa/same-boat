@@ -1068,7 +1068,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: aee1f53304f5fbc4b9a023ea5acfe4e6, type: 2}
   - {fileID: 11400000, guid: 8b409fcfa11fa3a4a888882ea33e2b81, type: 2}
   _currentLevel: 0
-  _useHeuristicForSolver: 0
+  _useHeuristicForSolver: 1
   _showDebugUI: 1
 --- !u!1 &1971991502
 GameObject:

@@ -326,7 +326,9 @@ public class GameLogic
 
     public override string ToString()
     {
-        string result = "";
+        return GetCurrentState().ToString();
+
+        /*string result = "";
 
         string progress = "";
         for (int i = 0; i < _commands.Count; i++)
@@ -350,7 +352,7 @@ public class GameLogic
 
         result += _boat + "\n";
 
-        return result;
+        return result;*/
     }
 }
 
