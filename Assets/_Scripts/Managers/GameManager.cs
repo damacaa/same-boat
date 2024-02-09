@@ -27,8 +27,18 @@ public class GameManager : MonoBehaviour
     public event Delegate OnSolverStarted;
     public event Delegate OnSolverEnded;
 
+    public enum Method
+    {
+        Normal,
+        Coroutine,
+        Task
+    }
+
+
     [SerializeField]
     bool _useHeuristicForSolver = false;
+    [SerializeField]
+    Method _solverMethod;
     [SerializeField]
     bool _showDebugUI = false;
 
@@ -130,25 +140,6 @@ public class GameManager : MonoBehaviour
             Undo();
         }
 
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            ScreenCapture.CaptureScreenshot("screen.png");
-        }
-
-        if (Input.GetKeyDown(KeyCode.W))
-        {
-            /*int steps = Solver.Solver.SolveWidth(Game);
-            print(steps + " steps");
-
-            if (steps != -1)
-                StartCoroutine(Game.ShowAllMovesCoroutine());*/
-            StartCoroutine(SolveCoroutine());
-        }
-
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            Reset();
-        }
 #endif
     }
 
@@ -158,8 +149,10 @@ public class GameManager : MonoBehaviour
             OnSolverStarted();
 
         float startTime = Time.realtimeSinceStartup;
-        yield return Solver.Solver.SolveWidthAndResetCoroutine(Game, _useHeuristicForSolver);
+        yield return Solver.SolverCoroutine.SolveWidthAndReset(Game, _useHeuristicForSolver);
         float elapsedTime = Time.realtimeSinceStartup - startTime;
+
+        Debug.Log($"Elapsed coroutine {elapsedTime}");
 
         if (OnSolverEnded != null)
             OnSolverEnded();
@@ -178,7 +171,7 @@ public class GameManager : MonoBehaviour
         if (OnSolverStarted != null)
             OnSolverStarted();
 
-        yield return Solver.Solver.SolveWidthAndResetCoroutine(Game, _useHeuristicForSolver);
+        yield return Solver.SolverCoroutine.SolveWidthAndReset(Game, _useHeuristicForSolver);
 
         if (OnSolverEnded != null)
             OnSolverEnded();
@@ -278,14 +271,33 @@ public class GameManager : MonoBehaviour
 
         if (GUI.Button(new Rect(space, 2 * (space + height) + space, width, height), "Solve"))
         {
-            //StartCoroutine(SolveCoroutine());
-            Solver.Solver.SolveWidthAndReset(Game, _useHeuristicForSolver);
-            StartCoroutine(Game.ShowAllMovesCoroutine());
+            switch (_solverMethod)
+            {
+                case Method.Normal:
+                    float startTime = Time.realtimeSinceStartup;
+                    Solver.Solver.SolveWidthAndReset(Game, _useHeuristicForSolver);
+                    float elapsedTime = Time.realtimeSinceStartup - startTime;
+
+                    Debug.Log($"Elapsed normal {elapsedTime}");
+
+                    StartCoroutine(Game.ShowAllMovesCoroutine());
+                    break;
+                case Method.Coroutine:
+                    StartCoroutine(SolveCoroutine());
+                    break;
+                case Method.Task:
+                    break;
+            }
         }
 
         if (GUI.Button(new Rect(space, 3 * (space + height) + space, width, height), "Clue"))
         {
             StartCoroutine(ClueCoroutine());
+        }
+
+        if (GUI.Button(new Rect(space, 4 * (space + height) + space, width, height), "Screenshot"))
+        {
+            ScreenCapture.CaptureScreenshot("screen.png");
         }
 
         // GUI.TextArea(new Rect(Screen.width - (3 * width) - space, space * 5, 3 * width, 5 * height), LevelDescription);

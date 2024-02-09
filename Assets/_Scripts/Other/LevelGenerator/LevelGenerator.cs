@@ -107,7 +107,7 @@ public class LevelGenerator : MonoBehaviour
             iter++;
 
             game = new GameLogic(level);
-            Solver.Solver.SolveWidth(game, true);
+            //Solver.Solver.SolveWidth(game, true);
 
             if (!game.Win || game.Boat.Crossings < _desiredCrossings)
                 continue;
@@ -123,7 +123,7 @@ public class LevelGenerator : MonoBehaviour
         game.Reset();
         while (!game.Win)
         {
-            Solver.Solver.SolveWidth(new GameLogic(levelWithSmallerWeightLimit), true);
+            //Solver.Solver.SolveWidth(new GameLogic(levelWithSmallerWeightLimit), true);
             level = levelWithSmallerWeightLimit;
             levelWithSmallerWeightLimit.BoatMaxWeightAllowed--;
         }

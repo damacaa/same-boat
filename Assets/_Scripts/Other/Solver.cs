@@ -9,22 +9,9 @@ namespace Solver
 {
     public class Solver
     {
-        public static State SolveWidth(GameLogic game, bool useHeuristic = false)
+        public static bool SolveWidthAndReset(GameLogic game, bool useHeuristic = false)
         {
-            HashSet<State> openList = new HashSet<State>(new StateComparer()); // List of states to explore 
-            HashSet<State> closedList = new HashSet<State>(new StateComparer()); // List of states that have already been explored
-
-            PriorityQueue<State> nodeQueue;
-            if (useHeuristic)
-                nodeQueue = new PriorityQueue<State>((n1, n2) => n2.F.CompareTo(n1.F));
-            else
-                nodeQueue = new PriorityQueue<State>((n1, n2) => 1);
-
-
-            State current = game.GetCurrentState();
-
-            openList.Add(current); // Exploration starts with current state
-            nodeQueue.Enqueue(current);
+            State current = Initialize(game, useHeuristic, out PriorityQueue<State> nodeQueue, out HashSet<State> openList, out HashSet<State> closedList);
 
             while (openList.Count > 0)
             {
@@ -44,31 +31,48 @@ namespace Solver
                 ExpandNeighbours(current, game, openList, closedList, nodeQueue, true);
             }
 
+            if (!game.Win)
+            {
+                return false;
+            }
+
+            ResetGame(game, current);
+
+            return true;
+        }
+
+        protected static State Initialize(GameLogic game, bool useHeuristic, out PriorityQueue<State> nodeQueue, out HashSet<State> openList, out HashSet<State> closedList)
+        {
+            openList = new HashSet<State>(new StateComparer()); // List of states to explore 
+            closedList = new HashSet<State>(new StateComparer()); // List of states that have already been explored
+
+            if (useHeuristic)
+                nodeQueue = new PriorityQueue<State>((n1, n2) => n2.F.CompareTo(n1.F));
+            else
+                nodeQueue = new PriorityQueue<State>((n1, n2) => 1);
+
+            State current = game.GetCurrentState();
+
+            openList.Add(current); // Exploration starts with current state
+            nodeQueue.Enqueue(current);
+
             return current;
         }
 
-        public static State SolveWidthAndReset(GameLogic game, bool useHeuristic = false)
+
+
+        protected static void ResetGame(GameLogic game, State current)
         {
-            State result = SolveWidth(game, useHeuristic);
-
-            if (!game.Win)
-            {
-                return null;
-            }
-
             // Reset game to initial state
-            State aux = result;
+            State aux = current;
             while (aux.PreviousState != null)
             {
                 aux = aux.PreviousState;
                 game.Undo(true);
             }
-
-            return result;
         }
 
-
-        private static void SetState(State newState, State current, GameLogic game)
+        protected static void SetState(State newState, State current, GameLogic game)
         {
             if (newState == current) { return; }
 
@@ -104,7 +108,7 @@ namespace Solver
             }
         }
 
-        private static void ExpandNeighbours(State current, GameLogic game, HashSet<State> openList, HashSet<State> closedList, PriorityQueue<State> queue, bool omitAnimation)
+        protected static void ExpandNeighbours(State current, GameLogic game, HashSet<State> openList, HashSet<State> closedList, PriorityQueue<State> queue, bool omitAnimation)
         {
             //If boat has transportables it will try to unload in current island
             if (current.BoatOccupiedSeats > 0)
@@ -161,7 +165,7 @@ namespace Solver
             }
         }
 
-        private static void TryAddNewState(State current, GameLogic game, HashSet<State> openList, HashSet<State> closedList, PriorityQueue<State> queue)
+        protected static void TryAddNewState(State current, GameLogic game, HashSet<State> openList, HashSet<State> closedList, PriorityQueue<State> queue)
         {
             State newState = game.GetCurrentState();
 
@@ -176,134 +180,6 @@ namespace Solver
             }
         }
 
-
-        /// <summary>
-        /// Same but as a coroutine
-        /// </summary>
-        /// <param name="game"></param>
-        /// <param name="useHeuristic"></param>
-        /// <returns></returns>
-
-        internal static IEnumerator SolveWidthAndResetCoroutine(GameLogic game, bool useHeuristic)
-        {
-            HashSet<State> openList = new HashSet<State>(new StateComparer()); // List of states to explore 
-            HashSet<State> closedList = new HashSet<State>(new StateComparer()); // List of states that have already been explored
-
-            PriorityQueue<State> nodeQueue;
-            if (useHeuristic)
-                nodeQueue = new PriorityQueue<State>((n1, n2) => n2.F.CompareTo(n1.F));
-            else
-                nodeQueue = new PriorityQueue<State>((n1, n2) => 0);
-
-            State current = game.GetCurrentState();
-
-            openList.Add(current); // Exploration starts with current state
-            nodeQueue.Enqueue(current);
-
-            while (openList.Count > 0)
-            {
-                // Sets game state
-                State previous = current;
-                current = nodeQueue.Dequeue();
-
-                SetState(current, previous, game);
-
-                openList.Remove(current);
-                closedList.Add(current);
-
-                // Checks win and brakes loop if true
-                if (game.Win) break;
-
-                // Adds to the open list all of the new possible states derived from the current state
-                yield return ExpandNeighboursCoroutine(current, game, openList, closedList, nodeQueue, false);
-            }
-
-            if (!game.Win)
-            {
-                yield break;
-            }
-
-            // Reset game to initial state
-            State aux = current;
-            while (aux.PreviousState != null)
-            {
-                aux = aux.PreviousState;
-                game.Undo(true);
-            }
-
-            yield return null;
-        }
-
-        private static IEnumerator ExpandNeighboursCoroutine(State current, GameLogic game, HashSet<State> openList, HashSet<State> closedList, PriorityQueue<State> queue, bool omitAnimation)
-        {
-            var wait = new WaitForSeconds(1);   
-
-            //If boat has transportables it will try to unload in current island
-            if (current.BoatOccupiedSeats > 0)
-            {
-                for (int i = 0; i < current.BoatTransportables.Length; i++)
-                {
-                    Transportable transportable = current.BoatTransportables[i];
-                    // Game logic is completely decoupled. The solver doesn't need to know how does the game work in order to work.
-                    // It just tries to make every possible move and asks if it was valid.
-                    if (transportable == null || !game.UnloadFromBoat(transportable, omitAnimation))
-                    {
-                        continue;
-                    }
-
-                    TryAddNewState(current, game, openList, closedList, queue);
-
-                    if (game.Win)
-                    {
-                        openList.Add(current);
-                        queue.Enqueue(current);
-                    }
-
-                    if (!omitAnimation)
-                        yield return wait;
-                    game.Undo(omitAnimation);
-                    if (!omitAnimation)
-                        yield return wait;
-                }
-            }
-
-            //If boat has empty seats it will load new transportables
-            if (current.BoatOccupiedSeats < current.BoatCapacity)
-            {
-                for (int i = 0; i < current.CurrentIsland.Transportables.Count; i++)
-                {
-                    Transportable transportable = current.CurrentIsland.Transportables[i];
-                    if (transportable == null || !game.LoadOnBoat(transportable, omitAnimation))
-                    {
-                        continue;
-                    }
-
-                    TryAddNewState(current, game, openList, closedList, queue);
-
-                    if (!omitAnimation)
-                        yield return wait;
-                    game.Undo(omitAnimation);
-                    if (!omitAnimation)
-                        yield return wait;
-                }
-            }
-
-            //Boat will traver to another island if possible
-            for (int i = current.Islands.Count - 1; i >= 0; i--)
-            {
-                State.IslandState island = current.Islands[i];
-                if (island.islandRef == current.CurrentIsland || !game.MoveBoatToIsland(island.islandRef, omitAnimation))
-                    continue;
-
-                TryAddNewState(current, game, openList, closedList, queue);
-
-                if (!omitAnimation)
-                    yield return wait;
-                game.Undo(omitAnimation);
-                if (!omitAnimation)
-                    yield return wait;
-            }
-        }
     }
 
 
