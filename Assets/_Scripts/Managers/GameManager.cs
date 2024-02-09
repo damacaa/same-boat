@@ -1,8 +1,9 @@
 
+using Solver;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -166,6 +167,29 @@ public class GameManager : MonoBehaviour
         yield return null;
     }
 
+    IEnumerator SolveTaskCoroutine()
+    {
+        if (OnSolverStarted != null)
+            OnSolverStarted();
+
+        float startTime = Time.realtimeSinceStartup;
+        yield return SolverTask.SolveCoroutine(Game, _useHeuristicForSolver);
+        float elapsedTime = Time.realtimeSinceStartup - startTime;
+
+        Debug.Log($"Elapsed task {elapsedTime}");
+
+        if (OnSolverEnded != null)
+            OnSolverEnded();
+        yield return Game.ShowAllMovesCoroutine();
+
+        //print($"Used heuristic: {_useHeuristicForSolver}\n" +
+        //    $"Time elapsed: {elapsedTime}s\n" +
+        //    $"Crossings: {Game.Boat.Crossings}\n" +
+        //    $"Travel cost: {Game.Boat.CurrentTravelCost}");
+
+        yield return null;
+    }
+
     IEnumerator ClueCoroutine()
     {
         if (OnSolverStarted != null)
@@ -274,18 +298,21 @@ public class GameManager : MonoBehaviour
             switch (_solverMethod)
             {
                 case Method.Normal:
-                    float startTime = Time.realtimeSinceStartup;
-                    Solver.Solver.SolveWidthAndReset(Game, _useHeuristicForSolver);
-                    float elapsedTime = Time.realtimeSinceStartup - startTime;
+                    {
+                        float startTime = Time.realtimeSinceStartup;
+                        Solver.Solver.SolveWidthAndReset(Game, _useHeuristicForSolver);
+                        float elapsedTime = Time.realtimeSinceStartup - startTime;
 
-                    Debug.Log($"Elapsed normal {elapsedTime}");
+                        Debug.Log($"Elapsed normal {elapsedTime}");
 
-                    StartCoroutine(Game.ShowAllMovesCoroutine());
-                    break;
+                        StartCoroutine(Game.ShowAllMovesCoroutine());
+                        break;
+                    }
                 case Method.Coroutine:
                     StartCoroutine(SolveCoroutine());
                     break;
                 case Method.Task:
+                    StartCoroutine(SolveTaskCoroutine());
                     break;
             }
         }
@@ -311,4 +338,6 @@ public class GameManager : MonoBehaviour
             }
         }
     }
+
+
 }
