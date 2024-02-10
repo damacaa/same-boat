@@ -14,6 +14,7 @@ public class Transportable
 
     public int Weight { get { return ScripatableObject.Weight; } }
     public int PositionIndexInIsland { get; internal set; }
+    public bool IsHungry { get; internal set; }
 
     public Transportable(TransportableSO scripatableObject)
     {

@@ -82,7 +82,8 @@ public class GameManager : MonoBehaviour
         Game.OnWin += HandleWin;
         Game.OnFail += HandleFail;
 
-        LevelDescription = level.ToString();
+        LevelDescription = $"{level.name}:\n{level}";
+        Debug.Log(LevelDescription);
 
         OnLevelLoaded?.Invoke();
 
@@ -278,7 +279,12 @@ public class GameManager : MonoBehaviour
             Game.Undo();
 
         if (GUI.Button(new Rect(space, space + height + space, width, height), "Reset"))
+        {
+            if(_isWin || _isFail)
+                SoundController.Instace.PlaySong(1);
+
             Game.Reset();
+        }
 
         if (GUI.Button(new Rect(space, 2 * (space + height) + space, width, height), "Solve"))
         {

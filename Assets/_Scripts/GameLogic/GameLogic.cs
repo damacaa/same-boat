@@ -50,7 +50,38 @@ public class GameLogic
 
             foreach (var transportableSO in island.transportables)
             {
-                islandData.Add(new Transportable(transportableSO), out float animationDuration, true);
+                var t = new Transportable(transportableSO);
+
+                if (level.StrictMode)
+                {
+                    foreach (var rule in level.Rules)
+                    {
+
+                        switch (rule.comparison)
+                        {
+                            case Rule.RuleType.WantsToEat:
+                                if (t.ScripatableObject == rule.A)
+                                    t.IsHungry = true;
+                                break;
+                            case Rule.RuleType.CountMustBeGreaterThan:
+                                if (t.ScripatableObject == rule.B)
+                                    t.IsHungry = true;
+                                break;
+                            case Rule.RuleType.CountMustBeGreaterEqualThan:
+                                if (t.ScripatableObject == rule.B)
+                                    t.IsHungry = true;
+                                break;
+                            case Rule.RuleType.Requires:
+                                break;
+                            default:
+                                break;
+                        }
+
+
+                    }
+                }
+
+                islandData.Add(t, out float animationDuration, true);
             }
 
             _islands.Add(islandData);
@@ -67,7 +98,7 @@ public class GameLogic
         //Build map
         MapGenerator.instace.GenerateMap(_islands.ToArray(), level); //Should generate island behaviours
         MapGenerator.instace.GenerateBoat(_boat);
-        TransportableManager.instace.GenerateSprites(_islands.ToArray());
+        TransportableManager.instace.GenerateSprites(_islands.ToArray(), level);
     }
 
     #region CommandExecution
@@ -182,10 +213,14 @@ public class GameLogic
 
             List<Transportable> group = island.Transportables.Where(item => item != null).Select(item => item).ToList();
 
+
             if (_strictMode && island == _boat.Island)
             {
                 group.AddRange(_boat.Transportables.Where(item => item != null));
             }
+
+            /*var hungryTransportablesInBoat = _boat.Transportables.Where(item => item != null && item.IsHungry);
+            group.AddRange(hungryTransportablesInBoat);*/
 
             if (!CheckRules(group))
             {
@@ -230,7 +265,7 @@ public class GameLogic
 
             switch (r.comparison)
             {
-                case Rule.RuleType.CantCoexist:
+                case Rule.RuleType.WantsToEat:
                     if (aCount > 0 && bCount > 0)
                         return false;
                     break;
@@ -323,7 +358,7 @@ public class GameLogic
         return currentState;
     }
 
-    
+
 
     public override string ToString()
     {

@@ -1003,8 +1003,8 @@ MonoBehaviour:
   colors:
   - {r: 1, g: 0.6075944, b: 0.33490568, a: 1}
   - {r: 0.85236424, g: 0.5707547, b: 1, a: 1}
-  - {r: 0.4198113, g: 1, b: 0.7671396, a: 1}
-  - {r: 0.504717, g: 0.9468651, b: 1, a: 1}
+  - {r: 0.7294118, g: 0.91764706, b: 0.49019608, a: 1}
+  - {r: 1, g: 0.4862745, b: 0.65882355, a: 1}
   _darkColor: {r: 0.23349059, g: 0.2514514, b: 0.31132078, a: 1}
   _map: {fileID: 2800000, guid: 7c27b6935c20ed24bb8c48af6e63306c, type: 3}
   _threshold: 0.5
@@ -1067,8 +1067,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 294d16c47a36c8142ad022e5bd0cf112, type: 2}
   - {fileID: 11400000, guid: aee1f53304f5fbc4b9a023ea5acfe4e6, type: 2}
   - {fileID: 11400000, guid: 8b409fcfa11fa3a4a888882ea33e2b81, type: 2}
+  - {fileID: 11400000, guid: 3b256d271c6c77c4a8800123686d050d, type: 2}
   _currentLevel: 0
   _useHeuristicForSolver: 1
+  _solverMethod: 2
   _showDebugUI: 1
 --- !u!1 &1971991502
 GameObject:

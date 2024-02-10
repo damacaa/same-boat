@@ -8,6 +8,8 @@ using UnityEngine;
 public class Level : ScriptableObject
 {
     public new string name;
+    public string Description;
+    [Space]
     [Range(2, 4)]
     public int BoatCapacity = 2;
     [Range(0, 20)]
@@ -22,14 +24,17 @@ public class Level : ScriptableObject
     public Island[] Islands;
     public Rule[] Rules;
 
-
     public override string ToString()
     {
-        string s = "";
-        StringBuilder sb = new StringBuilder();
+        if (!string.IsNullOrEmpty(Description))
+            return Description;
 
-        if (name != "")
-            sb.Append($"{name}{(StrictMode ? " (strict mode)" : "")}:\n");
+        return GenerateDescription();
+    }
+
+    private string GenerateDescription()
+    {
+        StringBuilder sb = new StringBuilder();
 
         Dictionary<TransportableSO, int> count = new Dictionary<TransportableSO, int>();
 
@@ -80,14 +85,14 @@ public class Level : ScriptableObject
             }
         }
 
-        sb.Append($"\n{listOfTransportables} want to get to the island in the north, but they must cross a river first.\n");
+        sb.Append($"{listOfTransportables} want to get to the island in the north, but they must cross a river first.\n");
 
         // Boat
 
         bool hasMaxWeight = BoatMaxWeightAllowed > 0;
         bool hasMaxTravelCost = BoatMaxTravelCost > 0;
 
-        sb.Append($"\nThey have a boat with {numbers[BoatCapacity].ToLower()}{(BoatCapacity == 1 ? " seat" : " seats")}");
+        sb.Append($"They have a boat with {numbers[BoatCapacity].ToLower()}{(BoatCapacity == 1 ? " seat" : " seats")}");
 
         if (hasMaxWeight || hasMaxTravelCost)
         {
@@ -140,7 +145,7 @@ public class Level : ScriptableObject
             sb.Append($"When two or more things are traveling together," +
                     $" the time they will take to cross the river is equal to the time that the slowest one of them would take.\n");
 
-        sb.Append($"\nThe boat can’t be moved if there isn’t somebody driving it.");
+        sb.Append($"The boat can’t be moved if there isn’t somebody driving it.");
 
         if (OnlyHumansCanDrive)
             sb.Append($" However, the man won't allow anyone but himself to sail the boat.\n");
@@ -152,18 +157,25 @@ public class Level : ScriptableObject
         // Rules
 
         if (Rules.Length == 0)
-            return s;
+            return sb.ToString();
 
-        sb.Append($"\nEven though they all want everyone to get to the other side in one piece," +
+        sb.Append($"Even though they all want everyone to get to the other side in one piece," +
             $" the animal instincts of some of them will kick in if they are left unattended." +
-            $" Keep in mind that:\n\n");
+            $" Keep in mind that:\n");
 
         foreach (var rule in Rules)
         {
             sb.Append("   - " + rule + "\n");
         }
 
-        return s;
+        if (StrictMode)
+        {
+            sb.Append("\nBe carefull, as some animals are specially hugry today and won't be able " +
+                "to resist their urges, even in the boat. " +
+                "You will see them because they have an especial icon over their heads.\n");
+        }
+
+        return sb.ToString();
     }
 
     [System.Serializable]

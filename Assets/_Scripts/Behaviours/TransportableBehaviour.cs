@@ -47,11 +47,18 @@ public class TransportableBehaviour : MonoBehaviour
         }
     }
 
+    [Header("Sprites")]
+    [SerializeField]
     GameObject _sprite;
+    [SerializeField]
     GameObject _shadow;
+
+    [SerializeField]
+    GameObject _icon;
 
     Animator _animator;
     SpriteRenderer _renderer;
+    SpriteRenderer _iconRenderer;
     ParticleSystem _particles;
     AudioSource _audioSource;
     AudioSource _stepAudioSource;
@@ -68,6 +75,7 @@ public class TransportableBehaviour : MonoBehaviour
     void Update()
     {
         _renderer.sortingOrder = 1 + (int)Mathf.Abs(100 - Mathf.Min(transform.position.y * 10, 100));
+        _iconRenderer.sortingOrder = _renderer.sortingOrder + 1;
 
         // Rotation
         transform.rotation = Quaternion.identity;//Always look at camera, even if parent rotates
@@ -109,8 +117,8 @@ public class TransportableBehaviour : MonoBehaviour
     {
         Data = t;
 
-        _sprite = transform.GetChild(0).gameObject;
-        _shadow = transform.GetChild(1).gameObject;
+        //_sprite = transform.GetChild(0).gameObject;
+        //_shadow = transform.GetChild(1).gameObject;
 
         _animator = _sprite.GetComponent<Animator>();
         _renderer = _sprite.GetComponent<SpriteRenderer>();
@@ -118,6 +126,8 @@ public class TransportableBehaviour : MonoBehaviour
         _particles = GetComponentInChildren<ParticleSystem>();
         _particles.Pause();
 
+        _iconRenderer = _icon.GetComponent<SpriteRenderer>();
+        _iconRenderer.gameObject.SetActive(t.IsHungry);
 
         int res = scriptableObject.sprite.texture.width;
         int halfRes = res / 2;
@@ -133,6 +143,8 @@ public class TransportableBehaviour : MonoBehaviour
     }
 
     Coroutine _movement;
+
+
     internal float GoTo(Transform target, bool skipAnimation, out float animationDuration, bool backwards)
     {
         _mirror = target.position.x < transform.position.x;

@@ -13,9 +13,14 @@ MonoBehaviour:
   m_Name: Level1
   m_EditorClassIdentifier: 
   name: The classic
+  Description: "Island calls, but river blocks! \nCaptain sails alone, in a two-seater
+    boat. \nFoxy friend wants feathery snack,  Chicken loves crunchy corn attack! 
+    Help them all cross, safe and sound,  But don't leave them hungry on the ground! 
+    Can you crack the riddle's code? \nReach the island, down the watery road!"
   BoatCapacity: 2
   BoatMaxWeightAllowed: 0
   BoatMaxTravelCost: 0
+  StrictMode: 0
   OnlyHumansCanDrive: 1
   Map: {fileID: 2800000, guid: f944d0c065e6cf44fb2c6180bcf8d17a, type: 3}
   Islands:
