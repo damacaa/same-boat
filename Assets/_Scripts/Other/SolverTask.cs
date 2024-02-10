@@ -14,7 +14,6 @@ namespace Solver
 
             Task.Run(() =>
             {
-
                 State current = Initialize(game, useHeuristic, out PriorityQueue<State> nodeQueue, out HashSet<State> openList, out HashSet<State> closedList);
 
                 while (openList.Count > 0)
@@ -33,7 +32,6 @@ namespace Solver
 
                     // Adds to the open list all of the new possible states derived from the current state
                     ExpandNeighbours(current, game, openList, closedList, nodeQueue, true);
-
                 }
 
                 result.Ready = true;
@@ -47,10 +45,8 @@ namespace Solver
                 ResetGame(game, current);
             });
 
-
             return result;
         }
-
 
 
         public static IEnumerator SolveCoroutine(GameLogic game, bool useHeuristic = true)

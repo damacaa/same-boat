@@ -49,12 +49,12 @@ public class BoatBehaviour : MonoBehaviour
         return _seats[pos];
     }
 
-    internal void GoTo(Island newIsland, out float animationDuration, bool instant, bool backwards)
+    internal void GoTo(Island newIsland, out float animationDuration, bool skipAnimation, bool backwards)
     {
         animationDuration = 0;
         StopAllCoroutines();
         Vector3 destination = newIsland.Behaviour.GetPortPosition();
-        if (instant)
+        if (skipAnimation)
         {
             transform.position = destination;
         }

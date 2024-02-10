@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Level", menuName = "ScriptableObjects/Level", order = 2)]
@@ -19,16 +19,17 @@ public class Level : ScriptableObject
     public bool OnlyHumansCanDrive = false;
     [Space()]
     public Texture2D Map;
-    public Level.Island[] Islands;
+    public Island[] Islands;
     public Rule[] Rules;
 
 
     public override string ToString()
     {
         string s = "";
+        StringBuilder sb = new StringBuilder();
 
         if (name != "")
-            s += $"{name}{(StrictMode?" (strict mode)":"")}:\n";
+            sb.Append($"{name}{(StrictMode ? " (strict mode)" : "")}:\n");
 
         Dictionary<TransportableSO, int> count = new Dictionary<TransportableSO, int>();
 
@@ -67,85 +68,85 @@ public class Level : ScriptableObject
 
             if (i == arrayOfAllKeys.Length - 1)
             {
-                //listOfTransportables += ".\n";
+                //listOfTransportablesb.Append( ".\n";
             }
             else if (i == arrayOfAllKeys.Length - 2)
             {
-                listOfTransportables += " and ";
+                listOfTransportables += (" and ");
             }
             else
             {
-                listOfTransportables += ", ";
+                listOfTransportables += (", ");
             }
         }
 
-        s += $"\n{listOfTransportables} want to get to the island in the north, but they must cross a river first.\n";
+        sb.Append($"\n{listOfTransportables} want to get to the island in the north, but they must cross a river first.\n");
 
         // Boat
 
         bool hasMaxWeight = BoatMaxWeightAllowed > 0;
         bool hasMaxTravelCost = BoatMaxTravelCost > 0;
 
-        s += $"\nThey have a boat with {numbers[BoatCapacity].ToLower()}{(BoatCapacity == 1 ? " seat" : " seats")}";
+        sb.Append($"\nThey have a boat with {numbers[BoatCapacity].ToLower()}{(BoatCapacity == 1 ? " seat" : " seats")}");
 
         if (hasMaxWeight || hasMaxTravelCost)
         {
 
-            s += " but";
+            sb.Append(" but");
 
             if (hasMaxWeight)
             {
-                s += $" it can only carry up to {BoatMaxWeightAllowed * 10} kilos";
+                sb.Append($" it can only carry up to {BoatMaxWeightAllowed * 10} kilos");
                 if (hasMaxTravelCost)
-                    s += " and";
+                    sb.Append(" and");
                 else
-                    s += ".\n";
+                    sb.Append(".\n");
             }
 
             if (hasMaxTravelCost)
             {
-                s += $" it can only drive for {BoatMaxTravelCost} minutes.\n";
+                sb.Append($" it can only drive for {BoatMaxTravelCost} minutes.\n");
 
             }
         }
         else
-            s += ".\n";
+            sb.Append(".\n");
 
         foreach (var t in arrayOfAllKeys)
         {
             if (hasMaxWeight || hasMaxTravelCost)
             {
 
-                s += $"   - A {t.name.ToLower()}";
+                sb.Append($"   - A {t.name.ToLower()}");
 
                 if (hasMaxWeight)
                 {
-                    s += $" weighs {t.Weight*10} kilos";
+                    sb.Append($" weighs {t.Weight * 10} kilos");
 
                     if (hasMaxTravelCost)
-                        s += " and";
+                        sb.Append(" and");
                     else
-                        s += ".\n";
+                        sb.Append(".\n");
                 }
 
                 if (hasMaxTravelCost)
                 {
-                    s += $" takes {t.TravelCost} {(t.TravelCost > 1 ? "minutes" : "minute")} to cross the river.\n";
+                    sb.Append($" takes {t.TravelCost} {(t.TravelCost > 1 ? "minutes" : "minute")} to cross the river.\n");
                 }
             }
         }
 
         if (hasMaxTravelCost)
-            s += $"When two or more things are traveling together," +
-                    $" the time they will take to cross the river is equal to the time that the slowest one of them would take.\n";
+            sb.Append($"When two or more things are traveling together," +
+                    $" the time they will take to cross the river is equal to the time that the slowest one of them would take.\n");
 
-        s += $"\nThe boat can’t be moved if there isn’t somebody driving it.";
+        sb.Append($"\nThe boat can’t be moved if there isn’t somebody driving it.");
 
         if (OnlyHumansCanDrive)
-            s += $" However, the man won't allow anyone but himself to drive.\n";
+            sb.Append($" However, the man won't allow anyone but himself to sail the boat.\n");
         else
         {
-            s += "\n";
+            sb.Append("\n");
         }
 
         // Rules
@@ -153,13 +154,13 @@ public class Level : ScriptableObject
         if (Rules.Length == 0)
             return s;
 
-        s += $"\nEven though they all want everyone to get to the other side in one piece," +
+        sb.Append($"\nEven though they all want everyone to get to the other side in one piece," +
             $" the animal instincts of some of them will kick in if they are left unattended." +
-            $" Keep in mind that:\n\n";
+            $" Keep in mind that:\n\n");
 
         foreach (var rule in Rules)
         {
-            s += "   - " + rule + "\n";
+            sb.Append("   - " + rule + "\n");
         }
 
         return s;

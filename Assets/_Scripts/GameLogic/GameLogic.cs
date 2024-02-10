@@ -7,36 +7,35 @@ using UnityEngine;
 
 public class GameLogic
 {
-    Level _level;
+    private Level _level;
 
     //Entities
-    Boat _boat;
-    List<Island> _islands = new List<Island>();
+    private Boat _boat;
+    private List<Island> _islands = new List<Island>();
 
     //Command
-    int _currentCommand = 0;
-    List<Command> _commands = new List<Command>();
+    private int _currentCommand = 0;
+    private List<Command> _commands = new List<Command>();
 
     //Control
-    bool _win = false;
-    bool _fail = false;
-    bool _undone = false;
-    private bool _waitForEnd = true;
-    private bool _showingSolveAnimation = false;
-    float _nextTime = 0;
+    private bool _win = false;
+    private bool _fail = false;
+    private bool _undone = false;
 
-    bool _strictMode = false;
+    private bool _showingSolveAnimation = false;
+    private float _nextTime = 0;
+
+    private bool _strictMode = false;
 
     public bool Win { get { return _win; } }
     public bool Fail { get { return _fail; } }
 
     public Boat Boat { get { return _boat; } }
-    public Island FirstIsland { get { return _islands[0]; } }
 
     // Events
-    public delegate void Delegate();
-    public event Delegate OnFail;
-    public event Delegate OnWin;
+    public event Action OnFail;
+    public event Action OnWin;
+
 
     public GameLogic(Level level)
     {
@@ -61,15 +60,7 @@ public class GameLogic
         _boat = new Boat(_islands[0], level.BoatCapacity, level.BoatMaxWeightAllowed, level.BoatMaxTravelCost, level.OnlyHumansCanDrive);
     }
 
-    internal void Reset(bool instant = false)
-    {
-        for (int i = 0; i <= _commands.Count; i++) //Have to figure out how many undos are needed
-        {
-            Undo(instant);
-        }
-        _commands.Clear();
-        _currentCommand = 0;
-    }
+
 
     public void GenerateGameObjects(Level level)
     {
@@ -79,17 +70,18 @@ public class GameLogic
         TransportableManager.instace.GenerateSprites(_islands.ToArray());
     }
 
-    public bool Execute(bool instant = false)
+    #region CommandExecution
+    public bool Execute(bool skipAnimation = false)
     {
-        /*if (!instant && (_showingSolveAnimation || (_waitForEnd && Time.time < _nextTime)))
+        /*if (!skipAnimation && (_showingSolveAnimation || (_waitForEnd && Time.time < _nextTime)))
         {
-            //instant = true;//Should make current animation skipeable
+            //skipAnimation = true;//Should make current animation skipeable
             return false;
         }*/
 
         if (!_fail && _currentCommand < _commands.Count)
         {
-            bool success = _commands[_currentCommand].Execute(out float animationDuration, instant);
+            bool success = _commands[_currentCommand].Execute(out float animationDuration, skipAnimation);
 
 
             //If command fails
@@ -99,19 +91,19 @@ public class GameLogic
                 return false;
             }
 
-            if (!instant)
+            if (!skipAnimation)
                 _nextTime = Time.time + (0.5f * animationDuration);
 
             //Debug.Log(_commands[_currentCommand]);
 
-            _fail = CheckFail(!instant);
-            if (!instant && _fail && OnFail != null)
+            _fail = CheckFail(!skipAnimation);
+            if (!skipAnimation && _fail && OnFail != null)
                 OnFail();
 
             if (!_fail)
             {
                 CheckWin();
-                if (!instant && Win && OnWin != null)
+                if (!skipAnimation && Win && OnWin != null)
                     OnWin();
             }
 
@@ -121,11 +113,11 @@ public class GameLogic
         return false;
     }
 
-    public void Undo(bool instant = false)
+    public void Undo(bool skipAnimation = false)
     {
-        /*if (!instant && (_showingSolveAnimation || (_waitForEnd && Time.time < _nextTime)))
+        /*if (!skipAnimation && (_showingSolveAnimation || (_waitForEnd && Time.time < _nextTime)))
         {
-            //instant = true;
+            //skipAnimation = true;
             return;
         }*/
 
@@ -133,8 +125,8 @@ public class GameLogic
         {
             _undone = true;
             _currentCommand--;
-            _commands[_currentCommand].Undo(out float animationDuration, instant);
-            if (!instant)
+            _commands[_currentCommand].Undo(out float animationDuration, skipAnimation);
+            if (!skipAnimation)
                 _nextTime = Time.time + (0.5f * animationDuration);
             _fail = false;
             _win = false;
@@ -142,6 +134,44 @@ public class GameLogic
         }
     }
 
+    internal void Reset(bool skipAnimation = false)
+    {
+        for (int i = 0; i <= _commands.Count; i++) //Have to figure out how many undos are needed
+        {
+            Undo(skipAnimation);
+        }
+        _commands.Clear();
+        _currentCommand = 0;
+    }
+
+    public IEnumerator ExecuteAllMovesCoroutine()
+    {
+        var wait = new WaitForSeconds(.5f);
+        while (_showingSolveAnimation)
+        {
+            yield return wait;
+        }
+
+        _showingSolveAnimation = true;
+
+        while (_currentCommand < _commands.Count)
+        {
+            _commands[_currentCommand].Execute(out float waitTime);
+            _currentCommand++;
+            yield return new WaitForSeconds(1.1f * waitTime);
+        }
+
+        CheckWin();
+        if (Win && OnWin != null)
+            OnWin();
+        _showingSolveAnimation = false;
+
+        yield return null;
+    }
+
+    #endregion
+
+    #region Checks
     bool CheckFail(bool showMessage = true)
     {
         bool fail = false;
@@ -238,25 +268,25 @@ public class GameLogic
 
         _win = _win && _boat.IsEmpty;
     }
+    #endregion
 
-
-
-    public bool LoadOnBoat(Transportable load, bool instant = false)
+    #region Commands
+    public bool LoadOnBoat(Transportable load, bool skipAnimation = false)
     {
-        return AddCommand(new BoatLoadCommand(_boat, load), instant);
+        return AddCommand(new BoatLoadCommand(_boat, load), skipAnimation);
     }
 
-    public bool UnloadFromBoat(Transportable load, bool instant = false)
+    public bool UnloadFromBoat(Transportable load, bool skipAnimation = false)
     {
-        return AddCommand(new BoatUnloadCommand(_boat, load), instant);
+        return AddCommand(new BoatUnloadCommand(_boat, load), skipAnimation);
     }
 
-    public bool MoveBoatToIsland(Island island, bool instant = false)
+    public bool MoveBoatToIsland(Island island, bool skipAnimation = false)
     {
-        return AddCommand(new BoatTravelCommand(_boat, island), instant);
+        return AddCommand(new BoatTravelCommand(_boat, island), skipAnimation);
     }
 
-    public bool AddCommand(Command command, bool instant = false)
+    public bool AddCommand(Command command, bool skipAnimation = false)
     {
         if (_undone && _commands.Count > _currentCommand)
             _commands.RemoveRange(_currentCommand, _commands.Count - _currentCommand);
@@ -264,8 +294,9 @@ public class GameLogic
 
         _commands.Add(command);
 
-        return Execute(instant);
+        return Execute(skipAnimation);
     }
+    #endregion
 
     public Solver.State GetCurrentState()
     {
@@ -292,67 +323,11 @@ public class GameLogic
         return currentState;
     }
 
-    public IEnumerator ShowAllMovesCoroutine()
-    {
-        _showingSolveAnimation = true;
-
-        while (_currentCommand < _commands.Count)
-        {
-            _commands[_currentCommand].Execute(out float wait);
-            _currentCommand++;
-            yield return new WaitForSeconds(1.1f * wait);
-        }
-
-        CheckWin();
-        if (Win && OnWin != null)
-            OnWin();
-        _showingSolveAnimation = false;
-
-        yield return null;
-    }
-
-
-    public void Test()
-    {
-        var a = _islands[0];
-        var b = _islands[1];
-
-        var fox = a.Transportables[0];
-        var chicken = a.Transportables[1];
-        var corn = a.Transportables[2];
-
-        LoadOnBoat(fox);
-    }
+    
 
     public override string ToString()
     {
         return GetCurrentState().ToString();
-
-        /*string result = "";
-
-        string progress = "";
-        for (int i = 0; i < _commands.Count; i++)
-        {
-            if (i == _currentCommand)
-            {
-                progress += "|";
-            }
-            else
-            {
-                progress += _commands[i].Success ? "-" : "x";
-            }
-        }
-
-        result += progress + " " + _currentCommand + "/" + _commands.Count + "\n";
-
-        foreach (var island in _islands)
-        {
-            result += island + "    ";
-        }
-
-        result += _boat + "\n";
-
-        return result;*/
     }
 }
 

@@ -133,13 +133,13 @@ public class TransportableBehaviour : MonoBehaviour
     }
 
     Coroutine _movement;
-    internal float GoTo(Transform target, bool instant, out float animationDuration, bool backwards)
+    internal float GoTo(Transform target, bool skipAnimation, out float animationDuration, bool backwards)
     {
         _mirror = target.position.x < transform.position.x;
         if (backwards)
             _mirror = !_mirror;
 
-        if (instant)
+        if (skipAnimation)
         {
             StopAllCoroutines();
             transform.position = target.position;

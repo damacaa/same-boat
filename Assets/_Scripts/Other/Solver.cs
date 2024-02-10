@@ -269,10 +269,6 @@ namespace Solver
             return ToString() == other.ToString();
         }
 
-
-
-
-
         public override string ToString()
         {
             if (!string.IsNullOrEmpty(_text))
@@ -311,6 +307,7 @@ namespace Solver
 
             return result;
         }
-
     }
 }
+
+

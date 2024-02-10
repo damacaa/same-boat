@@ -58,10 +58,10 @@ public class Transportable
         _behaviour.SetUp(this, ScripatableObject);
     }
 
-    internal void GoTo(Transform transform, out float animationDuration, bool instant, bool backwards = false)
+    internal void GoTo(Transform transform, out float animationDuration, bool skipAnimation, bool backwards = false)
     {
         animationDuration = 0;
         if (_behaviour)
-            _behaviour.GoTo(transform, instant, out animationDuration, backwards);
+            _behaviour.GoTo(transform, skipAnimation, out animationDuration, backwards);
     }
 }
