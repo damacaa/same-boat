@@ -53,11 +53,11 @@ public class GameUIManager : MonoBehaviour
         _gameOverReturnToMenuButton.clicked += () => { SceneManager.LoadScene(0); };
         _gameOverUndoButtonButton.clicked += () => { GameManager.Instance.Undo(); };
         _gameOverUndoButtonButton.clicked += CloseGameOver;
-        _gameOverRetryButton.clicked += () => { GameManager.Instance.Reset(); };
+        _gameOverRetryButton.clicked += () => { GameManager.Instance.ResetGame(); };
         _gameOverRetryButton.clicked += CloseGameOver;
 
         _victoryReturnToMenuButton.clicked += () => { SceneManager.LoadScene(0); };
-        _victoryRetryButton.clicked += () => { GameManager.Instance.Reset(); };
+        _victoryRetryButton.clicked += () => { GameManager.Instance.ResetGame(); };
         _victoryRetryButton.clicked += CloseVictory;
 
         GameManager.Instance.OnLevelLoaded += SetCrossingsChangeListener;

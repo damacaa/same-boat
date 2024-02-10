@@ -18,13 +18,13 @@ public class TransportableManager : MonoBehaviour
     [SerializeField]
     GameObject transportablePrefab;
 
-    internal void GenerateSprites(Island[] islands)
+    internal void GenerateSprites(Island[] islands, Level level)
     {
         foreach (var island in islands)
         {
             foreach (var t in island.Transportables)
             {
-                var g = GameObject.Instantiate(transportablePrefab, island.FindSpot(out int index));
+                var g = Instantiate(transportablePrefab, island.FindSpot(out int index));
                 t.AssignGameObject(g);
             }
         }
