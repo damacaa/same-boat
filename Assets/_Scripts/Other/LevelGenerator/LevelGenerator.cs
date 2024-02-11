@@ -1,3 +1,4 @@
+using Solver;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
@@ -106,11 +107,12 @@ public class LevelGenerator : MonoBehaviour
             iter++;
 
             game = new GameLogic(level);
-            var state = Solver.Solver.SolveWidth(game, true);
+            //Solver.Solver.SolveWidth(game, true);
 
-            if (state == null || game.Boat.Crossings < _desiredCrossings)
+            if (!game.Win || game.Boat.Crossings < _desiredCrossings)
                 continue;
 
+            var state = game.GetCurrentState();
             level.BoatMaxTravelCost = state.BoatTravelCost;
 
         };
@@ -118,8 +120,10 @@ public class LevelGenerator : MonoBehaviour
         Level levelWithSmallerWeightLimit = level;
         levelWithSmallerWeightLimit.BoatMaxWeightAllowed--;
 
-        while (Solver.Solver.SolveWidth(new GameLogic(levelWithSmallerWeightLimit), true) != null)
+        game.Reset();
+        while (!game.Win)
         {
+            //Solver.Solver.SolveWidth(new GameLogic(levelWithSmallerWeightLimit), true);
             level = levelWithSmallerWeightLimit;
             levelWithSmallerWeightLimit.BoatMaxWeightAllowed--;
         }

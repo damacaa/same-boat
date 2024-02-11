@@ -139,7 +139,7 @@ public class InputSystem : MonoBehaviour
             else if (_transportable && g.TryGetComponent<BoatBehaviour>(out BoatBehaviour boat))
             {
                 _line.End(boat.FindSeat());
-                fail = !GameManager.Instance.MoveTransportableTo(_transportable, boat);
+                fail = !GameManager.Instance.LoadTransportableOnBoat(_transportable, boat);
             }
             else
             {

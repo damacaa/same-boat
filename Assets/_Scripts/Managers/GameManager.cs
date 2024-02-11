@@ -1,36 +1,49 @@
 
+using Solver;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager Instance { get; private set; }
-    public GameLogic Game { get; private set; }
+  
 
+    // Debug stuff
     [SerializeField]
     Level[] levels;
     [SerializeField]
     int _currentLevel;
 
-    string _levelDescription = "";
-    public string LevelDescription
+    // Singleton
+    public static GameManager Instance { get; private set; }
+
+    public GameLogic Game { get; private set; }
+    public string LevelDescription { get; private set; }
+
+    private bool _isWin;
+    private bool _isFail;
+
+    public event Action OnLevelLoaded;
+    public event Action OnSolverStarted;
+    public event Action OnSolverEnded;
+
+    public enum SolverMethod
     {
-        get { return _levelDescription; }
-        private set { _levelDescription = value; }
+        Normal,
+        Coroutine,
+        Task
     }
 
-    public delegate void Delegate();
-    public event Delegate OnLevelLoaded;
-    public event Delegate OnSolverStarted;
-    public event Delegate OnSolverEnded;
-
+    [Header("Solver settings")]
     [SerializeField]
     bool _useHeuristicForSolver = false;
     [SerializeField]
+    SolverMethod _solverMethod;
+    [SerializeField]
     bool _showDebugUI = false;
+
 
     private void Awake()
     {
@@ -40,27 +53,42 @@ public class GameManager : MonoBehaviour
             Instance = this;
     }
 
-    [HideInInspector]
-    public bool Win { get; private set; }
-    [HideInInspector]
-    public bool Fail { get; private set; }
-
-
     private void Start()
     {
 #if !UNITY_EDITOR
         _showDebugUI = false;
 #endif
 
+        Application.targetFrameRate = 60;
+
         SoundController.Instace.PlaySong(1);
 
         if (!ProgressManager.Instance)
             LoadLevel(levels[_currentLevel]);
+
     }
 
     public void LoadLevel(Level level)
     {
+        // Clear previous game
         if (Game != null)
+        {
+            ClearPreviousGame();
+        }
+
+        Game = new GameLogic(level);
+        Game.GenerateGameObjects(level);
+
+        Game.OnWin += HandleWin;
+        Game.OnFail += HandleFail;
+
+        LevelDescription = $"{level.name}:\n{level}";
+        Debug.Log(LevelDescription);
+
+        OnLevelLoaded?.Invoke();
+
+
+        void ClearPreviousGame()
         {
             var transportables = FindObjectsOfType<TransportableBehaviour>();
             foreach (var t in transportables)
@@ -79,40 +107,23 @@ public class GameManager : MonoBehaviour
 
             Game = null;
         }
-
-        Game = new GameLogic(level);
-        Game.GenerateGameObjects(level);
-
-        Game.OnWin += delegate { SoundController.Instace.PlaySound(SoundController.Sound.Win); };
-        Game.OnFail += delegate { SoundController.Instace.PlaySound(SoundController.Sound.Fail); };
-
-        LevelDescription = level.ToString();
-
-        if (OnLevelLoaded != null) OnLevelLoaded();
     }
+
+    private void HandleWin()
+    {
+        SoundController.Instace.PlaySound(SoundController.Sound.Win);
+    }
+
+    private void HandleFail()
+    {
+        SoundController.Instace.PlaySound(SoundController.Sound.Fail);
+    }
+
 
     private void Update()
     {
         if (Game == null)
             return;
-
-        if (Fail != Game.Fail)
-        {
-            Fail = Game.Fail;
-            if (Fail)
-            {
-                SoundController.Instace.PlaySound(SoundController.Sound.Fail);
-                //if (OnGameOver != null) OnGameOver();
-            }
-        }
-
-        if (Win != Game.Win)
-        {
-            Win = Game.Win;
-            if (Win)
-                SoundController.Instace.PlaySound(SoundController.Sound.Win);
-            //if (OnVictory != null) OnVictory();
-        }
 
 #if UNITY_EDITOR
 
@@ -127,25 +138,6 @@ public class GameManager : MonoBehaviour
             Undo();
         }
 
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            ScreenCapture.CaptureScreenshot("screen.png");
-        }
-
-        if (Input.GetKeyDown(KeyCode.W))
-        {
-            /*int steps = Solver.Solver.SolveWidth(Game);
-            print(steps + " steps");
-
-            if (steps != -1)
-                StartCoroutine(Game.ShowAllMovesCoroutine());*/
-            StartCoroutine(SolveCoroutine());
-        }
-
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            Reset();
-        }
 #endif
     }
 
@@ -155,49 +147,82 @@ public class GameManager : MonoBehaviour
             OnSolverStarted();
 
         float startTime = Time.realtimeSinceStartup;
-        yield return Solver.Solver.SolveWidthCoroutine(Game, _useHeuristicForSolver);
+
+        switch (_solverMethod)
+        {
+            case SolverMethod.Coroutine:
+                yield return SolverCoroutine.SolveWidthAndReset(Game, _useHeuristicForSolver);
+                break;
+            case SolverMethod.Task:
+                yield return SolverTask.SolveCoroutine(Game, _useHeuristicForSolver);
+                break;
+        }
+
         float elapsedTime = Time.realtimeSinceStartup - startTime;
+
+        Debug.Log($"Elapsed {_solverMethod}: {elapsedTime}");
 
         if (OnSolverEnded != null)
             OnSolverEnded();
-        yield return Game.ShowAllMovesCoroutine();
 
-        //print($"Used heuristic: {_useHeuristicForSolver}\n" +
-        //    $"Time elapsed: {elapsedTime}s\n" +
-        //    $"Crossings: {Game.Boat.Crossings}\n" +
-        //    $"Travel cost: {Game.Boat.CurrentTravelCost}");
+        yield return Game.ExecuteAllMovesCoroutine();
+    }
+
+
+    IEnumerator ClueCoroutine()
+    {
+        if (OnSolverStarted != null)
+            OnSolverStarted();
+
+        switch (_solverMethod)
+        {
+            case SolverMethod.Coroutine:
+                yield return SolverCoroutine.SolveWidthAndReset(Game, _useHeuristicForSolver);
+                break;
+            case SolverMethod.Task:
+                yield return SolverTask.SolveCoroutine(Game, _useHeuristicForSolver);
+                break;
+        }
+
+        if (OnSolverEnded != null)
+            OnSolverEnded();
+
+        yield return null;
+
+        Game.Execute();
 
         yield return null;
     }
 
+
     public void Undo()
     {
-        if (Win)
+        if (_isWin)
             return;
 
-        if (Fail)
+        if (_isFail)
         {
-            print("Undo fail");
-            Fail = false;
+            _isFail = false;
             SoundController.Instace.PlaySong(1);
         }
 
         Game.Undo();
     }
 
-    public void Reset()
+    public void ResetGame()
     {
+        StopAllCoroutines();
+
         Game.Reset();
 
-        Win = false;
-        Fail = false;
+        _isWin = false;
+        _isFail = false;
         SoundController.Instace.PlaySong(1);
     }
 
-
     internal bool MoveBoatTo(BoatBehaviour boat, IslandBehaviour island)
     {
-        if (Win || Fail)
+        if (_isWin || _isFail)
             return false;
 
         return Game.MoveBoatToIsland(island.Data);
@@ -205,7 +230,7 @@ public class GameManager : MonoBehaviour
 
     internal bool MoveTransportableTo(TransportableBehaviour transportable, IslandBehaviour island)
     {
-        if (Win || Fail)
+        if (_isWin || _isFail)
             return false;
 
         if (island.Data != Game.Boat.Island)
@@ -222,7 +247,7 @@ public class GameManager : MonoBehaviour
             Game.Undo(true);
             Game.Undo(true);
 
-            StartCoroutine(Game.ShowAllMovesCoroutine());
+            StartCoroutine(Game.ExecuteAllMovesCoroutine());
 
             return true;
         }
@@ -231,14 +256,16 @@ public class GameManager : MonoBehaviour
         return Game.UnloadFromBoat(transportable.Data);
     }
 
-    internal bool MoveTransportableTo(TransportableBehaviour transportable, BoatBehaviour boat)
+    internal bool LoadTransportableOnBoat(TransportableBehaviour transportable, BoatBehaviour boat)
     {
-        if (Win || Fail)
+        if (_isWin || _isFail)
             return false;
 
         return Game.LoadOnBoat(transportable.Data);
     }
 
+
+    // Show debug UI
     private void OnGUI()
     {
         if (Game == null || !_showDebugUI)
@@ -252,17 +279,43 @@ public class GameManager : MonoBehaviour
             Game.Undo();
 
         if (GUI.Button(new Rect(space, space + height + space, width, height), "Reset"))
+        {
+            if(_isWin || _isFail)
+                SoundController.Instace.PlaySong(1);
+
             Game.Reset();
+        }
 
         if (GUI.Button(new Rect(space, 2 * (space + height) + space, width, height), "Solve"))
         {
-            StartCoroutine(SolveCoroutine());
+            switch (_solverMethod)
+            {
+                case SolverMethod.Normal:
+                    {
+                        float startTime = Time.realtimeSinceStartup;
+                        Solver.Solver.SolveWidthAndReset(Game, _useHeuristicForSolver);
+                        float elapsedTime = Time.realtimeSinceStartup - startTime;
+
+                        Debug.Log($"Elapsed normal {elapsedTime}");
+
+                        StartCoroutine(Game.ExecuteAllMovesCoroutine());
+                        break;
+                    }
+                case SolverMethod.Coroutine:
+                case SolverMethod.Task:
+                    StartCoroutine(SolveCoroutine());
+                    break;
+            }
         }
 
         if (GUI.Button(new Rect(space, 3 * (space + height) + space, width, height), "Clue"))
         {
-            Solver.Solver.SolveWidthCoroutine(Game);
-            Game.Execute();
+            StartCoroutine(ClueCoroutine());
+        }
+
+        if (GUI.Button(new Rect(space, 4 * (space + height) + space, width, height), "Screenshot"))
+        {
+            ScreenCapture.CaptureScreenshot("screen.png");
         }
 
         // GUI.TextArea(new Rect(Screen.width - (3 * width) - space, space * 5, 3 * width, 5 * height), LevelDescription);
@@ -276,4 +329,5 @@ public class GameManager : MonoBehaviour
             }
         }
     }
+
 }

@@ -8,9 +8,10 @@ public class Rule
 
     public enum RuleType
     {
-        CantCoexist,
-        CountMustBeGreaterThan,
-        CountMustBeGreaterEqualThan
+        WantsToEat = 0,
+        CountMustBeGreaterThan = 1,
+        CountMustBeGreaterEqualThan = 2,
+        Requires = 3,
     }
 
     public enum Result
@@ -25,7 +26,7 @@ public class Rule
 
         switch (comparison)
         {
-            case RuleType.CantCoexist:
+            case RuleType.WantsToEat:
                 s = $"You can't leave a {A.name.ToLower()} and a {B.name.ToLower()} together in the same island or it will be eaten.";
                 break;
             case RuleType.CountMustBeGreaterThan:
@@ -34,10 +35,12 @@ public class Rule
             case RuleType.CountMustBeGreaterEqualThan:
                 s = $"The number of {A.NamePlural.ToLower()} must be greater than or equal to the number of {B.NamePlural.ToLower()}.";
                 break;
+            case RuleType.Requires:
+                s = $"A {A.name.ToLower()} must always be accompanied by a {B.name.ToLower()}.";
+                break;
             default:
                 break;
         }
-
 
         return s;
     }
