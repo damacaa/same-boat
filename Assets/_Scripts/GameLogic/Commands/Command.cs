@@ -7,8 +7,8 @@ public abstract class Command
     protected bool _success = true;
     public bool Success { get { return _success; } }
 
-    public abstract bool Execute(out float animationDuration, bool instant = false);
-    public abstract void Undo(out float animationDuration, bool instant = false);
+    public abstract bool Execute(out float animationDuration, bool skipAnimation = false);
+    public abstract void Undo(out float animationDuration, bool skipAnimation = false);
 
     public bool Execute() { return Execute(out float animationDuration, true); }
     public void Undo() { Undo(out float animationDuration, true); }
