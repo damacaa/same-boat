@@ -2,32 +2,15 @@
 using Solver;
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-  
-
     // Debug stuff
     [SerializeField]
     Level[] levels;
     [SerializeField]
     int _currentLevel;
-
-    // Singleton
-    public static GameManager Instance { get; private set; }
-
-    public GameLogic Game { get; private set; }
-    public string LevelDescription { get; private set; }
-
-    private bool _isWin;
-    private bool _isFail;
-
-    public event Action OnLevelLoaded;
-    public event Action OnSolverStarted;
-    public event Action OnSolverEnded;
 
     public enum SolverMethod
     {
@@ -35,6 +18,21 @@ public class GameManager : MonoBehaviour
         Coroutine,
         Task
     }
+
+    // Singleton
+    public static GameManager Instance { get; private set; }
+    public GameLogic Game { get; private set; }
+
+    public Level LevelToLoad
+    {
+        set => _levelToLoad = value;
+    }
+
+    public string LevelDescription { get; private set; }
+
+    public event Action OnLevelLoaded;
+    public event Action OnSolverStarted;
+    public event Action OnSolverEnded;
 
     [Header("Solver settings")]
     [SerializeField]
@@ -44,6 +42,9 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     bool _showDebugUI = false;
 
+    private Level _levelToLoad;
+    private bool _isWin;
+    private bool _isFail;
 
     private void Awake()
     {
@@ -63,62 +64,16 @@ public class GameManager : MonoBehaviour
 
         SoundController.Instace.PlaySong(1);
 
-        if (!ProgressManager.Instance)
+        if (ProgressManager.Instance)
+        {
+            // TO DO Load selected level from progress manager
+            LoadLevel(ProgressManager.Instance.LevelToLoad);
+        }
+        else
+        {
             LoadLevel(levels[_currentLevel]);
-
-    }
-
-    public void LoadLevel(Level level)
-    {
-        // Clear previous game
-        if (Game != null)
-        {
-            ClearPreviousGame();
-        }
-
-        Game = new GameLogic(level);
-        Game.GenerateGameObjects(level);
-
-        Game.OnWin += HandleWin;
-        Game.OnFail += HandleFail;
-
-        LevelDescription = $"{level.name}:\n{level}";
-        Debug.Log(LevelDescription);
-
-        OnLevelLoaded?.Invoke();
-
-
-        void ClearPreviousGame()
-        {
-            var transportables = FindObjectsOfType<TransportableBehaviour>();
-            foreach (var t in transportables)
-            {
-                Destroy(t.gameObject);
-            }
-
-            var boat = FindObjectOfType<BoatBehaviour>();
-            Destroy(boat.gameObject);
-
-            var map = FindObjectOfType<MapGenerator>();
-            for (int i = 0; i < map.transform.childCount; i++)
-            {
-                Destroy(map.transform.GetChild(i).gameObject);
-            }
-
-            Game = null;
         }
     }
-
-    private void HandleWin()
-    {
-        SoundController.Instace.PlaySound(SoundController.Sound.Win);
-    }
-
-    private void HandleFail()
-    {
-        SoundController.Instace.PlaySound(SoundController.Sound.Fail);
-    }
-
 
     private void Update()
     {
@@ -126,7 +81,6 @@ public class GameManager : MonoBehaviour
             return;
 
 #if UNITY_EDITOR
-
         if (Input.GetKeyDown("right"))
         {
             Game.Execute();
@@ -137,133 +91,8 @@ public class GameManager : MonoBehaviour
         {
             Undo();
         }
-
 #endif
     }
-
-    IEnumerator SolveCoroutine()
-    {
-        if (OnSolverStarted != null)
-            OnSolverStarted();
-
-        float startTime = Time.realtimeSinceStartup;
-
-        switch (_solverMethod)
-        {
-            case SolverMethod.Coroutine:
-                yield return SolverCoroutine.SolveWidthAndReset(Game, _useHeuristicForSolver);
-                break;
-            case SolverMethod.Task:
-                yield return SolverTask.SolveCoroutine(Game, _useHeuristicForSolver);
-                break;
-        }
-
-        float elapsedTime = Time.realtimeSinceStartup - startTime;
-
-        Debug.Log($"Elapsed {_solverMethod}: {elapsedTime}");
-
-        if (OnSolverEnded != null)
-            OnSolverEnded();
-
-        yield return Game.ExecuteAllMovesCoroutine();
-    }
-
-
-    IEnumerator ClueCoroutine()
-    {
-        if (OnSolverStarted != null)
-            OnSolverStarted();
-
-        switch (_solverMethod)
-        {
-            case SolverMethod.Coroutine:
-                yield return SolverCoroutine.SolveWidthAndReset(Game, _useHeuristicForSolver);
-                break;
-            case SolverMethod.Task:
-                yield return SolverTask.SolveCoroutine(Game, _useHeuristicForSolver);
-                break;
-        }
-
-        if (OnSolverEnded != null)
-            OnSolverEnded();
-
-        yield return null;
-
-        Game.Execute();
-
-        yield return null;
-    }
-
-
-    public void Undo()
-    {
-        if (_isWin)
-            return;
-
-        if (_isFail)
-        {
-            _isFail = false;
-            SoundController.Instace.PlaySong(1);
-        }
-
-        Game.Undo();
-    }
-
-    public void ResetGame()
-    {
-        StopAllCoroutines();
-
-        Game.Reset();
-
-        _isWin = false;
-        _isFail = false;
-        SoundController.Instace.PlaySong(1);
-    }
-
-    internal bool MoveBoatTo(BoatBehaviour boat, IslandBehaviour island)
-    {
-        if (_isWin || _isFail)
-            return false;
-
-        return Game.MoveBoatToIsland(island.Data);
-    }
-
-    internal bool MoveTransportableTo(TransportableBehaviour transportable, IslandBehaviour island)
-    {
-        if (_isWin || _isFail)
-            return false;
-
-        if (island.Data != Game.Boat.Island)
-        {
-            if (!Game.MoveBoatToIsland(island.Data, true))
-                return false;
-
-            if (!Game.UnloadFromBoat(transportable.Data, true))
-            {
-                Game.Undo(true);
-                return false;
-            }
-
-            Game.Undo(true);
-            Game.Undo(true);
-
-            StartCoroutine(Game.ExecuteAllMovesCoroutine());
-
-            return true;
-        }
-        //return false; // Game.MoveBoatToIsland(island.Data)
-
-        return Game.UnloadFromBoat(transportable.Data);
-    }
-
-    internal bool LoadTransportableOnBoat(TransportableBehaviour transportable, BoatBehaviour boat)
-    {
-        if (_isWin || _isFail)
-            return false;
-
-        return Game.LoadOnBoat(transportable.Data);
-    }
-
 
     // Show debug UI
     private void OnGUI()
@@ -280,7 +109,7 @@ public class GameManager : MonoBehaviour
 
         if (GUI.Button(new Rect(space, space + height + space, width, height), "Reset"))
         {
-            if(_isWin || _isFail)
+            if (_isWin || _isFail)
                 SoundController.Instace.PlaySong(1);
 
             Game.Reset();
@@ -330,4 +159,185 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void LoadLevel()
+    {
+        if (_levelToLoad == null)
+        {
+            Debug.LogError("Level to load is null. It must be set previously.");
+            return;
+        }
+
+        LoadLevel(_levelToLoad);
+    }
+
+    public void LoadLevel(Level level)
+    {
+        // Clear previous game
+        if (Game != null)
+        {
+            ClearPreviousGame();
+        }
+
+        Game = new GameLogic(level);
+        Game.GenerateGameObjects(level);
+
+        Game.OnWin += HandleWin;
+        Game.OnFail += HandleFail;
+
+        LevelDescription = $"{level.name}:\n{level}";
+        Debug.Log(LevelDescription);
+
+        OnLevelLoaded?.Invoke();
+
+        void ClearPreviousGame()
+        {
+            var transportables = FindObjectsOfType<TransportableBehaviour>();
+            foreach (var t in transportables)
+            {
+                Destroy(t.gameObject);
+            }
+
+            var boat = FindObjectOfType<BoatBehaviour>();
+            Destroy(boat.gameObject);
+
+            var map = FindObjectOfType<MapGenerator>();
+            for (int i = 0; i < map.transform.childCount; i++)
+            {
+                Destroy(map.transform.GetChild(i).gameObject);
+            }
+
+            Game = null;
+        }
+    }
+
+    public void Undo()
+    {
+        if (_isWin)
+            return;
+
+        if (_isFail)
+        {
+            _isFail = false;
+            SoundController.Instace.PlaySong(1);
+        }
+
+        Game.Undo();
+    }
+
+    public void ResetGame()
+    {
+        StopAllCoroutines();
+
+        Game.Reset();
+
+        _isWin = false;
+        _isFail = false;
+        SoundController.Instace.PlaySong(1);
+    }
+
+    private void HandleWin()
+    {
+        SoundController.Instace.PlaySound(SoundController.Sound.Win);
+    }
+
+    private void HandleFail()
+    {
+        SoundController.Instace.PlaySound(SoundController.Sound.Fail);
+    }
+
+    private IEnumerator SolveCoroutine()
+    {
+        if (OnSolverStarted != null)
+            OnSolverStarted();
+
+        float startTime = Time.realtimeSinceStartup;
+
+        switch (_solverMethod)
+        {
+            case SolverMethod.Coroutine:
+                yield return SolverCoroutine.SolveWidthAndReset(Game, _useHeuristicForSolver);
+                break;
+            case SolverMethod.Task:
+                yield return SolverTask.SolveCoroutine(Game, _useHeuristicForSolver);
+                break;
+        }
+
+        float elapsedTime = Time.realtimeSinceStartup - startTime;
+
+        Debug.Log($"Elapsed {_solverMethod}: {elapsedTime}");
+
+        if (OnSolverEnded != null)
+            OnSolverEnded();
+
+        yield return Game.ExecuteAllMovesCoroutine();
+    }
+
+    private IEnumerator ClueCoroutine()
+    {
+        if (OnSolverStarted != null)
+            OnSolverStarted();
+
+        switch (_solverMethod)
+        {
+            case SolverMethod.Coroutine:
+                yield return SolverCoroutine.SolveWidthAndReset(Game, _useHeuristicForSolver);
+                break;
+            case SolverMethod.Task:
+                yield return SolverTask.SolveCoroutine(Game, _useHeuristicForSolver);
+                break;
+        }
+
+        if (OnSolverEnded != null)
+            OnSolverEnded();
+
+        yield return null;
+
+        Game.Execute();
+
+        yield return null;
+    }
+
+    internal bool MoveBoatTo(BoatBehaviour boat, IslandBehaviour island)
+    {
+        if (_isWin || _isFail)
+            return false;
+
+        return Game.MoveBoatToIsland(island.Data);
+    }
+
+    internal bool MoveTransportableTo(TransportableBehaviour transportable, IslandBehaviour island)
+    {
+        if (_isWin || _isFail)
+            return false;
+
+        if (island.Data != Game.Boat.Island)
+        {
+            if (!Game.MoveBoatToIsland(island.Data, true))
+                return false;
+
+            if (!Game.UnloadFromBoat(transportable.Data, true))
+            {
+                Game.Undo(true);
+                return false;
+            }
+
+            Game.Undo(true);
+            Game.Undo(true);
+
+            StartCoroutine(Game.ExecuteAllMovesCoroutine());
+
+            return true;
+        }
+        //return false; // Game.MoveBoatToIsland(island.Data)
+
+        return Game.UnloadFromBoat(transportable.Data);
+    }
+
+    internal bool LoadTransportableOnBoat(TransportableBehaviour transportable, BoatBehaviour boat)
+    {
+        if (_isWin || _isFail)
+            return false;
+
+        return Game.LoadOnBoat(transportable.Data);
+    }
 }

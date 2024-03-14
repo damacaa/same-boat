@@ -9,6 +9,7 @@ public class Level : ScriptableObject
 {
     public new string name;
     public string Description;
+    public Sprite Preview;
     [Space]
     [Range(2, 4)]
     public int BoatCapacity = 2;
@@ -19,6 +20,7 @@ public class Level : ScriptableObject
     [Space()]
     public bool StrictMode = false;
     public bool OnlyHumansCanDrive = false;
+    public bool Unlocked = false;
     [Space()]
     public Texture2D Map;
     public Island[] Islands;
