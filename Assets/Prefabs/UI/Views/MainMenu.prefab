@@ -486,17 +486,7 @@ MonoBehaviour:
   _imagePrefab: {fileID: 2660616151453815642, guid: ebcda12e677c37542959f9d8c105f83f, type: 3}
   _levelsContainer: {fileID: 1368918908508514756}
   _levelButtonPrefab: {fileID: 3952479804946032314, guid: 489806ba9ed22ad4581d9413d7bc2a98, type: 3}
-  _levels:
-  - {fileID: 11400000, guid: 9fc1ac9099c05054d8707da8a018e462, type: 2}
-  - {fileID: 11400000, guid: 4d8dbc005f9bfc3439639dc01ecfe999, type: 2}
-  - {fileID: 11400000, guid: 8111e356143502c43a42645bd40e6934, type: 2}
-  - {fileID: 11400000, guid: 2f590190fd0d19344ab46bbdcd893d89, type: 2}
-  - {fileID: 11400000, guid: e7aa722d7f634624b83d5ef6fb0cc49e, type: 2}
-  - {fileID: 11400000, guid: 6393b96ab0c6e594cb1bba92ee52bd29, type: 2}
-  - {fileID: 11400000, guid: 5417fad908ee1874eb32fa856671ff9e, type: 2}
-  - {fileID: 11400000, guid: 294d16c47a36c8142ad022e5bd0cf112, type: 2}
-  - {fileID: 11400000, guid: aee1f53304f5fbc4b9a023ea5acfe4e6, type: 2}
-  - {fileID: 11400000, guid: 8b409fcfa11fa3a4a888882ea33e2b81, type: 2}
+  _levels: {fileID: 0}
 --- !u!1 &5908033107667228300
 GameObject:
   m_ObjectHideFlags: 0
@@ -589,7 +579,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Content: {fileID: 7808679469416815200}
-  m_Horizontal: 1
+  m_Horizontal: 0
   m_Vertical: 1
   m_MovementType: 1
   m_Elasticity: 0.1
@@ -1115,7 +1105,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 20, y: 0}
+  m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!222 &2401617415824683875
 CanvasRenderer:
@@ -1176,10 +1166,10 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 0.27450982}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 0.4862745}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 0.27450982}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -1528,7 +1518,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5674956845066248405, guid: 99e5196d7f69c414faaad2612314b633, type: 3}
       propertyPath: m_fontSize
-      value: 64.4
+      value: 72
       objectReference: {fileID: 0}
     - target: {fileID: 5674956845066248405, guid: 99e5196d7f69c414faaad2612314b633, type: 3}
       propertyPath: m_fontStyle
@@ -1790,7 +1780,7 @@ PrefabInstance:
     - target: {fileID: 7904996809985370850, guid: 99e5196d7f69c414faaad2612314b633, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 6d6088174bb906b49ad8428526ee337b, type: 3}
+      objectReference: {fileID: 21300000, guid: 6d5fa092ef334be4998e7cbc84244865, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 99e5196d7f69c414faaad2612314b633, type: 3}
 --- !u!224 &443746192769314497 stripped

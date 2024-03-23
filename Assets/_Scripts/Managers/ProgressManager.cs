@@ -5,11 +5,11 @@ public class ProgressManager : MonoBehaviour
     public static ProgressManager Instance { get; private set; }
 
     [SerializeField]
-    private Level[] _levels;
+    private LevelCollection _levels;
 
     private Level _levelToLoad;
 
-    public Level[] Levels { get { return _levels; } }
+    public LevelCollection Levels { get { return _levels; } }
     public Level LevelToLoad
     {
         set => _levelToLoad = value;

@@ -22,7 +22,7 @@ namespace UI
         [SerializeField]
         private GameObject _levelButtonPrefab;
         [SerializeField]
-        private List<Level> _levels;
+        private LevelCollection _levels;
 
         private List<LevelButton> _levelsButtons = new();
 
