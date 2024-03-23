@@ -1,0 +1,2 @@
+keystore password: alpuerro
+key password: sameboat

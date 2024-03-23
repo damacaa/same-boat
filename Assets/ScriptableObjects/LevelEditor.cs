@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
+#if UNITY_EDITOR
 [CustomEditor(typeof(Level))]
 public class LevelEditor : Editor
 {
@@ -25,3 +26,4 @@ public class LevelEditor : Editor
         DrawDefaultInspector();
     }
 }
+#endif
