@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,10 +11,8 @@ namespace UI
         [SerializeField]
         private TextMeshProUGUI _text;
 
-        private GameObject _transportablesPreview;
         private Image _imagePreview;
         private Level _level;
-        private List<TransportableSO> _transportables = new();
 
         private bool _initialized;
 
@@ -38,23 +35,11 @@ namespace UI
 
             _level = level;
             _imagePreview = imagePreview;
-            _transportablesPreview = transportablesPreview;
 
             // For each level's island
             for (int i = 0; i < _level.Islands.Length; i++)
             {
                 Level.Island island = _level.Islands[i];
-
-                // For each island's transportable
-                for (int j = 0; j < island.transportables.Length; j++)
-                {
-                    TransportableSO tr = island.transportables[j];
-
-                    if (!_transportables.Contains(tr))
-                    {
-                        _transportables.Add(tr);
-                    }
-                }
             }
 
             _button.onClick.AddListener(ButtonAction);
@@ -71,14 +56,6 @@ namespace UI
         {
             ProgressManager.Instance.LevelToLoad = _level;
             _imagePreview.sprite = _level.Preview;
-
-            //_transportablesPreview.chi
-
-            for (int i = 0; i < _transportables.Count; i++)
-            {
-                // TO DO Clean transportables and refill
-                TransportableSO transportable = _transportables[i];
-            }
         }
     }
 }

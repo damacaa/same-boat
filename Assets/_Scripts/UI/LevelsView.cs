@@ -66,6 +66,11 @@ namespace UI
 
             for (int i = 0; i < _levels.Count; i++)
             {
+                //if (!_levels[i].Unlocked)
+                //{
+                //    continue;
+                //}
+
                 GameObject go = Instantiate(_levelButtonPrefab, _levelsContainer.transform);
 
                 if (go.TryGetComponent(out LevelButton levelButton))
