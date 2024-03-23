@@ -56,6 +56,7 @@ namespace UI
         {
             ProgressManager.Instance.LevelToLoad = _level;
             _imagePreview.sprite = _level.Preview;
+            _imagePreview.preserveAspect = true;
         }
     }
 }

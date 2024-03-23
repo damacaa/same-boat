@@ -652,7 +652,7 @@ MonoBehaviour:
     m_Left: 150
     m_Right: 150
     m_Top: 20
-    m_Bottom: 100
+    m_Bottom: 50
   m_ChildAlignment: 4
   m_Spacing: 20
   m_ChildForceExpandWidth: 1
@@ -680,7 +680,7 @@ MonoBehaviour:
   m_PreferredWidth: -1
   m_PreferredHeight: -1
   m_FlexibleWidth: -1
-  m_FlexibleHeight: 6
+  m_FlexibleHeight: 5
   m_LayoutPriority: 1
 --- !u!1 &6320751217866192921
 GameObject:
@@ -691,7 +691,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 862905905391961023}
-  - component: {fileID: 4987218118209917899}
   m_Layer: 0
   m_Name: MainMenu
   m_TagString: Untagged
@@ -721,27 +720,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!223 &4987218118209917899
-Canvas:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6320751217866192921}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_RenderMode: 2
-  m_Camera: {fileID: 0}
-  m_PlaneDistance: 100
-  m_PixelPerfect: 0
-  m_ReceivesEvents: 1
-  m_OverrideSorting: 0
-  m_OverridePixelPerfect: 0
-  m_SortingBucketNormalizedSize: 0
-  m_AdditionalShaderChannelsFlag: 25
-  m_SortingLayerID: 0
-  m_SortingOrder: 0
-  m_TargetDisplay: 0
 --- !u!1 &6478673632292274500
 GameObject:
   m_ObjectHideFlags: 0
@@ -989,7 +967,7 @@ MonoBehaviour:
   m_PreferredWidth: -1
   m_PreferredHeight: -1
   m_FlexibleWidth: -1
-  m_FlexibleHeight: -1
+  m_FlexibleHeight: 1
   m_LayoutPriority: 1
 --- !u!1 &9005988327248040367
 GameObject:
@@ -1201,9 +1179,17 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3359563106893373033}
     m_Modifications:
+    - target: {fileID: 1632662545308460097, guid: 99e5196d7f69c414faaad2612314b633, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4294415338740850819, guid: 99e5196d7f69c414faaad2612314b633, type: 3}
       propertyPath: m_Name
       value: OptionsButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 4294415338740850819, guid: 99e5196d7f69c414faaad2612314b633, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6794117065479012786, guid: 99e5196d7f69c414faaad2612314b633, type: 3}
       propertyPath: m_AnchorMax.y
@@ -1321,6 +1307,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: c54a88bbef9cfc443b7e50d34d740525, type: 3}
+    - target: {fileID: 7904996809985370850, guid: 99e5196d7f69c414faaad2612314b633, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 99e5196d7f69c414faaad2612314b633, type: 3}
 --- !u!224 &6123289491870571088 stripped
@@ -1353,7 +1343,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 667477196830381441, guid: ebcda12e677c37542959f9d8c105f83f, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 617.14294
       objectReference: {fileID: 0}
     - target: {fileID: 667477196830381441, guid: ebcda12e677c37542959f9d8c105f83f, type: 3}
       propertyPath: m_SizeDelta.y
@@ -1371,13 +1361,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: Image
       objectReference: {fileID: 0}
+    - target: {fileID: 5487691737528509084, guid: ebcda12e677c37542959f9d8c105f83f, type: 3}
+      propertyPath: m_FlexibleHeight
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5487691737528509084, guid: ebcda12e677c37542959f9d8c105f83f, type: 3}
+      propertyPath: m_PreferredHeight
+      value: -1
+      objectReference: {fileID: 0}
     - target: {fileID: 8598905797304095853, guid: ebcda12e677c37542959f9d8c105f83f, type: 3}
       propertyPath: m_AspectMode
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8598905797304095853, guid: ebcda12e677c37542959f9d8c105f83f, type: 3}
       propertyPath: m_AspectRatio
-      value: 1.2
+      value: 1.2342858
       objectReference: {fileID: 0}
     - target: {fileID: 8967044607537976665, guid: ebcda12e677c37542959f9d8c105f83f, type: 3}
       propertyPath: m_Pivot.x
@@ -1521,9 +1519,17 @@ PrefabInstance:
       value: 72
       objectReference: {fileID: 0}
     - target: {fileID: 5674956845066248405, guid: 99e5196d7f69c414faaad2612314b633, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: c14d3357304c8014ea0686bc71a319b6, type: 2}
+    - target: {fileID: 5674956845066248405, guid: 99e5196d7f69c414faaad2612314b633, type: 3}
       propertyPath: m_fontStyle
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5674956845066248405, guid: 99e5196d7f69c414faaad2612314b633, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 582511429049135031, guid: c14d3357304c8014ea0686bc71a319b6, type: 2}
     - target: {fileID: 5674956845066248405, guid: 99e5196d7f69c414faaad2612314b633, type: 3}
       propertyPath: m_enableAutoSizing
       value: 1
@@ -1924,13 +1930,21 @@ PrefabInstance:
       value: 72
       objectReference: {fileID: 0}
     - target: {fileID: 8306586495444242215, guid: 9f6e386a9f2cbf947ae1d9cdf9147d84, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: c14d3357304c8014ea0686bc71a319b6, type: 2}
+    - target: {fileID: 8306586495444242215, guid: 9f6e386a9f2cbf947ae1d9cdf9147d84, type: 3}
       propertyPath: m_fontStyle
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8306586495444242215, guid: 9f6e386a9f2cbf947ae1d9cdf9147d84, type: 3}
       propertyPath: m_fontSizeBase
       value: 55
       objectReference: {fileID: 0}
+    - target: {fileID: 8306586495444242215, guid: 9f6e386a9f2cbf947ae1d9cdf9147d84, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 582511429049135031, guid: c14d3357304c8014ea0686bc71a319b6, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9f6e386a9f2cbf947ae1d9cdf9147d84, type: 3}
 --- !u!224 &854513394742105510 stripped
