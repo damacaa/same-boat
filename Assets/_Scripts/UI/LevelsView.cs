@@ -76,7 +76,9 @@ namespace UI
                 if (go.TryGetComponent(out LevelButton levelButton))
                 {
                     levelButton.Text = _levels[i].name;
-                    levelButton.Init(_levels[i], _levelPreview, _transportablesContainer);
+                    levelButton.Init(_levels[i]);
+                    levelButton.OnLevelSelected += SelectLevel;
+
                     _levelsButtons.Add(levelButton);
                 }
                 else
@@ -85,7 +87,9 @@ namespace UI
                     Debug.LogError("Required level button script not found.");
                     return;
 #endif
+#pragma warning disable CS0162 // Unreachable code detected
                     continue;
+#pragma warning restore CS0162 // Unreachable code detected
                 }
             }
 
@@ -99,5 +103,36 @@ namespace UI
         {
             SceneManager.LoadScene(1);
         }
+
+        private void SelectLevel(Level level)
+        {
+
+            ProgressManager.Instance.LevelToLoad = level;
+
+            // Set image
+            _levelPreview.sprite = level.Preview;
+            _levelPreview.preserveAspect = true;
+
+            for (int i = 0; i < _horizontalLayoutGroup.transform.childCount; i++)
+            {
+                Destroy(_horizontalLayoutGroup.transform.GetChild(i).gameObject);
+            }
+
+            foreach (var island in level.Islands)
+            {
+                foreach (var transportable in island.transportables)
+                {
+                    var go = GameObject.Instantiate(_characterPrefab);
+                    go.transform.SetParent(_horizontalLayoutGroup.transform, false);
+                    var image = go.GetComponent<Image>();
+                    image.sprite = transportable.sprite;
+                }
+            }
+        }
+
+        [SerializeField]
+        HorizontalLayoutGroup _horizontalLayoutGroup;
+        [SerializeField]
+        private GameObject _characterPrefab;
     }
 }

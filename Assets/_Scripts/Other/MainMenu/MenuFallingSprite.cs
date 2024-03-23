@@ -10,6 +10,7 @@ public class MenuFallingSprite : MonoBehaviour
     private void Start()
     {
         w = Random.Range(-90f, 90f);
+        transform.Rotate(new Vector3(0, 0, w));
     }
 
     // Update is called once per frame

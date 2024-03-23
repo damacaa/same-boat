@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,10 +12,11 @@ namespace UI
         [SerializeField]
         private TextMeshProUGUI _text;
 
-        private Image _imagePreview;
         private Level _level;
 
         private bool _initialized;
+
+        public event Action<Level> OnLevelSelected;
 
         public string Text
         {
@@ -26,7 +28,7 @@ namespace UI
             _button.onClick.RemoveAllListeners();
         }
 
-        public void Init(Level level, Image imagePreview, GameObject transportablesPreview)
+        public void Init(Level level)
         {
             if (_initialized)
             {
@@ -34,7 +36,6 @@ namespace UI
             }
 
             _level = level;
-            _imagePreview = imagePreview;
 
             // For each level's island
             for (int i = 0; i < _level.Islands.Length; i++)
@@ -54,9 +55,7 @@ namespace UI
 
         private void ButtonAction()
         {
-            ProgressManager.Instance.LevelToLoad = _level;
-            _imagePreview.sprite = _level.Preview;
-            _imagePreview.preserveAspect = true;
+            OnLevelSelected.Invoke(_level);
         }
     }
 }

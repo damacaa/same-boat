@@ -91,6 +91,11 @@ public class GameManager : MonoBehaviour
         {
             Undo();
         }
+
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            ScreenCapture.CaptureScreenshot("screen.png");
+        }
 #endif
     }
 
