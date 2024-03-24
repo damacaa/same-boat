@@ -6,11 +6,17 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+
+    [SerializeField]
+    private UIGame _ui;
+
     // Debug stuff
     [SerializeField]
-    Level[] levels;
+    private LevelCollection levels;
     [SerializeField]
     int _currentLevel;
+
+ 
 
     public enum SolverMethod
     {
@@ -155,7 +161,7 @@ public class GameManager : MonoBehaviour
         // GUI.TextArea(new Rect(Screen.width - (3 * width) - space, space * 5, 3 * width, 5 * height), LevelDescription);
 
         width = height;
-        for (int i = 0; i < levels.Length; i++)
+        for (int i = 0; i < levels.Count; i++)
         {
             if (GUI.Button(new Rect(space + i * (space + width), Screen.height - space - height, width, height), (i + 1).ToString()))
             {
@@ -190,6 +196,7 @@ public class GameManager : MonoBehaviour
         Game.OnFail += HandleFail;
 
         LevelDescription = $"{level.name}:\n{level}";
+        _ui.SetDescription(LevelDescription);
         Debug.Log(LevelDescription);
 
         OnLevelLoaded?.Invoke();
