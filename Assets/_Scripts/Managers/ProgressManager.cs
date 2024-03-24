@@ -4,6 +4,11 @@ public class ProgressManager : MonoBehaviour
 {
     public static ProgressManager Instance { get; private set; }
 
+    private const string COMPLETED_LEVELS = "progress";
+    [SerializeField]
+    int _completedLevels;
+    public int CurrentLevel { get {  return _completedLevels; } }   
+
     [SerializeField]
     private LevelCollection _levels;
 
@@ -16,16 +21,34 @@ public class ProgressManager : MonoBehaviour
         get { return _levelToLoad; }
     }
 
+    
+
     private void Awake()
     {
         if (Instance)
             Destroy(this);
         else
             Instance = this;
+
+         _completedLevels = PlayerPrefs.GetInt(COMPLETED_LEVELS);
     }
 
     void Start()
     {
         DontDestroyOnLoad(this);
+    }
+
+    public void CompleteLevel()
+    {
+        if (Levels[_completedLevels] == _levelToLoad)
+        {
+            _completedLevels++;
+        }
+    }
+
+    private void OnDestroy()
+    {
+        PlayerPrefs.SetInt(COMPLETED_LEVELS, _completedLevels);
+        PlayerPrefs.Save();
     }
 }

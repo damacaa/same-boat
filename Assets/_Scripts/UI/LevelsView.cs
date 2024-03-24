@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -9,13 +10,23 @@ namespace UI
     {
         [SerializeField]
         private Button _playButton;
+
         [Header("Preview")]
+        [SerializeField]
+        TextMeshProUGUI _levelName;
         [SerializeField]
         private Image _levelPreview;
         [SerializeField]
         private GameObject _transportablesContainer;
         [SerializeField]
         private GameObject _imagePrefab;
+
+        [SerializeField]
+        HorizontalLayoutGroup _characterList;
+        [SerializeField]
+        private GameObject _characterPrefab;
+
+
         [Header("Levels")]
         [SerializeField]
         private GameObject _levelsContainer;
@@ -71,6 +82,9 @@ namespace UI
                 //    continue;
                 //}
 
+                if (i > ProgressManager.Instance.CurrentLevel)
+                    break;
+
                 GameObject go = Instantiate(_levelButtonPrefab, _levelsContainer.transform);
 
                 if (go.TryGetComponent(out LevelButton levelButton))
@@ -109,13 +123,15 @@ namespace UI
 
             ProgressManager.Instance.LevelToLoad = level;
 
+            _levelName.text = level.name;    
+
             // Set image
             _levelPreview.sprite = level.Preview;
             _levelPreview.preserveAspect = true;
 
-            for (int i = 0; i < _horizontalLayoutGroup.transform.childCount; i++)
+            for (int i = 0; i < _characterList.transform.childCount; i++)
             {
-                Destroy(_horizontalLayoutGroup.transform.GetChild(i).gameObject);
+                Destroy(_characterList.transform.GetChild(i).gameObject);
             }
 
             foreach (var island in level.Islands)
@@ -123,16 +139,13 @@ namespace UI
                 foreach (var transportable in island.transportables)
                 {
                     var go = GameObject.Instantiate(_characterPrefab);
-                    go.transform.SetParent(_horizontalLayoutGroup.transform, false);
-                    var image = go.GetComponent<Image>();
+                    go.transform.SetParent(_characterList.transform, false);
+                    var image = go.GetComponentInChildren<Image>();
                     image.sprite = transportable.sprite;
                 }
             }
         }
 
-        [SerializeField]
-        HorizontalLayoutGroup _horizontalLayoutGroup;
-        [SerializeField]
-        private GameObject _characterPrefab;
+
     }
 }

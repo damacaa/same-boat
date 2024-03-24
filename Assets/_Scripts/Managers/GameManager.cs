@@ -243,6 +243,7 @@ public class GameManager : MonoBehaviour
     private void HandleWin()
     {
         SoundController.Instace.PlaySound(SoundController.Sound.Win);
+        ProgressManager.Instance?.CompleteLevel();
     }
 
     private void HandleFail()
