@@ -864,8 +864,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 3355391231388760273}
   m_HandleRect: {fileID: 5017327154315011020}
   m_Direction: 2
-  m_Value: 0.99999976
-  m_Size: 0.6084972
+  m_Value: 1
+  m_Size: 0.60849726
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -920,6 +920,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _descriptionText: {fileID: 6057963549982701301}
+  _crossingsCounterText: {fileID: 1896648002630368582}
 --- !u!1 &5630417433887216812
 GameObject:
   m_ObjectHideFlags: 0
@@ -1354,7 +1355,7 @@ GameObject:
   - component: {fileID: 4544469624530443722}
   - component: {fileID: 4710246659230344252}
   m_Layer: 0
-  m_Name: VerticalLayout
+  m_Name: HUD
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1530,7 +1531,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4294415338740850819, guid: 99e5196d7f69c414faaad2612314b633, type: 3}
       propertyPath: m_Name
-      value: OptionsButton (2)
+      value: UndoButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 4294415338740850819, guid: 99e5196d7f69c414faaad2612314b633, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4423701367309346963, guid: 99e5196d7f69c414faaad2612314b633, type: 3}
       propertyPath: m_SizeDelta.y
@@ -1846,7 +1851,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4294415338740850819, guid: 99e5196d7f69c414faaad2612314b633, type: 3}
       propertyPath: m_Name
-      value: OptionsButton (1)
+      value: ClueButton
       objectReference: {fileID: 0}
     - target: {fileID: 4423701367309346963, guid: 99e5196d7f69c414faaad2612314b633, type: 3}
       propertyPath: m_SizeDelta.y
@@ -2450,6 +2455,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 7390327716585852253, guid: 9f6e386a9f2cbf947ae1d9cdf9147d84, type: 3}
   m_PrefabInstance: {fileID: 7571909039882138209}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1896648002630368582 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8306586495444242215, guid: 9f6e386a9f2cbf947ae1d9cdf9147d84, type: 3}
+  m_PrefabInstance: {fileID: 7571909039882138209}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &7810694424710111116
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -103,6 +103,8 @@ public class GameManager : MonoBehaviour
             ScreenCapture.CaptureScreenshot("screen.png");
         }
 #endif
+
+        _ui.SetCrossings(Game.Boat.Crossings);
     }
 
     // Show debug UI
@@ -150,7 +152,7 @@ public class GameManager : MonoBehaviour
 
         if (GUI.Button(new Rect(space, 3 * (space + height) + space, width, height), "Clue"))
         {
-            StartCoroutine(ClueCoroutine());
+            RequestClue();
         }
 
         if (GUI.Button(new Rect(space, 4 * (space + height) + space, width, height), "Screenshot"))
@@ -234,6 +236,11 @@ public class GameManager : MonoBehaviour
         }
 
         Game.Undo();
+    }
+
+    public void RequestClue()
+    {
+        StartCoroutine(ClueCoroutine());
     }
 
     public void ResetGame()
