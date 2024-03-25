@@ -3,6 +3,7 @@ using Solver;
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -231,6 +232,7 @@ public class GameManager : MonoBehaviour
 
         if (_isFail)
         {
+            _ui.SetState(UIGame.UIState.Playing);
             _isFail = false;
             SoundController.Instace.PlaySong(1);
         }
@@ -252,17 +254,24 @@ public class GameManager : MonoBehaviour
         _isWin = false;
         _isFail = false;
         SoundController.Instace.PlaySong(1);
+        _ui.SetState(UIGame.UIState.Playing);
+
     }
 
     private void HandleWin()
     {
         SoundController.Instace.PlaySound(SoundController.Sound.Win);
         ProgressManager.Instance?.CompleteLevel();
+
+        _ui.SetState(UIGame.UIState.Win);
+        _isWin = true;
     }
 
     private void HandleFail()
     {
         SoundController.Instace.PlaySound(SoundController.Sound.Fail);
+        _ui.SetState(UIGame.UIState.Fail);
+        _isFail=true;
     }
 
     private IEnumerator SolveCoroutine()
@@ -359,5 +368,10 @@ public class GameManager : MonoBehaviour
             return false;
 
         return Game.LoadOnBoat(transportable.Data);
+    }
+
+    public void GoToMainMenu()
+    {
+        SceneManager.LoadScene(0);
     }
 }

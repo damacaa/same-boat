@@ -162,8 +162,8 @@ public class Level : ScriptableObject
             return sb.ToString();
 
         sb.Append($"Even though they all want everyone to get to the other side in one piece," +
-            $" the animal instincts of some of them will kick in if they are left unattended." +
-            $" Keep in mind that:\n");
+            $" the animal instincts of some of them will kick in if they are left unattended.\n" +
+            $"Keep in mind that:\n");
 
         foreach (var rule in Rules)
         {

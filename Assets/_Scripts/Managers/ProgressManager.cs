@@ -4,7 +4,8 @@ public class ProgressManager : MonoBehaviour
 {
     public static ProgressManager Instance { get; private set; }
 
-    private const string COMPLETED_LEVELS = "progress";
+    public static readonly string COMPLETED_LEVELS = "progress";
+
     [SerializeField]
     int _completedLevels;
     public int CurrentLevel { get {  return _completedLevels; } }   
@@ -43,10 +44,16 @@ public class ProgressManager : MonoBehaviour
         if (Levels[_completedLevels] == _levelToLoad)
         {
             _completedLevels++;
+            SaveProgress();
         }
     }
 
     private void OnDestroy()
+    {
+        SaveProgress();
+    }
+
+    private void SaveProgress()
     {
         PlayerPrefs.SetInt(COMPLETED_LEVELS, _completedLevels);
         PlayerPrefs.Save();

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43576c3ff47158b4580a126f4cf8a5e2, type: 3}
   m_Name: Level3
   m_EditorClassIdentifier: 
-  name: Understanding weight
+  name: Understanding weight II
   Description: 
   Preview: {fileID: 21300000, guid: dae33700bd23f76409a80bf78fdb8a42, type: 3}
   BoatCapacity: 2
