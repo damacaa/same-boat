@@ -31,6 +31,11 @@ public class MenuIslands : MonoBehaviour
     float _spawnRate = 1f;
     private void Update()
     {
+        if(Input.GetKeyDown(KeyCode.S))
+        {
+            ScreenCapture.CaptureScreenshot("screen.png");
+        }
+
         if (Time.time > _nextSpawnTime)
         {
             _nextSpawnTime = Time.time + 1f / _spawnRate;
