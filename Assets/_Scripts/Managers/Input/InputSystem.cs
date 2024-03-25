@@ -25,6 +25,8 @@ public class InputSystem : MonoBehaviour
     {
         _cursor = new GameObject("Cursor");
         _cursor.transform.position = Vector3.zero;
+
+        if(_island != null) { }
     }
 
     // Update is called once per frame

@@ -31,6 +31,11 @@ public class MenuIslands : MonoBehaviour
     float _spawnRate = 1f;
     private void Update()
     {
+        if(Input.GetKeyDown(KeyCode.S))
+        {
+            ScreenCapture.CaptureScreenshot("screen.png");
+        }
+
         if (Time.time > _nextSpawnTime)
         {
             _nextSpawnTime = Time.time + 1f / _spawnRate;
@@ -43,7 +48,10 @@ public class MenuIslands : MonoBehaviour
             g.transform.position += 7.5f * Camera.main.transform.right * Random.Range(-1f, 1f);
 
             g.GetComponent<MenuFallingSprite>().Velocity = -Camera.main.transform.up * Random.Range(1f, 3f);
-            g.GetComponent<SpriteRenderer>().sprite = sprites[Random.Range(0, sprites.Length)];
+
+            var sr = g.GetComponent<SpriteRenderer>();
+            sr.sprite = sprites[Random.Range(0, sprites.Length)];
+            sr.sortingOrder = 1100-(int)(Time.time * 10) % 1000;
         }
     }
 }

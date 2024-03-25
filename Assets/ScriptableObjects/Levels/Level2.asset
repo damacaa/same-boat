@@ -13,10 +13,14 @@ MonoBehaviour:
   m_Name: Level2
   m_EditorClassIdentifier: 
   name: Understanding weight
+  Description: 
+  Preview: {fileID: 21300000, guid: 70632ddfe8e71b04b8f90ef7e29a9e98, type: 3}
   BoatCapacity: 2
   BoatMaxWeightAllowed: 4
   BoatMaxTravelCost: 0
+  StrictMode: 0
   OnlyHumansCanDrive: 0
+  Unlocked: 0
   Map: {fileID: 2800000, guid: f944d0c065e6cf44fb2c6180bcf8d17a, type: 3}
   Islands:
   - transportables:

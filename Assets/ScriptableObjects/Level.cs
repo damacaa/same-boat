@@ -9,6 +9,7 @@ public class Level : ScriptableObject
 {
     public new string name;
     public string Description;
+    public Sprite Preview;
     [Space]
     [Range(2, 4)]
     public int BoatCapacity = 2;
@@ -19,6 +20,7 @@ public class Level : ScriptableObject
     [Space()]
     public bool StrictMode = false;
     public bool OnlyHumansCanDrive = false;
+    public bool Unlocked = false;
     [Space()]
     public Texture2D Map;
     public Island[] Islands;
@@ -160,8 +162,8 @@ public class Level : ScriptableObject
             return sb.ToString();
 
         sb.Append($"Even though they all want everyone to get to the other side in one piece," +
-            $" the animal instincts of some of them will kick in if they are left unattended." +
-            $" Keep in mind that:\n");
+            $" the animal instincts of some of them will kick in if they are left unattended.\n" +
+            $"Keep in mind that:\n");
 
         foreach (var rule in Rules)
         {

@@ -2,32 +2,22 @@
 using Solver;
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-  
+
+    [SerializeField]
+    private UIGame _ui;
 
     // Debug stuff
     [SerializeField]
-    Level[] levels;
+    private LevelCollection levels;
     [SerializeField]
     int _currentLevel;
 
-    // Singleton
-    public static GameManager Instance { get; private set; }
-
-    public GameLogic Game { get; private set; }
-    public string LevelDescription { get; private set; }
-
-    private bool _isWin;
-    private bool _isFail;
-
-    public event Action OnLevelLoaded;
-    public event Action OnSolverStarted;
-    public event Action OnSolverEnded;
+ 
 
     public enum SolverMethod
     {
@@ -35,6 +25,21 @@ public class GameManager : MonoBehaviour
         Coroutine,
         Task
     }
+
+    // Singleton
+    public static GameManager Instance { get; private set; }
+    public GameLogic Game { get; private set; }
+
+    public Level LevelToLoad
+    {
+        set => _levelToLoad = value;
+    }
+
+    public string LevelDescription { get; private set; }
+
+    public event Action OnLevelLoaded;
+    public event Action OnSolverStarted;
+    public event Action OnSolverEnded;
 
     [Header("Solver settings")]
     [SerializeField]
@@ -44,6 +49,9 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     bool _showDebugUI = false;
 
+    private Level _levelToLoad;
+    private bool _isWin;
+    private bool _isFail;
 
     private void Awake()
     {
@@ -63,9 +71,117 @@ public class GameManager : MonoBehaviour
 
         SoundController.Instace.PlaySong(1);
 
-        if (!ProgressManager.Instance)
+        if (ProgressManager.Instance)
+        {
+            // TO DO Load selected level from progress manager
+            LoadLevel(ProgressManager.Instance.LevelToLoad);
+        }
+        else
+        {
             LoadLevel(levels[_currentLevel]);
+        }
+    }
 
+    private void Update()
+    {
+        if (Game == null)
+            return;
+
+#if UNITY_EDITOR
+        if (Input.GetKeyDown("right"))
+        {
+            Game.Execute();
+            print(Game);
+        }
+
+        if (Input.GetKeyDown("left"))
+        {
+            Undo();
+        }
+
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            ScreenCapture.CaptureScreenshot("screen.png");
+        }
+#endif
+
+        _ui.SetCrossings(Game.Boat.Crossings);
+    }
+
+    // Show debug UI
+    private void OnGUI()
+    {
+        if (Game == null || !_showDebugUI)
+            return;
+
+        int width = Screen.width / 8;
+        int height = Screen.height / 20;
+        int space = Screen.height / 50;
+
+        if (GUI.Button(new Rect(space, space, width, height), "Undo"))
+            Game.Undo();
+
+        if (GUI.Button(new Rect(space, space + height + space, width, height), "Reset"))
+        {
+            if (_isWin || _isFail)
+                SoundController.Instace.PlaySong(1);
+
+            Game.Reset();
+        }
+
+        if (GUI.Button(new Rect(space, 2 * (space + height) + space, width, height), "Solve"))
+        {
+            switch (_solverMethod)
+            {
+                case SolverMethod.Normal:
+                    {
+                        float startTime = Time.realtimeSinceStartup;
+                        Solver.Solver.SolveWidthAndReset(Game, _useHeuristicForSolver);
+                        float elapsedTime = Time.realtimeSinceStartup - startTime;
+
+                        Debug.Log($"Elapsed normal {elapsedTime}");
+
+                        StartCoroutine(Game.ExecuteAllMovesCoroutine());
+                        break;
+                    }
+                case SolverMethod.Coroutine:
+                case SolverMethod.Task:
+                    StartCoroutine(SolveCoroutine());
+                    break;
+            }
+        }
+
+        if (GUI.Button(new Rect(space, 3 * (space + height) + space, width, height), "Clue"))
+        {
+            RequestClue();
+        }
+
+        if (GUI.Button(new Rect(space, 4 * (space + height) + space, width, height), "Screenshot"))
+        {
+            ScreenCapture.CaptureScreenshot("screen.png");
+        }
+
+        // GUI.TextArea(new Rect(Screen.width - (3 * width) - space, space * 5, 3 * width, 5 * height), LevelDescription);
+
+        width = height;
+        for (int i = 0; i < levels.Count; i++)
+        {
+            if (GUI.Button(new Rect(space + i * (space + width), Screen.height - space - height, width, height), (i + 1).ToString()))
+            {
+                LoadLevel(levels[i]);
+            }
+        }
+    }
+
+    public void LoadLevel()
+    {
+        if (_levelToLoad == null)
+        {
+            Debug.LogError("Level to load is null. It must be set previously.");
+            return;
+        }
+
+        LoadLevel(_levelToLoad);
     }
 
     public void LoadLevel(Level level)
@@ -83,10 +199,10 @@ public class GameManager : MonoBehaviour
         Game.OnFail += HandleFail;
 
         LevelDescription = $"{level.name}:\n{level}";
+        _ui.SetDescription(LevelDescription);
         Debug.Log(LevelDescription);
 
         OnLevelLoaded?.Invoke();
-
 
         void ClearPreviousGame()
         {
@@ -109,39 +225,56 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void Undo()
+    {
+        if (_isWin)
+            return;
+
+        if (_isFail)
+        {
+            _ui.SetState(UIGame.UIState.Playing);
+            _isFail = false;
+            SoundController.Instace.PlaySong(1);
+        }
+
+        Game.Undo();
+    }
+
+    public void RequestClue()
+    {
+        StartCoroutine(ClueCoroutine());
+    }
+
+    public void ResetGame()
+    {
+        StopAllCoroutines();
+
+        Game.Reset();
+
+        _isWin = false;
+        _isFail = false;
+        SoundController.Instace.PlaySong(1);
+        _ui.SetState(UIGame.UIState.Playing);
+
+    }
+
     private void HandleWin()
     {
         SoundController.Instace.PlaySound(SoundController.Sound.Win);
+        ProgressManager.Instance?.CompleteLevel();
+
+        _ui.SetState(UIGame.UIState.Win);
+        _isWin = true;
     }
 
     private void HandleFail()
     {
         SoundController.Instace.PlaySound(SoundController.Sound.Fail);
+        _ui.SetState(UIGame.UIState.Fail);
+        _isFail=true;
     }
 
-
-    private void Update()
-    {
-        if (Game == null)
-            return;
-
-#if UNITY_EDITOR
-
-        if (Input.GetKeyDown("right"))
-        {
-            Game.Execute();
-            print(Game);
-        }
-
-        if (Input.GetKeyDown("left"))
-        {
-            Undo();
-        }
-
-#endif
-    }
-
-    IEnumerator SolveCoroutine()
+    private IEnumerator SolveCoroutine()
     {
         if (OnSolverStarted != null)
             OnSolverStarted();
@@ -168,8 +301,7 @@ public class GameManager : MonoBehaviour
         yield return Game.ExecuteAllMovesCoroutine();
     }
 
-
-    IEnumerator ClueCoroutine()
+    private IEnumerator ClueCoroutine()
     {
         if (OnSolverStarted != null)
             OnSolverStarted();
@@ -192,32 +324,6 @@ public class GameManager : MonoBehaviour
         Game.Execute();
 
         yield return null;
-    }
-
-
-    public void Undo()
-    {
-        if (_isWin)
-            return;
-
-        if (_isFail)
-        {
-            _isFail = false;
-            SoundController.Instace.PlaySong(1);
-        }
-
-        Game.Undo();
-    }
-
-    public void ResetGame()
-    {
-        StopAllCoroutines();
-
-        Game.Reset();
-
-        _isWin = false;
-        _isFail = false;
-        SoundController.Instace.PlaySong(1);
     }
 
     internal bool MoveBoatTo(BoatBehaviour boat, IslandBehaviour island)
@@ -264,70 +370,8 @@ public class GameManager : MonoBehaviour
         return Game.LoadOnBoat(transportable.Data);
     }
 
-
-    // Show debug UI
-    private void OnGUI()
+    public void GoToMainMenu()
     {
-        if (Game == null || !_showDebugUI)
-            return;
-
-        int width = Screen.width / 8;
-        int height = Screen.height / 20;
-        int space = Screen.height / 50;
-
-        if (GUI.Button(new Rect(space, space, width, height), "Undo"))
-            Game.Undo();
-
-        if (GUI.Button(new Rect(space, space + height + space, width, height), "Reset"))
-        {
-            if(_isWin || _isFail)
-                SoundController.Instace.PlaySong(1);
-
-            Game.Reset();
-        }
-
-        if (GUI.Button(new Rect(space, 2 * (space + height) + space, width, height), "Solve"))
-        {
-            switch (_solverMethod)
-            {
-                case SolverMethod.Normal:
-                    {
-                        float startTime = Time.realtimeSinceStartup;
-                        Solver.Solver.SolveWidthAndReset(Game, _useHeuristicForSolver);
-                        float elapsedTime = Time.realtimeSinceStartup - startTime;
-
-                        Debug.Log($"Elapsed normal {elapsedTime}");
-
-                        StartCoroutine(Game.ExecuteAllMovesCoroutine());
-                        break;
-                    }
-                case SolverMethod.Coroutine:
-                case SolverMethod.Task:
-                    StartCoroutine(SolveCoroutine());
-                    break;
-            }
-        }
-
-        if (GUI.Button(new Rect(space, 3 * (space + height) + space, width, height), "Clue"))
-        {
-            StartCoroutine(ClueCoroutine());
-        }
-
-        if (GUI.Button(new Rect(space, 4 * (space + height) + space, width, height), "Screenshot"))
-        {
-            ScreenCapture.CaptureScreenshot("screen.png");
-        }
-
-        // GUI.TextArea(new Rect(Screen.width - (3 * width) - space, space * 5, 3 * width, 5 * height), LevelDescription);
-
-        width = height;
-        for (int i = 0; i < levels.Length; i++)
-        {
-            if (GUI.Button(new Rect(space + i * (space + width), Screen.height - space - height, width, height), (i + 1).ToString()))
-            {
-                LoadLevel(levels[i]);
-            }
-        }
+        SceneManager.LoadScene(0);
     }
-
 }
