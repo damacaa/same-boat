@@ -14,25 +14,7 @@ namespace Solver
 
             Task.Run(() =>
             {
-                State current = Initialize(game, useHeuristic, out PriorityQueue<State> nodeQueue, out HashSet<State> openList, out HashSet<State> closedList);
-
-                while (openList.Count > 0)
-                {
-                    // Sets game state
-                    State previous = current;
-                    current = nodeQueue.Dequeue();
-
-                    SetState(current, previous, game);
-
-                    openList.Remove(current);
-                    closedList.Add(current);
-
-                    // Checks win and brakes loop if true
-                    if (game.Win) break;
-
-                    // Adds to the open list all of the new possible states derived from the current state
-                    ExpandNeighbours(current, game, openList, closedList, nodeQueue, true);
-                }
+                State solution = Solver.Solve(game, useHeuristic);
 
                 result.Ready = true;
 
@@ -42,7 +24,7 @@ namespace Solver
                 }
 
                 // Reset game to initial state
-                ResetGame(game, current);
+                ResetGame(game, solution);
             });
 
             return result;

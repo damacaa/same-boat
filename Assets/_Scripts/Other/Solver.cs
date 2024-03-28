@@ -6,7 +6,21 @@ namespace Solver
 {
     public class Solver
     {
-        public static bool SolveWidthAndReset(GameLogic game, bool useHeuristic = false)
+        public static bool SolveWidthAndReset(GameLogic game,  bool useHeuristic = false)
+        {
+            State solution = Solve(game, useHeuristic);
+
+            if (!game.Win)
+            {
+                return false;
+            }
+
+            ResetGame(game, solution);
+
+            return true;
+        }
+
+        internal static State Solve(GameLogic game, bool useHeuristic = false)
         {
             State current = Initialize(game, useHeuristic, out PriorityQueue<State> nodeQueue, out HashSet<State> openList, out HashSet<State> closedList);
 
@@ -28,14 +42,7 @@ namespace Solver
                 ExpandNeighbours(current, game, openList, closedList, nodeQueue, true);
             }
 
-            if (!game.Win)
-            {
-                return false;
-            }
-
-            ResetGame(game, current);
-
-            return true;
+            return current;
         }
 
         protected static State Initialize(GameLogic game, bool useHeuristic, out PriorityQueue<State> nodeQueue, out HashSet<State> openList, out HashSet<State> closedList)
