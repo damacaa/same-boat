@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -8,13 +9,17 @@ namespace Solver
 
     public class SolverTask : Solver
     {
-        public static new SolverResult SolveWidthAndReset(GameLogic game, bool useHeuristic = true)
+        // Problem: inherits things we don't want
+        
+
+
+        private static SolverResult SolveWidthAndReset(GameLogic game, CancellationTokenSource cancellationToken, bool useHeuristic = true)
         {
             SolverResult result = new SolverResult();
 
-            Task.Run(() =>
+            result.Task = Task.Run(() =>
             {
-                State solution = Solver.Solve(game, useHeuristic);
+                State solution = Solver.Solve(game, useHeuristic, cancellationToken);
 
                 result.Ready = true;
 
@@ -30,10 +35,9 @@ namespace Solver
             return result;
         }
 
-
-        public static IEnumerator SolveCoroutine(GameLogic game, bool useHeuristic = true)
+        public static IEnumerator SolveCoroutine(GameLogic game, CancellationTokenSource cancellationToken, bool useHeuristic = true)
         {
-            var result = SolveWidthAndReset(game, useHeuristic);
+            var result = SolveWidthAndReset(game, cancellationToken, useHeuristic);
 
             while (!result.Ready)
             {
@@ -47,6 +51,7 @@ namespace Solver
     public class SolverResult
     {
         public bool Ready { get; internal set; }
+        public Task Task { get; internal set; }
     }
 
 }

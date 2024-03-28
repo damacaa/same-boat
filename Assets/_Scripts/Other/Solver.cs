@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 
 namespace Solver
 {
@@ -20,11 +22,11 @@ namespace Solver
             return true;
         }
 
-        internal static State Solve(GameLogic game, bool useHeuristic = false)
+        internal static State Solve(GameLogic game, bool useHeuristic = false, CancellationTokenSource cancellationToken = null)
         {
             State current = Initialize(game, useHeuristic, out PriorityQueue<State> nodeQueue, out HashSet<State> openList, out HashSet<State> closedList);
 
-            while (openList.Count > 0)
+            while (openList.Count > 0 && (cancellationToken != null && !cancellationToken.IsCancellationRequested))
             {
                 // Sets game state
                 State previous = current;
@@ -40,6 +42,9 @@ namespace Solver
 
                 // Adds to the open list all of the new possible states derived from the current state
                 ExpandNeighbours(current, game, openList, closedList, nodeQueue, true);
+
+                Thread.Sleep(300);
+                UnityEngine.Debug.Log(current);
             }
 
             return current;

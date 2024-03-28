@@ -2,6 +2,7 @@
 using Solver;
 using System;
 using System.Collections;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -53,6 +54,7 @@ public class GameManager : MonoBehaviour
     private bool _isWin;
     private bool _isFail;
     private Level _loadedLevel;
+    private CancellationTokenSource _solverCancellationToken;
 
     private void Awake()
     {
@@ -290,7 +292,10 @@ public class GameManager : MonoBehaviour
                 yield return SolverCoroutine.SolveWidthAndReset(Game, _useHeuristicForSolver);
                 break;
             case SolverMethod.Task:
-                yield return SolverTask.SolveCoroutine(Game, _useHeuristicForSolver);
+                if (_solverCancellationToken != null)
+                    _solverCancellationToken.Cancel();
+                _solverCancellationToken = new CancellationTokenSource();
+                yield return SolverTask.SolveCoroutine(Game, _solverCancellationToken, _useHeuristicForSolver);
                 break;
         }
 
@@ -315,7 +320,10 @@ public class GameManager : MonoBehaviour
                 yield return SolverCoroutine.SolveWidthAndReset(Game, _useHeuristicForSolver);
                 break;
             case SolverMethod.Task:
-                yield return SolverTask.SolveCoroutine(Game, _useHeuristicForSolver);
+                if (_solverCancellationToken != null)
+                    _solverCancellationToken.Cancel();
+                _solverCancellationToken = new CancellationTokenSource();
+                yield return SolverTask.SolveCoroutine(Game, _solverCancellationToken, _useHeuristicForSolver);
                 break;
         }
 
@@ -399,5 +407,11 @@ public class GameManager : MonoBehaviour
         }
 
         SceneManager.LoadScene(1);
+    }
+
+    private void OnDestroy()
+    {
+        if (_solverCancellationToken != null)
+            _solverCancellationToken.Cancel();
     }
 }
