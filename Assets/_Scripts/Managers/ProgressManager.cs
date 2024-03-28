@@ -41,11 +41,18 @@ public class ProgressManager : MonoBehaviour
 
     public void CompleteLevel()
     {
-        if (Levels[_completedLevels] == _levelToLoad)
+        try
         {
-            _completedLevels++;
-            SaveProgress();
+            if (Levels[_completedLevels] == _levelToLoad)
+            {
+                _completedLevels++;
+                SaveProgress();
+            }
         }
+        catch (System.Exception)
+        {
+        }
+        
     }
 
     private void OnDestroy()

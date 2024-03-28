@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     int _currentLevel;
 
- 
+
 
     public enum SolverMethod
     {
@@ -52,6 +52,7 @@ public class GameManager : MonoBehaviour
     private Level _levelToLoad;
     private bool _isWin;
     private bool _isFail;
+    private Level _loadedLevel;
 
     private void Awake()
     {
@@ -202,6 +203,8 @@ public class GameManager : MonoBehaviour
         _ui.SetDescription(LevelDescription);
         Debug.Log(LevelDescription);
 
+        _loadedLevel = level;
+
         OnLevelLoaded?.Invoke();
 
         void ClearPreviousGame()
@@ -271,7 +274,7 @@ public class GameManager : MonoBehaviour
     {
         SoundController.Instace.PlaySound(SoundController.Sound.Fail);
         _ui.SetState(UIGame.UIState.Fail);
-        _isFail=true;
+        _isFail = true;
     }
 
     private IEnumerator SolveCoroutine()
@@ -373,5 +376,28 @@ public class GameManager : MonoBehaviour
     public void GoToMainMenu()
     {
         SceneManager.LoadScene(0);
+    }
+
+    public void LoandNextLevel()
+    {
+        if (!ProgressManager.Instance)
+            return;
+
+        for (int i = 0; i < ProgressManager.Instance.Levels.Count; i++)
+        {
+            if (_loadedLevel == ProgressManager.Instance.Levels[i])
+            {
+                if (i + 1 >= ProgressManager.Instance.Levels.Count)
+                {
+                    // TODO: hide button
+                    return;
+                }
+
+                ProgressManager.Instance.LevelToLoad = ProgressManager.Instance.Levels[i + 1];
+                break;
+            }
+        }
+
+        SceneManager.LoadScene(1);
     }
 }
