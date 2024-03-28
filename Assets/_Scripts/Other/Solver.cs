@@ -43,8 +43,6 @@ namespace Solver
                 // Adds to the open list all of the new possible states derived from the current state
                 ExpandNeighbours(current, game, openList, closedList, nodeQueue, true);
 
-                Thread.Sleep(300);
-                UnityEngine.Debug.Log(current);
             }
 
             return current;

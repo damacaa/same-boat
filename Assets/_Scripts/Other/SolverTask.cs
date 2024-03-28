@@ -6,13 +6,8 @@ using UnityEngine;
 
 namespace Solver
 {
-
-    public class SolverTask : Solver
+    public class SolverTask
     {
-        // Problem: inherits things we don't want
-        
-
-
         private static SolverResult SolveWidthAndReset(GameLogic game, CancellationTokenSource cancellationToken, bool useHeuristic = true)
         {
             SolverResult result = new SolverResult();
@@ -29,7 +24,12 @@ namespace Solver
                 }
 
                 // Reset game to initial state
-                ResetGame(game, solution);
+                State aux = solution;
+                while (aux.PreviousState != null)
+                {
+                    aux = aux.PreviousState;
+                    game.Undo(true);
+                }
             });
 
             return result;
