@@ -10,26 +10,31 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 43576c3ff47158b4580a126f4cf8a5e2, type: 3}
-  m_Name: Level6
+  m_Name: Layton
   m_EditorClassIdentifier: 
-  name: Torch
+  name: Layton
   Description: 
-  Preview: {fileID: 21300000, guid: fd098fb4cf57bad419701c802e442b7e, type: 3}
+  Preview: {fileID: 21300000, guid: 3a0c527d7f890d64a9b56b086e6e766a, type: 3}
   BoatCapacity: 2
   BoatMaxWeightAllowed: 0
-  BoatMaxTravelCost: 15
+  BoatMaxTravelCost: 0
   StrictMode: 0
   OnlyHumansCanDrive: 0
   Unlocked: 0
   Map: {fileID: 2800000, guid: f944d0c065e6cf44fb2c6180bcf8d17a, type: 3}
   Islands:
   - transportables:
-    - {fileID: 11400000, guid: e404f737187f5584989fee925aad497c, type: 2}
-    - {fileID: 11400000, guid: 8bb208a2f8e4d454ebc0ff9967aeed9c, type: 2}
+    - {fileID: 11400000, guid: e63010679b2421748bab0e9218e3bd99, type: 2}
     - {fileID: 11400000, guid: 715219d6dc8b18847890caab79708628, type: 2}
-    - {fileID: 11400000, guid: 9c173236f3b917043b185990f60b7614, type: 2}
+    - {fileID: 11400000, guid: 715219d6dc8b18847890caab79708628, type: 2}
+    - {fileID: 11400000, guid: e404f737187f5584989fee925aad497c, type: 2}
+    - {fileID: 11400000, guid: e404f737187f5584989fee925aad497c, type: 2}
+    - {fileID: 11400000, guid: e404f737187f5584989fee925aad497c, type: 2}
   - transportables: []
   Rules:
+  - A: {fileID: 11400000, guid: 715219d6dc8b18847890caab79708628, type: 2}
+    comparison: 1
+    B: {fileID: 11400000, guid: e63010679b2421748bab0e9218e3bd99, type: 2}
   - A: {fileID: 11400000, guid: e404f737187f5584989fee925aad497c, type: 2}
     comparison: 1
     B: {fileID: 11400000, guid: 715219d6dc8b18847890caab79708628, type: 2}

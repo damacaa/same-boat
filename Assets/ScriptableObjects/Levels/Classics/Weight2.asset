@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 43576c3ff47158b4580a126f4cf8a5e2, type: 3}
-  m_Name: Level4
+  m_Name: Weight2
   m_EditorClassIdentifier: 
-  name: Missionaries and cannibals
+  name: Understanding weight II
   Description: 
-  Preview: {fileID: 21300000, guid: 9c0d6ec706e01ce448aea81584af092b, type: 3}
+  Preview: {fileID: 21300000, guid: dae33700bd23f76409a80bf78fdb8a42, type: 3}
   BoatCapacity: 2
-  BoatMaxWeightAllowed: 0
+  BoatMaxWeightAllowed: 3
   BoatMaxTravelCost: 0
   StrictMode: 0
   OnlyHumansCanDrive: 0
@@ -25,13 +25,13 @@ MonoBehaviour:
   Islands:
   - transportables:
     - {fileID: 11400000, guid: cec013bbd6b087046b857f5414739136, type: 2}
-    - {fileID: 11400000, guid: cec013bbd6b087046b857f5414739136, type: 2}
-    - {fileID: 11400000, guid: cec013bbd6b087046b857f5414739136, type: 2}
-    - {fileID: 11400000, guid: 9c173236f3b917043b185990f60b7614, type: 2}
-    - {fileID: 11400000, guid: 9c173236f3b917043b185990f60b7614, type: 2}
-    - {fileID: 11400000, guid: 9c173236f3b917043b185990f60b7614, type: 2}
+    - {fileID: 11400000, guid: 8bb208a2f8e4d454ebc0ff9967aeed9c, type: 2}
+    - {fileID: 11400000, guid: c93da487864c90f4897ed27019024def, type: 2}
   - transportables: []
   Rules:
-  - A: {fileID: 11400000, guid: 9c173236f3b917043b185990f60b7614, type: 2}
-    comparison: 1
-    B: {fileID: 11400000, guid: cec013bbd6b087046b857f5414739136, type: 2}
+  - A: {fileID: 11400000, guid: cec013bbd6b087046b857f5414739136, type: 2}
+    comparison: 0
+    B: {fileID: 11400000, guid: 8bb208a2f8e4d454ebc0ff9967aeed9c, type: 2}
+  - A: {fileID: 11400000, guid: 8bb208a2f8e4d454ebc0ff9967aeed9c, type: 2}
+    comparison: 0
+    B: {fileID: 11400000, guid: c93da487864c90f4897ed27019024def, type: 2}

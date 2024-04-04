@@ -10,18 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 43576c3ff47158b4580a126f4cf8a5e2, type: 3}
-  m_Name: Level7
+  m_Name: Missionaries and cannibals
   m_EditorClassIdentifier: 
-  name: Cannibals extended
+  name: Missionaries and cannibals
   Description: 
-  Preview: {fileID: 21300000, guid: a04ecc9d5e12d5d449077414eb86635e, type: 3}
+  Preview: {fileID: 21300000, guid: 9c0d6ec706e01ce448aea81584af092b, type: 3}
   BoatCapacity: 2
   BoatMaxWeightAllowed: 0
   BoatMaxTravelCost: 0
   StrictMode: 0
   OnlyHumansCanDrive: 0
   Unlocked: 0
-  Map: {fileID: 2800000, guid: 48ea27f58e9ed024489602fa0adfaa91, type: 3}
+  Map: {fileID: 2800000, guid: f944d0c065e6cf44fb2c6180bcf8d17a, type: 3}
   Islands:
   - transportables:
     - {fileID: 11400000, guid: cec013bbd6b087046b857f5414739136, type: 2}
@@ -30,11 +30,8 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 9c173236f3b917043b185990f60b7614, type: 2}
     - {fileID: 11400000, guid: 9c173236f3b917043b185990f60b7614, type: 2}
     - {fileID: 11400000, guid: 9c173236f3b917043b185990f60b7614, type: 2}
-  - transportables:
-    - {fileID: 11400000, guid: cec013bbd6b087046b857f5414739136, type: 2}
-    - {fileID: 11400000, guid: 9c173236f3b917043b185990f60b7614, type: 2}
   - transportables: []
   Rules:
   - A: {fileID: 11400000, guid: 9c173236f3b917043b185990f60b7614, type: 2}
-    comparison: 2
+    comparison: 1
     B: {fileID: 11400000, guid: cec013bbd6b087046b857f5414739136, type: 2}

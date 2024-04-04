@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 43576c3ff47158b4580a126f4cf8a5e2, type: 3}
-  m_Name: Level10
+  m_Name: Couples
   m_EditorClassIdentifier: 
-  name: Missionaries and cannibals
+  name: Couples
   Description: 
-  Preview: {fileID: 21300000, guid: c887ed2a931c29040bc544cd8c546e9f, type: 3}
+  Preview: {fileID: 21300000, guid: 13e7e6fe43a8aa049bcd610bbc1f5ff8, type: 3}
   BoatCapacity: 2
   BoatMaxWeightAllowed: 0
   BoatMaxTravelCost: 0
@@ -25,13 +25,11 @@ MonoBehaviour:
   Islands:
   - transportables:
     - {fileID: 11400000, guid: cec013bbd6b087046b857f5414739136, type: 2}
-    - {fileID: 11400000, guid: cec013bbd6b087046b857f5414739136, type: 2}
-    - {fileID: 11400000, guid: cec013bbd6b087046b857f5414739136, type: 2}
-    - {fileID: 11400000, guid: 9c173236f3b917043b185990f60b7614, type: 2}
-    - {fileID: 11400000, guid: 9c173236f3b917043b185990f60b7614, type: 2}
-    - {fileID: 11400000, guid: 9c173236f3b917043b185990f60b7614, type: 2}
+    - {fileID: 11400000, guid: 8bb208a2f8e4d454ebc0ff9967aeed9c, type: 2}
+    - {fileID: 11400000, guid: e404f737187f5584989fee925aad497c, type: 2}
+    - {fileID: 11400000, guid: c93da487864c90f4897ed27019024def, type: 2}
   - transportables: []
   Rules:
-  - A: {fileID: 11400000, guid: 9c173236f3b917043b185990f60b7614, type: 2}
-    comparison: 2
-    B: {fileID: 11400000, guid: cec013bbd6b087046b857f5414739136, type: 2}
+  - A: {fileID: 11400000, guid: e404f737187f5584989fee925aad497c, type: 2}
+    comparison: 3
+    B: {fileID: 11400000, guid: 8bb208a2f8e4d454ebc0ff9967aeed9c, type: 2}
