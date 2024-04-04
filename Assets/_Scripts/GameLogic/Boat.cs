@@ -82,9 +82,16 @@ public class Boat
         Occupied++;
         CurrentWeight += newTransportable.Weight;
 
-        if (_behaviour && !skipAnimation)
+        if (_behaviour)
         {
-            newTransportable.GoTo(_behaviour.GetSeat(pos), out animationDuration, skipAnimation, backwards);
+            if (skipAnimation)
+            {
+                _behaviour.ScheduleLoad(newTransportable, pos, skipAnimation, backwards);
+            }
+            else
+            {
+                newTransportable.GoTo(_behaviour.GetSeat(pos), out animationDuration, skipAnimation, backwards);
+            }
         }
 
         return true;

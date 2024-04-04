@@ -8,7 +8,7 @@ namespace Solver
 {
     public class Solver
     {
-        public static bool SolveWidthAndReset(GameLogic game,  bool useHeuristic = false)
+        public static bool SolveWidthAndReset(GameLogic game, bool useHeuristic = false)
         {
             State solution = Solve(game, useHeuristic);
 
@@ -33,6 +33,8 @@ namespace Solver
                 current = nodeQueue.Dequeue();
 
                 SetState(current, previous, game);
+
+                //Thread.Sleep(1000);
 
                 openList.Remove(current);
                 closedList.Add(current);
@@ -79,7 +81,7 @@ namespace Solver
             }
         }
 
-        protected static void SetState(State newState, State current, GameLogic game)
+        protected static void SetState(State newState, State current, GameLogic game, bool skipAnimation = true)
         {
             if (newState == current) { return; }
 
@@ -100,7 +102,7 @@ namespace Solver
             aux = current;
             while (aux != null && !states.Contains(aux))
             {
-                game.Undo(true);
+                game.Undo(skipAnimation);
                 aux = aux.PreviousState;
                 numberOfUndos++;
             }
@@ -111,7 +113,7 @@ namespace Solver
             // Execute every command from every state to obtain the same state in the game
             for (int i = startingPoint + 1; i < states.Count; i++)
             {
-                game.AddCommand(states[i].Command, true);
+                game.AddCommand(states[i].Command, skipAnimation);
             }
         }
 
@@ -132,11 +134,11 @@ namespace Solver
 
                     TryAddNewState(current, game, openList, closedList, queue);
 
-                    if (game.Win)
+                    /*if (game.Win)
                     {
                         openList.Add(current);
                         queue.Enqueue(current);
-                    }
+                    }*/
 
                     game.Undo(omitAnimation);
                 }
@@ -179,7 +181,7 @@ namespace Solver
             bool isInOpenList = openList.Contains(newState);
             bool isInClosedList = closedList.Contains(newState);
             // If the state is considered a fail or has already been explored, it gets omitted
-            if (!(game.Fail || isInOpenList || isInClosedList))
+            if (game.Win || !(game.Fail || isInOpenList || isInClosedList))
             {
                 newState.PreviousState = current;
                 openList.Add(newState);

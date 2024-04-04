@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class BoatBehaviour : MonoBehaviour
 {
@@ -28,6 +29,12 @@ public class BoatBehaviour : MonoBehaviour
     void Update()
     {
         _outline.enabled = false;
+
+        if (_loadRequested && !_loadRequest.skipAnimation)
+        {
+            _loadRequested = false;
+            _loadRequest.transportable.GoTo(GetSeat(_loadRequest.pos), out float animationDuration, _loadRequest.skipAnimation, _loadRequest.backwards);
+        }
     }
 
     internal void SetUp(Boat boat)
@@ -42,10 +49,11 @@ public class BoatBehaviour : MonoBehaviour
 
     internal Transform GetSeat(int pos)
     {
-        while(_seats[pos].transform.childCount != 0)
+        while (_seats[pos].transform.childCount != 0 && (pos < _seats.Length - 1))
         {
-            pos = (pos + 1) % _seats.Length;
+            pos = (pos + 1);
         }
+
         return _seats[pos];
     }
 
@@ -107,5 +115,22 @@ public class BoatBehaviour : MonoBehaviour
         }
 
         return transform;
+    }
+
+    bool _loadRequested = false;
+    LoadRequest _loadRequest;
+
+    internal void ScheduleLoad(Transportable newTransportable, int pos, bool skipAnimation, bool backwards)
+    {
+        _loadRequested = true;
+        _loadRequest = new LoadRequest { transportable = newTransportable, pos = pos, skipAnimation = skipAnimation, backwards = backwards };
+    }
+
+    private class LoadRequest
+    {
+        public Transportable transportable;
+        public int pos;
+        public bool skipAnimation;
+        public bool backwards;
     }
 }
