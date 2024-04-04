@@ -178,8 +178,9 @@ public class MapGenerator : MonoBehaviour
             float offsetY = (-blockSize * (map.Height) / 2f);
 
             var t = new GameObject("Port").transform;
-            t.position = new Vector3(offsetX + ((map.Port.x + 1) * blockSize), offsetY + ((map.Port.y + 1) * blockSize), -0.1f);
+            t.position = new Vector3(offsetX + ((map.Port.x + 1) * blockSize), offsetY + ((map.Port.y + 1) * blockSize), 0f);
             t.position -= t.position.normalized * 3f;
+            t.position = new Vector3(t.position.x, t.position.y, 0f);
             return t;
         }
 
