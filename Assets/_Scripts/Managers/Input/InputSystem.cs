@@ -19,6 +19,8 @@ public class InputSystem : MonoBehaviour
 
     GameObject _cursor;
 
+    public static bool InputEnabled = true;
+
 
     // Start is called before the first frame update
     void Start()
@@ -49,6 +51,9 @@ public class InputSystem : MonoBehaviour
 
     void OnClick()
     {
+        if (!InputEnabled)
+            return;
+
         //create a ray cast and set it to the mouses cursor position in game
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
@@ -83,6 +88,13 @@ public class InputSystem : MonoBehaviour
 
     private void OnHover()
     {
+        if (!InputEnabled)
+        {
+            _line.Reset();
+            return;
+        }
+
+
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit, distance, _layerMask))
@@ -121,6 +133,12 @@ public class InputSystem : MonoBehaviour
 
     void OnRelease()
     {
+        if (!InputEnabled)
+        {
+            _line.Reset();
+            return;
+        }
+
         bool fail = false;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
@@ -160,5 +178,16 @@ public class InputSystem : MonoBehaviour
 
         if (fail)
             _line.Reset();
+    }
+
+
+    public void EnableInput()
+    {
+        InputEnabled = true;
+    }
+
+    public void DisableInput()
+    {
+        InputEnabled = false;
     }
 }

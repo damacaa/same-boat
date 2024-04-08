@@ -17,6 +17,8 @@ public class UIGame : MonoBehaviour
     GameObject _winScreen;
     [SerializeField]
     GameObject _failScreen;
+    [SerializeField]
+    GameObject _loadingScreen;
 
     public enum UIState
     {
@@ -55,5 +57,15 @@ public class UIGame : MonoBehaviour
                 _failScreen.SetActive(true);
                 break;
         }
+    }
+
+    public void ShowLoadingScreen()
+    {
+        _loadingScreen.SetActive(true);
+    }
+
+    public void HideLoadingScreen()
+    {
+        _loadingScreen.SetActive(false);
     }
 }

@@ -8,6 +8,10 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    // Singleton
+    public static GameManager Instance { get; private set; }
+
+    private const int MIN_SOLVER_TIME = 1;
 
     [SerializeField]
     private UIGame _ui;
@@ -17,44 +21,36 @@ public class GameManager : MonoBehaviour
     private LevelCollection levels;
     [SerializeField]
     int _currentLevel;
+    [SerializeField]
+    bool _showDebugUI;
 
-
-
+    // Solver
+    [Header("Solver settings")]
+    [SerializeField]
+    bool _useHeuristicForSolver;
     public enum SolverMethod
     {
         Normal,
         Coroutine,
         Task
     }
-
-    // Singleton
-    public static GameManager Instance { get; private set; }
-    public GameLogic Game { get; private set; }
-
-    public Level LevelToLoad
-    {
-        set => _levelToLoad = value;
-    }
-
-    public string LevelDescription { get; private set; }
-
-    public event Action OnLevelLoaded;
-    public event Action OnSolverStarted;
-    public event Action OnSolverEnded;
-
-    [Header("Solver settings")]
-    [SerializeField]
-    bool _useHeuristicForSolver = false;
     [SerializeField]
     SolverMethod _solverMethod;
-    [SerializeField]
-    bool _showDebugUI = false;
+
+
+
+    private GameLogic _game;
+    private string _levelDescription;
 
     private Level _levelToLoad;
     private bool _isWin;
     private bool _isFail;
     private Level _loadedLevel;
     private CancellationTokenSource _solverCancellationToken;
+
+    public event Action OnLevelLoaded;
+    public event Action OnSolverStarted;
+    public event Action OnSolverEnded;
 
     private void Awake()
     {
@@ -64,11 +60,13 @@ public class GameManager : MonoBehaviour
             Instance = this;
     }
 
+    #region UnityEventFunctions
     private void Start()
     {
 #if !UNITY_EDITOR
         _showDebugUI = false;
 #endif
+        InputSystem.InputEnabled = true;
 
         Application.targetFrameRate = 60;
 
@@ -87,14 +85,14 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if (Game == null)
+        if (_game == null)
             return;
 
 #if UNITY_EDITOR
         if (Input.GetKeyDown("right"))
         {
-            Game.Execute();
-            print(Game);
+            _game.Execute();
+            print(_game);
         }
 
         if (Input.GetKeyDown("left"))
@@ -108,13 +106,13 @@ public class GameManager : MonoBehaviour
         }
 #endif
 
-        _ui.SetCrossings(Game.Boat.Crossings);
+        _ui.SetCrossings(_game.Boat.Crossings);
     }
 
     // Show debug UI
     private void OnGUI()
     {
-        if (Game == null || !_showDebugUI)
+        if (_game == null || !_showDebugUI)
             return;
 
         int width = Screen.width / 8;
@@ -122,14 +120,14 @@ public class GameManager : MonoBehaviour
         int space = Screen.height / 50;
 
         if (GUI.Button(new Rect(space, space, width, height), "Undo"))
-            Game.Undo();
+            _game.Undo();
 
         if (GUI.Button(new Rect(space, space + height + space, width, height), "Reset"))
         {
             if (_isWin || _isFail)
                 SoundController.Instace.PlaySong(1);
 
-            Game.Reset();
+            _game.Reset();
         }
 
         if (GUI.Button(new Rect(space, 2 * (space + height) + space, width, height), "Solve"))
@@ -139,12 +137,12 @@ public class GameManager : MonoBehaviour
                 case SolverMethod.Normal:
                     {
                         float startTime = Time.realtimeSinceStartup;
-                        Solver.Solver.SolveWidthAndReset(Game, _useHeuristicForSolver);
+                        Solver.Solver.SolveWidthAndReset(_game, _useHeuristicForSolver);
                         float elapsedTime = Time.realtimeSinceStartup - startTime;
 
                         Debug.Log($"Elapsed normal {elapsedTime}");
 
-                        StartCoroutine(Game.ExecuteAllMovesCoroutine());
+                        StartCoroutine(_game.ExecuteAllMovesCoroutine());
                         break;
                     }
                 case SolverMethod.Coroutine:
@@ -175,35 +173,25 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-
-    public void LoadLevel()
-    {
-        if (_levelToLoad == null)
-        {
-            Debug.LogError("Level to load is null. It must be set previously.");
-            return;
-        }
-
-        LoadLevel(_levelToLoad);
-    }
+    #endregion
 
     public void LoadLevel(Level level)
     {
         // Clear previous game
-        if (Game != null)
+        if (_game != null)
         {
             ClearPreviousGame();
         }
 
-        Game = new GameLogic(level);
-        Game.GenerateGameObjects(level);
+        _game = new GameLogic(level);
+        _game.GenerateGameObjects(level);
 
-        Game.OnWin += HandleWin;
-        Game.OnFail += HandleFail;
+        _game.OnWin += HandleWin;
+        _game.OnFail += HandleFail;
 
-        LevelDescription = $"{level.name}:\n{level}";
-        _ui.SetDescription(LevelDescription);
-        Debug.Log(LevelDescription);
+        _levelDescription = $"{level.name}:\n{level}";
+        _ui.SetDescription(_levelDescription);
+        Debug.Log(_levelDescription);
 
         _loadedLevel = level;
 
@@ -226,7 +214,7 @@ public class GameManager : MonoBehaviour
                 Destroy(map.transform.GetChild(i).gameObject);
             }
 
-            Game = null;
+            _game = null;
         }
     }
 
@@ -242,7 +230,7 @@ public class GameManager : MonoBehaviour
             SoundController.Instace.PlaySong(1);
         }
 
-        Game.Undo();
+        _game.Undo();
     }
 
     public void RequestClue()
@@ -254,7 +242,7 @@ public class GameManager : MonoBehaviour
     {
         StopAllCoroutines();
 
-        Game.Reset();
+        _game.Reset();
 
         _isWin = false;
         _isFail = false;
@@ -289,13 +277,13 @@ public class GameManager : MonoBehaviour
         switch (_solverMethod)
         {
             case SolverMethod.Coroutine:
-                yield return SolverCoroutine.SolveWidthAndReset(Game, _useHeuristicForSolver);
+                yield return SolverCoroutine.SolveWidthAndReset(_game, _useHeuristicForSolver);
                 break;
             case SolverMethod.Task:
                 if (_solverCancellationToken != null)
                     _solverCancellationToken.Cancel();
                 _solverCancellationToken = new CancellationTokenSource();
-                yield return SolverTask.SolveCoroutine(Game, _solverCancellationToken, _useHeuristicForSolver);
+                yield return SolverTask.SolveCoroutine(_game, _solverCancellationToken, _useHeuristicForSolver);
                 break;
         }
 
@@ -306,33 +294,46 @@ public class GameManager : MonoBehaviour
         if (OnSolverEnded != null)
             OnSolverEnded();
 
-        yield return Game.ExecuteAllMovesCoroutine();
+        yield return _game.ExecuteAllMovesCoroutine();
     }
 
     private IEnumerator ClueCoroutine()
     {
-        if (OnSolverStarted != null)
-            OnSolverStarted();
+        OnSolverStarted?.Invoke();
+
+        _ui.ShowLoadingScreen();
+
+        var t0 = Time.time;
 
         switch (_solverMethod)
         {
             case SolverMethod.Coroutine:
-                yield return SolverCoroutine.SolveWidthAndReset(Game, _useHeuristicForSolver);
+                yield return SolverCoroutine.SolveWidthAndReset(_game, _useHeuristicForSolver);
                 break;
             case SolverMethod.Task:
                 if (_solverCancellationToken != null)
                     _solverCancellationToken.Cancel();
                 _solverCancellationToken = new CancellationTokenSource();
-                yield return SolverTask.SolveCoroutine(Game, _solverCancellationToken, _useHeuristicForSolver);
+                yield return SolverTask.SolveCoroutine(_game, _solverCancellationToken, _useHeuristicForSolver);
                 break;
         }
 
-        if (OnSolverEnded != null)
-            OnSolverEnded();
+        var timeEllapsed = Time.time - t0;
+
+        if (timeEllapsed < MIN_SOLVER_TIME)
+        {
+            yield return new WaitForSeconds(MIN_SOLVER_TIME - timeEllapsed);
+        }
+
+
+        OnSolverEnded?.Invoke();
 
         yield return null;
 
-        Game.Execute();
+        _game.Execute();
+
+
+        _ui.HideLoadingScreen();
 
         yield return null;
     }
@@ -342,7 +343,7 @@ public class GameManager : MonoBehaviour
         if (_isWin || _isFail)
             return false;
 
-        return Game.MoveBoatToIsland(island.Data);
+        return _game.MoveBoatToIsland(island.Data);
     }
 
     internal bool MoveTransportableTo(TransportableBehaviour transportable, IslandBehaviour island)
@@ -350,27 +351,27 @@ public class GameManager : MonoBehaviour
         if (_isWin || _isFail)
             return false;
 
-        if (island.Data != Game.Boat.Island)
+        if (island.Data != _game.Boat.Island)
         {
-            if (!Game.MoveBoatToIsland(island.Data, true))
+            if (!_game.MoveBoatToIsland(island.Data, true))
                 return false;
 
-            if (!Game.UnloadFromBoat(transportable.Data, true))
+            if (!_game.UnloadFromBoat(transportable.Data, true))
             {
-                Game.Undo(true);
+                _game.Undo(true);
                 return false;
             }
 
-            Game.Undo(true);
-            Game.Undo(true);
+            _game.Undo(true);
+            _game.Undo(true);
 
-            StartCoroutine(Game.ExecuteAllMovesCoroutine());
+            StartCoroutine(_game.ExecuteAllMovesCoroutine());
 
             return true;
         }
         //return false; // Game.MoveBoatToIsland(island.Data)
 
-        return Game.UnloadFromBoat(transportable.Data);
+        return _game.UnloadFromBoat(transportable.Data);
     }
 
     internal bool LoadTransportableOnBoat(TransportableBehaviour transportable, BoatBehaviour boat)
@@ -378,7 +379,7 @@ public class GameManager : MonoBehaviour
         if (_isWin || _isFail)
             return false;
 
-        return Game.LoadOnBoat(transportable.Data);
+        return _game.LoadOnBoat(transportable.Data);
     }
 
     public void GoToMainMenu()
