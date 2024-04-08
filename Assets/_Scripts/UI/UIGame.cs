@@ -45,16 +45,19 @@ public class UIGame : MonoBehaviour
                 _hud.SetActive(true);
                 _winScreen.SetActive(false);
                 _failScreen.SetActive(false);
+                InputSystem.InputEnabled = true;
                 break;
             case UIState.Win:
                 _hud.SetActive(false);
                 _winScreen.SetActive(true);
                 _failScreen.SetActive(false);
+                InputSystem.InputEnabled = false;
                 break;
             case UIState.Fail:
                 _hud.SetActive(false);
                 _winScreen.SetActive(false);
                 _failScreen.SetActive(true);
+                InputSystem.InputEnabled = false;
                 break;
         }
     }
