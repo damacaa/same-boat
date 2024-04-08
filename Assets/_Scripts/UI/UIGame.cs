@@ -62,10 +62,22 @@ public class UIGame : MonoBehaviour
     public void ShowLoadingScreen()
     {
         _loadingScreen.SetActive(true);
+        var animator = _loadingScreen.GetComponentInChildren<Animator>();
+        animator.SetTrigger("StartAnimation");
     }
 
     public void HideLoadingScreen()
     {
+        //_loadingScreen.SetActive(false);
+        var animator = _loadingScreen.GetComponentInChildren<Animator>();
+        animator.SetTrigger("EndAnimation");
+        StartCoroutine(C());
+    }
+
+    IEnumerator C()
+    {
+        yield return new WaitForSeconds(0.05f);
         _loadingScreen.SetActive(false);
+        yield return null;  
     }
 }

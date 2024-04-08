@@ -11,7 +11,7 @@ public class GameManager : MonoBehaviour
     // Singleton
     public static GameManager Instance { get; private set; }
 
-    private const int MIN_SOLVER_TIME = 1;
+    private const float MIN_SOLVER_TIME = 1.5f;
 
     [SerializeField]
     private UIGame _ui;
