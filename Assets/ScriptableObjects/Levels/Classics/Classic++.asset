@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43576c3ff47158b4580a126f4cf8a5e2, type: 3}
   m_Name: Classic++
   m_EditorClassIdentifier: 
-  name: Random
+  name: Classic extended
   Description: 
   Preview: {fileID: 21300000, guid: ec03f79379868c642b48ae5ddc821b6d, type: 3}
   BoatCapacity: 2
@@ -40,9 +40,6 @@ MonoBehaviour:
   - A: {fileID: 11400000, guid: 8bb208a2f8e4d454ebc0ff9967aeed9c, type: 2}
     comparison: 0
     B: {fileID: 11400000, guid: e63010679b2421748bab0e9218e3bd99, type: 2}
-  - A: {fileID: 11400000, guid: 8bb208a2f8e4d454ebc0ff9967aeed9c, type: 2}
-    comparison: 1
-    B: {fileID: 11400000, guid: 715219d6dc8b18847890caab79708628, type: 2}
   - A: {fileID: 11400000, guid: cec013bbd6b087046b857f5414739136, type: 2}
     comparison: 1
     B: {fileID: 11400000, guid: e63010679b2421748bab0e9218e3bd99, type: 2}

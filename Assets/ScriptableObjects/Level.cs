@@ -144,10 +144,10 @@ public class Level : ScriptableObject
         }
 
         if (hasMaxTravelCost)
-            sb.Append($"When two or more things are traveling together," +
+            sb.Append($"When two or more characters are traveling together," +
                     $" the time they will take to cross the river is equal to the time that the slowest one of them would take.\n");
 
-        sb.Append($"The boat can’t be moved if there isn’t somebody driving it.");
+        sb.Append($"The boat can’t be moved if there isn’t someone driving it.");
 
         if (OnlyHumansCanDrive)
             sb.Append($" However, the man won't allow anyone but himself to sail the boat.\n");

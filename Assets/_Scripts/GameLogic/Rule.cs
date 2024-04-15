@@ -8,7 +8,7 @@ public class Rule
 
     public enum RuleType
     {
-        WantsToEat = 0,
+        CantCoexist = 0,
         CountMustBeGreaterThan = 1,
         CountMustBeGreaterEqualThan = 2,
         Requires = 3,
@@ -26,8 +26,8 @@ public class Rule
 
         switch (comparison)
         {
-            case RuleType.WantsToEat:
-                s = $"You can't leave a {A.name.ToLower()} and a {B.name.ToLower()} together in the same island or it will be eaten.";
+            case RuleType.CantCoexist:
+                s = $"You can't leave a {A.name.ToLower()} and a {B.name.ToLower()} together in the same island.";
                 break;
             case RuleType.CountMustBeGreaterThan:
                 s = $"The number of {A.NamePlural.ToLower()} must be greater than the number of {B.NamePlural.ToLower()}.";

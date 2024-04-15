@@ -59,7 +59,7 @@ public class GameLogic
 
                         switch (rule.comparison)
                         {
-                            case Rule.RuleType.WantsToEat:
+                            case Rule.RuleType.CantCoexist:
                                 if (t.ScripatableObject == rule.A)
                                     t.IsHungry = true;
                                 break;
@@ -265,7 +265,7 @@ public class GameLogic
 
             switch (r.comparison)
             {
-                case Rule.RuleType.WantsToEat:
+                case Rule.RuleType.CantCoexist:
                     if (aCount > 0 && bCount > 0)
                         return false;
                     break;

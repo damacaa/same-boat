@@ -31,5 +31,5 @@ MonoBehaviour:
   - transportables: []
   Rules:
   - A: {fileID: 11400000, guid: e404f737187f5584989fee925aad497c, type: 2}
-    comparison: 1
+    comparison: 0
     B: {fileID: 11400000, guid: 715219d6dc8b18847890caab79708628, type: 2}
