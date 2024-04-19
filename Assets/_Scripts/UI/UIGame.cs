@@ -3,14 +3,25 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UIGame : MonoBehaviour
 {
+    [Header("Game UI elements")]
     [SerializeField]
     TextMeshProUGUI _descriptionText;
     [SerializeField]
     TextMeshProUGUI _crossingsCounterText;
+    [SerializeField]
+    GameObject _rulePrefab;
+    [SerializeField]
+    GameObject _ruleList;
+    [SerializeField]
+    Sprite[] _ruleSprites;
 
+    Dictionary<Rule, GameObject> _rules = new();
+
+    [Header("Screens")]
     [SerializeField]
     GameObject _hud;
     [SerializeField]
@@ -32,9 +43,49 @@ public class UIGame : MonoBehaviour
         _crossingsCounterText.text = crossings.ToString();
     }
 
-    internal void SetDescription(string levelDescription)
+    internal void SetLevelDetails(Level level)
     {
-        _descriptionText.text = levelDescription;
+        _descriptionText.text = $"{level.name}:\n{level}";
+
+
+        foreach (var g in _rules.Values)
+        {
+            g.transform.SetParent(null);
+            Destroy(g);
+        }
+        _rules.Clear();
+
+        foreach (var rule in level.Rules)
+        {
+            GameObject g = GameObject.Instantiate(_rulePrefab);
+            g.transform.SetParent(_ruleList.transform);
+
+            g.transform.GetChild(0).gameObject.GetComponent<Image>().sprite = rule.B.sprite;
+            
+            g.transform.GetChild(2).gameObject.GetComponent<Image>().sprite = rule.A.sprite;
+
+            switch (rule.comparison)
+            {
+                case Rule.RuleType.CantCoexist:
+                    g.transform.GetChild(3).gameObject.GetComponent<Image>().sprite = _ruleSprites[0];
+                    break;
+                case Rule.RuleType.CountMustBeGreaterThan:
+                    g.transform.GetChild(3).gameObject.GetComponent<Image>().sprite = _ruleSprites[1];
+                    g.transform.GetChild(1).gameObject.GetComponent<Image>().sprite = rule.A.sprite;
+                    g.transform.GetChild(1).gameObject.SetActive(true);
+                    break;
+                case Rule.RuleType.CountMustBeGreaterEqualThan:
+                    g.transform.GetChild(3).gameObject.GetComponent<Image>().sprite = _ruleSprites[2];
+                    g.transform.GetChild(1).gameObject.GetComponent<Image>().sprite = rule.A.sprite;
+                    g.transform.GetChild(1).gameObject.SetActive(true);
+                    break;
+                case Rule.RuleType.Requires:
+                    g.transform.GetChild(3).gameObject.GetComponent<Image>().sprite = _ruleSprites[3];
+                    break;
+            }
+
+            _rules.Add(rule, g);
+        }
     }
 
     public void SetState(UIState state)
@@ -81,6 +132,6 @@ public class UIGame : MonoBehaviour
     {
         yield return new WaitForSeconds(0.05f);
         _loadingScreen.SetActive(false);
-        yield return null;  
+        yield return null;
     }
 }

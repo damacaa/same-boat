@@ -189,9 +189,8 @@ public class GameManager : MonoBehaviour
         _game.OnWin += HandleWin;
         _game.OnFail += HandleFail;
 
-        _levelDescription = $"{level.name}:\n{level}";
-        _ui.SetDescription(_levelDescription);
-        Debug.Log(_levelDescription);
+        _ui.SetLevelDetails(level);
+        Debug.Log(level);
 
         _loadedLevel = level;
 
