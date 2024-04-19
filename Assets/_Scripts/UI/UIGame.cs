@@ -12,6 +12,8 @@ public class UIGame : MonoBehaviour
     TextMeshProUGUI _descriptionText;
     [SerializeField]
     TextMeshProUGUI _crossingsCounterText;
+
+    [Header("Rules")]
     [SerializeField]
     GameObject _rulePrefab;
     [SerializeField]
@@ -19,7 +21,15 @@ public class UIGame : MonoBehaviour
     [SerializeField]
     Sprite[] _ruleSprites;
 
+    [Header("ExtraInfo")]
+
+    [SerializeField]
+    GameObject _infoPrefab;
+    [SerializeField]
+    GameObject _infoList;
+
     Dictionary<Rule, GameObject> _rules = new();
+    Dictionary<TransportableSO, GameObject> _infos = new();
 
     [Header("Screens")]
     [SerializeField]
@@ -59,9 +69,10 @@ public class UIGame : MonoBehaviour
         {
             GameObject g = GameObject.Instantiate(_rulePrefab);
             g.transform.SetParent(_ruleList.transform);
+            g.transform.localScale = Vector3.one;
 
             g.transform.GetChild(0).gameObject.GetComponent<Image>().sprite = rule.B.sprite;
-            
+
             g.transform.GetChild(2).gameObject.GetComponent<Image>().sprite = rule.A.sprite;
 
             switch (rule.comparison)
@@ -85,6 +96,58 @@ public class UIGame : MonoBehaviour
             }
 
             _rules.Add(rule, g);
+        }
+
+        foreach (var g in _infos.Values)
+        {
+            g.transform.SetParent(null);
+            Destroy(g);
+        }
+        _infos.Clear();
+
+        bool showWeight = level.BoatMaxWeightAllowed > 0;
+        bool showTravelCost = level.BoatMaxTravelCost > 0;
+
+        if (showWeight || showTravelCost)
+        {
+
+            HashSet<TransportableSO> list = new();
+
+            foreach (var island in level.Islands)
+            {
+
+                foreach (var item in island.transportables)
+                {
+                    if (list.Contains(item))
+                        continue;
+
+                    list.Add(item);
+
+                    GameObject g = GameObject.Instantiate(_infoPrefab);
+                    g.transform.SetParent(_infoList.transform);
+
+                    g.transform.GetChild(0).gameObject.GetComponent<Image>().sprite = item.sprite;
+
+                    if (showWeight)
+                    {
+                        g.transform.GetChild(1).gameObject.GetComponent<TextMeshProUGUI>().text = item.Weight.ToString() + "kg";
+
+                    }
+                    else if (showTravelCost)
+                    {
+                        g.transform.GetChild(1).gameObject.GetComponent<TextMeshProUGUI>().text = item.Weight.ToString() + "min";
+
+                    }
+
+                    _infos.Add(item, g);
+
+                    g.transform.localScale = Vector3.one;
+                }
+
+            }
+
+
+
         }
     }
 
