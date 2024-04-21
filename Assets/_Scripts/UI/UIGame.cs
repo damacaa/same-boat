@@ -105,7 +105,7 @@ public class UIGame : MonoBehaviour
         }
         _infos.Clear();
 
-        bool showWeight = level.BoatMaxWeightAllowed > 0;
+        bool showWeight = level.BoatMaxWeightAllowed > 0 || true;
         bool showTravelCost = level.BoatMaxTravelCost > 0;
 
         if (showWeight || showTravelCost)
