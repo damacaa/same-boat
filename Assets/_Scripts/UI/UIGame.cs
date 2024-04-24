@@ -70,28 +70,43 @@ public class UIGame : MonoBehaviour
             GameObject g = GameObject.Instantiate(_rulePrefab);
             g.transform.SetParent(_ruleList.transform);
             g.transform.localScale = Vector3.one;
+            RuleIcon r = g.GetComponent<RuleIcon>();
 
-            g.transform.GetChild(0).gameObject.GetComponent<Image>().sprite = rule.B.sprite;
+            var imageB = r.B.GetComponent<Image>();
+            imageB.sprite = rule.B.icon;
+            //imageB.SetNativeSize();
 
-            g.transform.GetChild(2).gameObject.GetComponent<Image>().sprite = rule.A.sprite;
+            var imageA = r.A.GetComponent<Image>();
+            //imageA.preserveAspect = true;
+            imageA.sprite = rule.A.icon;
+            //imageA.SetNativeSize();
+
+            var imageA2 = r.A2.GetComponent<Image>();
+
+            var icon = r.Icon.GetComponent<Image>();
+
 
             switch (rule.comparison)
             {
                 case Rule.RuleType.CantCoexist:
-                    g.transform.GetChild(3).gameObject.GetComponent<Image>().sprite = _ruleSprites[0];
+                    icon.sprite = _ruleSprites[0];
                     break;
                 case Rule.RuleType.CountMustBeGreaterThan:
-                    g.transform.GetChild(3).gameObject.GetComponent<Image>().sprite = _ruleSprites[1];
-                    g.transform.GetChild(1).gameObject.GetComponent<Image>().sprite = rule.A.sprite;
-                    g.transform.GetChild(1).gameObject.SetActive(true);
+                    icon.sprite = _ruleSprites[1];
+
+                    imageA2.sprite = rule.A.icon;
+                    imageA2.gameObject.SetActive(true);
+                    //imageA2.SetNativeSize();
                     break;
                 case Rule.RuleType.CountMustBeGreaterEqualThan:
-                    g.transform.GetChild(3).gameObject.GetComponent<Image>().sprite = _ruleSprites[2];
-                    g.transform.GetChild(1).gameObject.GetComponent<Image>().sprite = rule.A.sprite;
-                    g.transform.GetChild(1).gameObject.SetActive(true);
+                    icon.sprite = _ruleSprites[2];
+
+                    imageA2.sprite = rule.A.icon;
+                    imageA2.gameObject.SetActive(true);
+                    //imageA2.SetNativeSize();
                     break;
                 case Rule.RuleType.Requires:
-                    g.transform.GetChild(3).gameObject.GetComponent<Image>().sprite = _ruleSprites[3];
+                    icon.sprite = _ruleSprites[3];
                     break;
             }
 
@@ -105,11 +120,12 @@ public class UIGame : MonoBehaviour
         }
         _infos.Clear();
 
-        bool showWeight = level.BoatMaxWeightAllowed > 0 || true;
+        bool showWeight = level.BoatMaxWeightAllowed > 0;
         bool showTravelCost = level.BoatMaxTravelCost > 0;
 
         if (showWeight || showTravelCost)
         {
+            _infoList.SetActive(true);
 
             HashSet<TransportableSO> list = new();
 
@@ -118,6 +134,9 @@ public class UIGame : MonoBehaviour
 
                 foreach (var item in island.transportables)
                 {
+                    if (item.name == "Man")
+                        continue;
+
                     if (list.Contains(item))
                         continue;
 
@@ -126,7 +145,7 @@ public class UIGame : MonoBehaviour
                     GameObject g = GameObject.Instantiate(_infoPrefab);
                     g.transform.SetParent(_infoList.transform);
 
-                    g.transform.GetChild(0).gameObject.GetComponent<Image>().sprite = item.sprite;
+                    g.transform.GetChild(0).gameObject.GetComponent<Image>().sprite = item.icon;
 
                     if (showWeight)
                     {
@@ -143,11 +162,11 @@ public class UIGame : MonoBehaviour
 
                     g.transform.localScale = Vector3.one;
                 }
-
             }
-
-
-
+        }
+        else
+        {
+            _infoList.SetActive(false);
         }
     }
 

@@ -12,6 +12,7 @@ public class TransportableSO : ScriptableObject
     public int TravelCost = 1;
 
     public Sprite sprite;
+    public Sprite icon;
     public enum DietType
     {
         None,

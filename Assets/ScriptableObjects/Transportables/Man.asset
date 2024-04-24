@@ -16,8 +16,8 @@ MonoBehaviour:
   NamePlural: Men
   Weight: 4
   TravelCost: 8
-  CanDrive: 1
   sprite: {fileID: 21300000, guid: bf81e4ac928cda14292733782cb78de0, type: 3}
+  icon: {fileID: 21300000, guid: bf81e4ac928cda14292733782cb78de0, type: 3}
   Sounds:
   - {fileID: 8300000, guid: 4c8ccd26ade440c44aaff09ae3d635ba, type: 3}
   - {fileID: 8300000, guid: e3787701df11c8440be417b17b3925eb, type: 3}

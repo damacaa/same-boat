@@ -17,5 +17,6 @@ MonoBehaviour:
   Weight: 3
   TravelCost: 10
   sprite: {fileID: 21300000, guid: c855d098a15b72b49bd73ace24b84480, type: 3}
+  icon: {fileID: 21300000, guid: d2145c5f47ec8ad47a2fcef77eb421ba, type: 3}
   Sounds:
   - {fileID: 8300000, guid: 8cb1758f6f221af4eb4b7de663a4503d, type: 3}

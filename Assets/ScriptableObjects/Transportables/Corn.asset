@@ -16,8 +16,8 @@ MonoBehaviour:
   NamePlural: Sacks of corn
   Weight: 1
   TravelCost: 1
-  CanDrive: 1
   sprite: {fileID: 21300000, guid: 26e1e78666008ca439907232b7ff0d00, type: 3}
+  icon: {fileID: 21300000, guid: 2a6f46d47804f084291cd7f828feb13e, type: 3}
   Sounds:
   - {fileID: 8300000, guid: a6c173ace6fe0fd48a89031f45d596a7, type: 3}
   - {fileID: 8300000, guid: 2a3a5db19e60e394fb69edb0cf9148aa, type: 3}
