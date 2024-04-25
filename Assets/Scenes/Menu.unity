@@ -477,6 +477,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _completedLevels: 0
   _levels: {fileID: 11400000, guid: dcaa114012a01084491fe3b2c8bde553, type: 2}
+  _everythingUnlocked: 0
 --- !u!4 &1086378336
 Transform:
   m_ObjectHideFlags: 0

@@ -28,7 +28,7 @@ public class InputSystem : MonoBehaviour
         _cursor = new GameObject("Cursor");
         _cursor.transform.position = Vector3.zero;
 
-        if(_island != null) { }
+        if (_island != null) { }
     }
 
     // Update is called once per frame
@@ -125,6 +125,10 @@ public class InputSystem : MonoBehaviour
                     Outline outline = g.GetComponent<Outline>();
                     outline.enabled = true;
                 }
+            }
+            else if (!_transportable)
+            {
+                return;
             }
 
             _line.End(_cursor.transform);

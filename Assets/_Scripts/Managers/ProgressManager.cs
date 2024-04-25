@@ -8,7 +8,7 @@ public class ProgressManager : MonoBehaviour
 
     [SerializeField]
     int _completedLevels;
-    public int CurrentLevel { get {  return _completedLevels; } }   
+    public int CurrentLevel { get { return _completedLevels; } }
 
     [SerializeField]
     private LevelCollection _levels;
@@ -22,7 +22,9 @@ public class ProgressManager : MonoBehaviour
         get { return _levelToLoad; }
     }
 
-    
+    [SerializeField]
+    private bool _everythingUnlocked;
+
 
     private void Awake()
     {
@@ -31,7 +33,10 @@ public class ProgressManager : MonoBehaviour
         else
             Instance = this;
 
-         _completedLevels = PlayerPrefs.GetInt(COMPLETED_LEVELS);
+        if (_everythingUnlocked)
+            _completedLevels = int.MaxValue;
+        else
+            _completedLevels = PlayerPrefs.GetInt(COMPLETED_LEVELS);
     }
 
     void Start()
@@ -52,7 +57,7 @@ public class ProgressManager : MonoBehaviour
         catch (System.Exception)
         {
         }
-        
+
     }
 
     private void OnDestroy()
