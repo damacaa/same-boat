@@ -100,13 +100,18 @@ public class GameManager : MonoBehaviour
             Undo();
         }
 
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            _showDebugUI = !_showDebugUI;
+        }
+
         if (Input.GetKeyDown(KeyCode.S))
         {
             ScreenCapture.CaptureScreenshot("screen.png");
         }
 #endif
 
-        _ui.SetCrossings(_game.Boat.Crossings);
+
     }
 
     // Show debug UI
@@ -190,6 +195,7 @@ public class GameManager : MonoBehaviour
         _game.OnFail += HandleFail;
 
         _ui.SetLevelDetails(level);
+        _ui.SetGameState(_game.GetCurrentState());
         Debug.Log(level);
 
         _loadedLevel = level;
@@ -230,6 +236,7 @@ public class GameManager : MonoBehaviour
         }
 
         _game.Undo();
+        _ui.SetGameState(_game.GetCurrentState());
     }
 
     public void RequestClue()
@@ -334,6 +341,8 @@ public class GameManager : MonoBehaviour
 
         _ui.HideLoadingScreen();
 
+        _ui.SetGameState(_game.GetCurrentState());
+
         yield return null;
     }
 
@@ -342,7 +351,11 @@ public class GameManager : MonoBehaviour
         if (_isWin || _isFail)
             return false;
 
-        return _game.MoveBoatToIsland(island.Data);
+        bool success = _game.MoveBoatToIsland(island.Data);
+        if (success)
+            _ui.SetGameState(_game.GetCurrentState());
+
+        return success;
     }
 
     internal bool MoveTransportableTo(TransportableBehaviour transportable, IslandBehaviour island)
@@ -350,6 +363,7 @@ public class GameManager : MonoBehaviour
         if (_isWin || _isFail)
             return false;
 
+        //WTF is this
         if (island.Data != _game.Boat.Island)
         {
             if (!_game.MoveBoatToIsland(island.Data, true))
@@ -370,7 +384,12 @@ public class GameManager : MonoBehaviour
         }
         //return false; // Game.MoveBoatToIsland(island.Data)
 
-        return _game.UnloadFromBoat(transportable.Data);
+        bool success = _game.UnloadFromBoat(transportable.Data);
+
+        if (success)
+            _ui.SetGameState(_game.GetCurrentState());
+
+        return success;
     }
 
     internal bool LoadTransportableOnBoat(TransportableBehaviour transportable, BoatBehaviour boat)
@@ -378,7 +397,11 @@ public class GameManager : MonoBehaviour
         if (_isWin || _isFail)
             return false;
 
-        return _game.LoadOnBoat(transportable.Data);
+        bool success = _game.LoadOnBoat(transportable.Data);
+        if (success)
+            _ui.SetGameState(_game.GetCurrentState());
+
+        return success;
     }
 
     public void GoToMainMenu()

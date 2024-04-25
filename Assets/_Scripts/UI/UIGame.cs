@@ -1,3 +1,4 @@
+using Solver;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,8 +11,18 @@ public class UIGame : MonoBehaviour
     [Header("Game UI elements")]
     [SerializeField]
     TextMeshProUGUI _descriptionText;
+
     [SerializeField]
     TextMeshProUGUI _crossingsCounterText;
+
+    [SerializeField]
+    TextMeshProUGUI _weigthText;
+    [SerializeField]
+    TextMeshProUGUI _travelTimeText;
+
+
+    [SerializeField]
+    GameObject _levelInfo;
 
     [Header("Rules")]
     [SerializeField]
@@ -41,6 +52,9 @@ public class UIGame : MonoBehaviour
     [SerializeField]
     GameObject _loadingScreen;
 
+    int _maxWeight;
+    int _maxTime;
+
     public enum UIState
     {
         Playing,
@@ -48,16 +62,45 @@ public class UIGame : MonoBehaviour
         Fail
     }
 
-    internal void SetCrossings(int crossings)
+    private IEnumerator Start()
     {
-        _crossingsCounterText.text = crossings.ToString();
+        yield return null;
+        yield return null;
+        //_levelInfo.GetComponent<RectTransform>().sizeDelta = new Vector2(1, _levelInfo.GetComponent<RectTransform>().sizeDelta.y);
+        yield return null;
+    }
+
+    public void SetState(UIState state)
+    {
+        switch (state)
+        {
+            case UIState.Playing:
+                _hud.SetActive(true);
+                _winScreen.SetActive(false);
+                _failScreen.SetActive(false);
+                InputSystem.InputEnabled = true;
+                break;
+            case UIState.Win:
+                _hud.SetActive(false);
+                _winScreen.SetActive(true);
+                _failScreen.SetActive(false);
+                InputSystem.InputEnabled = false;
+                break;
+            case UIState.Fail:
+                _hud.SetActive(false);
+                _winScreen.SetActive(false);
+                _failScreen.SetActive(true);
+                InputSystem.InputEnabled = false;
+                break;
+        }
     }
 
     internal void SetLevelDetails(Level level)
     {
+        // Set level description text
         _descriptionText.text = $"{level.name}:\n{level}";
 
-
+        // Clear previous rules
         foreach (var g in _rules.Values)
         {
             g.transform.SetParent(null);
@@ -65,6 +108,8 @@ public class UIGame : MonoBehaviour
         }
         _rules.Clear();
 
+        // Load new rules
+        _ruleList.SetActive(level.Rules.Length > 0);
         foreach (var rule in level.Rules)
         {
             GameObject g = GameObject.Instantiate(_rulePrefab);
@@ -84,7 +129,6 @@ public class UIGame : MonoBehaviour
             var imageA2 = r.A2.GetComponent<Image>();
 
             var icon = r.Icon.GetComponent<Image>();
-
 
             switch (rule.comparison)
             {
@@ -110,9 +154,12 @@ public class UIGame : MonoBehaviour
                     break;
             }
 
+            icon.SetNativeSize();
+
             _rules.Add(rule, g);
         }
 
+        // Clear old informations
         foreach (var g in _infos.Values)
         {
             g.transform.SetParent(null);
@@ -120,8 +167,14 @@ public class UIGame : MonoBehaviour
         }
         _infos.Clear();
 
-        bool showWeight = level.BoatMaxWeightAllowed > 0;
-        bool showTravelCost = level.BoatMaxTravelCost > 0;
+        // Show new information if necessary
+        _maxWeight = level.BoatMaxWeightAllowed;
+        _maxTime = level.BoatMaxTravelCost;
+
+        bool showWeight = _maxWeight > 0;
+        _weigthText.gameObject.transform.parent.gameObject.SetActive(showWeight);
+        bool showTravelCost = _maxTime > 0;
+        _travelTimeText.gameObject.transform.parent.gameObject.SetActive(showTravelCost);
 
         if (showWeight || showTravelCost)
         {
@@ -170,29 +223,13 @@ public class UIGame : MonoBehaviour
         }
     }
 
-    public void SetState(UIState state)
+
+    internal void SetGameState(State state)
     {
-        switch (state)
-        {
-            case UIState.Playing:
-                _hud.SetActive(true);
-                _winScreen.SetActive(false);
-                _failScreen.SetActive(false);
-                InputSystem.InputEnabled = true;
-                break;
-            case UIState.Win:
-                _hud.SetActive(false);
-                _winScreen.SetActive(true);
-                _failScreen.SetActive(false);
-                InputSystem.InputEnabled = false;
-                break;
-            case UIState.Fail:
-                _hud.SetActive(false);
-                _winScreen.SetActive(false);
-                _failScreen.SetActive(true);
-                InputSystem.InputEnabled = false;
-                break;
-        }
+        _crossingsCounterText.text = state.Crossings.ToString();
+
+        _weigthText.text = $"{state.BoatCurrentWeight} / {_maxWeight}kg";
+        _travelTimeText.text = $"{state.BoatTravelCost} / {_maxTime}min";
     }
 
     public void ShowLoadingScreen()
@@ -216,4 +253,5 @@ public class UIGame : MonoBehaviour
         _loadingScreen.SetActive(false);
         yield return null;
     }
+
 }
