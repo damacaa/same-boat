@@ -26,7 +26,9 @@ public class UIGame : MonoBehaviour
 
     [Header("Rules")]
     [SerializeField]
-    GameObject _rulePrefab;
+    GameObject _rulePrefab;  
+    [SerializeField]
+    GameObject _ruleSeparatorPrefab;
     [SerializeField]
     GameObject _ruleList;
     [SerializeField]
@@ -112,6 +114,15 @@ public class UIGame : MonoBehaviour
         _ruleList.SetActive(level.Rules.Length > 0);
         foreach (var rule in level.Rules)
         {
+            if (rule != level.Rules[0])
+            {
+                GameObject line = GameObject.Instantiate(_ruleSeparatorPrefab);
+                line.transform.SetParent(_ruleList.transform);
+                line.transform.localScale = Vector3.one;
+
+                _rules.Add(new Rule(), line);
+            }
+
             GameObject g = GameObject.Instantiate(_rulePrefab);
             g.transform.SetParent(_ruleList.transform);
             g.transform.localScale = Vector3.one;
