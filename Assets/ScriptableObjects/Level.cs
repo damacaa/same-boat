@@ -26,6 +26,9 @@ public class Level : ScriptableObject
     public Island[] Islands;
     public Rule[] Rules;
 
+    [Space()]
+    public int OptimalCrossings;
+
     public override string ToString()
     {
         if (!string.IsNullOrEmpty(Description))

@@ -1,11 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Unity.Burst.CompilerServices;
 using UnityEngine;
+using static UnityEditor.Progress;
 
 public class InputSystem : MonoBehaviour
 {
     [SerializeField]
+    private float _r = .5f;
+    [SerializeField]
     float distance = 50f;
+    [SerializeField]
+    Vector2 _offset;
 
     [SerializeField]
     LayerMask _layerMask;
@@ -20,6 +27,7 @@ public class InputSystem : MonoBehaviour
     GameObject _cursor;
 
     public static bool InputEnabled = true;
+
 
 
     // Start is called before the first frame update
@@ -54,40 +62,91 @@ public class InputSystem : MonoBehaviour
         if (!InputEnabled)
             return;
 
-        //create a ray cast and set it to the mouses cursor position in game
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
-        if (Physics.Raycast(ray, out hit, distance))
+        // Ray from mouse position
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition + (Vector3)_offset);
+
+        // Find collisions with ray
+        //var hits = Physics.SphereCastAll(ray, _r, 100f, Physics.AllLayers);
+        var hits = Physics.RaycastAll(ray, distance);
+
+        // Handle no hits
+        if (hits.Length == 0)
         {
-            var g = hit.collider.gameObject;
-            if (g.TryGetComponent<TransportableBehaviour>(out TransportableBehaviour transportable))
+            return;
+        }
+
+        // Sort hits by y coordinate
+        List<RaycastHit> hitList = hits.ToList().OrderBy(a => a.collider.transform.position.y).ToList();
+
+        // Filter by tag
+        var characters = hitList.FindAll(a => a.collider.CompareTag("Draggable"));
+
+        if (characters.Count == 0)
+            return;
+
+
+        var firstObject = characters[0].collider.gameObject;
+        if (firstObject.TryGetComponent<TransportableBehaviour>(out TransportableBehaviour transportable))
+        {
+            HandleTransportableClick(transportable);
+        }
+        else if (firstObject.TryGetComponent<BoatBehaviour>(out BoatBehaviour boat))
+        {
+            if (characters.Count > 1 &&
+                characters[1].collider.gameObject &&
+                characters[1].collider.gameObject.TryGetComponent<TransportableBehaviour>(out TransportableBehaviour hiddenTransportable))
             {
-                _transportable = transportable;
-                _boat = null;
-                _island = null;
-                _line.Begin(g.transform);
+                HandleTransportableClick(hiddenTransportable);
+
             }
-            else if (g.TryGetComponent<BoatBehaviour>(out BoatBehaviour boat))
+            else
             {
                 _boat = boat;
                 _transportable = null;
                 _island = null;
-                _line.Begin(g.transform);
-            }
-            else
-            {
-                _cursor.transform.position = hit.point;
+                _line.Begin(boat.transform);
             }
         }
         else
         {
-
+            _cursor.transform.position = hits[0].point;
         }
 
+
+    }
+
+    private void HandleTransportableClick(TransportableBehaviour transportable)
+    {
+        _transportable = transportable;
+        _boat = null;
+        _island = null;
+        _line.Begin(transportable.transform);
     }
 
     private void OnHover()
     {
+
+        /*Ray rayy = Camera.main.ScreenPointToRay(Input.mousePosition + (Vector3)_offset);
+        var hits = Physics.SphereCastAll(rayy, _r, 100f, Physics.AllLayers);
+        List<RaycastHit> hitList = hits.ToList().OrderByDescending(a => a.collider.transform.position.y).ToList();
+
+        var item = hitList.Find(a => a.collider.CompareTag("Character"));
+
+        if (item.collider)
+        {
+
+           // item.collider.gameObject.SetActive(false);
+
+        if (item.collider.CompareTag("Character"))
+            item.collider.GetComponentInChildren<SpriteRenderer>().color = new Color(
+                0.5f * (Mathf.Sin(10 * Time.time) + 1f),
+                0.5f * (Mathf.Sin(10 * Time.time) + 1f),
+                0.5f * (Mathf.Sin(10 * Time.time) + 1f)
+                );
+
+       // Debug.Log(item.collider.transform.position.y);
+        }*/
+
         if (!InputEnabled)
         {
             _line.Reset();
@@ -95,18 +154,23 @@ public class InputSystem : MonoBehaviour
         }
 
 
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
-        if (Physics.Raycast(ray, out hit, distance, _layerMask))
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition + (Vector3)_offset);
+
+        if (Physics.Raycast(ray, out RaycastHit hit, distance, _layerMask))
         {
             var g = hit.collider.gameObject;
             _cursor.transform.position = hit.point;
+
 
             if (_boat && g.TryGetComponent<IslandBehaviour>(out IslandBehaviour island))
             {
                 //_line.End(g.transform.GetChild(0));
                 Outline outline = g.GetComponent<Outline>();
                 outline.enabled = true;
+            }
+            else if (_boat)
+            {
+                _line.End(_cursor.transform);
             }
             else if (_transportable && g.TryGetComponent<IslandBehaviour>(out island))
             {
@@ -144,7 +208,7 @@ public class InputSystem : MonoBehaviour
         }
 
         bool fail = false;
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition + (Vector3)_offset);
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit, distance, _layerMask))
         {

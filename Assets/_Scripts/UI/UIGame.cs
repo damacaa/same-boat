@@ -8,6 +8,18 @@ using UnityEngine.UI;
 
 public class UIGame : MonoBehaviour
 {
+    public enum UIState
+    {
+        Playing,
+        Win,
+        Fail
+    }
+
+    [SerializeField]
+    private UIState _state;
+    [Space]
+
+
     [Header("Game UI elements")]
     [SerializeField]
     TextMeshProUGUI _descriptionText;
@@ -15,15 +27,18 @@ public class UIGame : MonoBehaviour
     [SerializeField]
     TextMeshProUGUI _crossingsCounterText;
 
+    // Level info and rules
     [SerializeField]
     TextMeshProUGUI _weigthText;
     [SerializeField]
     TextMeshProUGUI _travelTimeText;
 
+    int _maxWeight;
+    int _maxTime;
 
-    [SerializeField]
-    GameObject _levelInfo;
 
+
+    // Rules
     [Header("Rules")]
     [SerializeField]
     GameObject _rulePrefab;  
@@ -34,35 +49,37 @@ public class UIGame : MonoBehaviour
     [SerializeField]
     Sprite[] _ruleSprites;
 
-    [Header("ExtraInfo")]
+    Dictionary<Rule, GameObject> _rules = new();
 
+    // Character info
+    [Header("CharacterInfo")]
     [SerializeField]
     GameObject _infoPrefab;
     [SerializeField]
     GameObject _infoList;
 
-    Dictionary<Rule, GameObject> _rules = new();
     Dictionary<TransportableSO, GameObject> _infos = new();
 
+    // States
     [Header("Screens")]
     [SerializeField]
     GameObject _hud;
     [SerializeField]
     GameObject _winScreen;
+
+    [SerializeField]
+    TextMeshProUGUI _winCrossingsCounter;
+    [SerializeField]
+    TextMeshProUGUI _winOptimalCrossings;
+
+    [Space]
     [SerializeField]
     GameObject _failScreen;
     [SerializeField]
     GameObject _loadingScreen;
 
-    int _maxWeight;
-    int _maxTime;
 
-    public enum UIState
-    {
-        Playing,
-        Win,
-        Fail
-    }
+
 
     private IEnumerator Start()
     {
@@ -74,6 +91,7 @@ public class UIGame : MonoBehaviour
 
     public void SetState(UIState state)
     {
+        _state = state;
         switch (state)
         {
             case UIState.Playing:
@@ -101,6 +119,10 @@ public class UIGame : MonoBehaviour
     {
         // Set level description text
         _descriptionText.text = $"{level.name}:\n{level}";
+
+        string optimalCrossingsText = _winOptimalCrossings.text;
+        optimalCrossingsText = optimalCrossingsText.Replace("{N}",level.OptimalCrossings.ToString());
+        _winOptimalCrossings.text = optimalCrossingsText;
 
         // Clear previous rules
         foreach (var g in _rules.Values)
@@ -265,4 +287,12 @@ public class UIGame : MonoBehaviour
         yield return null;
     }
 
+
+#if UNITY_EDITOR
+    private void OnValidate()
+    {
+        SetState(_state); 
+    }
+
+#endif
 }

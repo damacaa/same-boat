@@ -25,6 +25,7 @@ public class TransportableManager : MonoBehaviour
             foreach (var t in island.Transportables)
             {
                 var g = Instantiate(transportablePrefab, island.FindSpot(out int index));
+                g.name = t.ScripatableObject.name;
                 t.AssignGameObject(g);
             }
         }

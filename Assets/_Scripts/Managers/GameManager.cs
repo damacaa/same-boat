@@ -196,6 +196,8 @@ public class GameManager : MonoBehaviour
 
         _ui.SetLevelDetails(level);
         _ui.SetGameState(_game.GetCurrentState());
+        _ui.SetState(UIGame.UIState.Playing);
+
         Debug.Log(level);
 
         _loadedLevel = level;
@@ -253,6 +255,7 @@ public class GameManager : MonoBehaviour
         _isWin = false;
         _isFail = false;
         SoundController.Instace.PlaySong(1);
+        _ui.SetGameState(_game.GetCurrentState());
         _ui.SetState(UIGame.UIState.Playing);
 
     }
@@ -262,6 +265,7 @@ public class GameManager : MonoBehaviour
         SoundController.Instace.PlaySound(SoundController.Sound.Win);
         ProgressManager.Instance?.CompleteLevel();
 
+        _ui.SetGameState(_game.GetCurrentState());
         _ui.SetState(UIGame.UIState.Win);
         _isWin = true;
     }
@@ -301,6 +305,10 @@ public class GameManager : MonoBehaviour
             OnSolverEnded();
 
         yield return _game.ExecuteAllMovesCoroutine();
+
+        _loadedLevel.OptimalCrossings = _game.GetCurrentState().Crossings;
+
+        yield return null;
     }
 
     private IEnumerator ClueCoroutine()
