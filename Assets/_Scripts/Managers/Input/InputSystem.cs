@@ -8,8 +8,6 @@ using static UnityEditor.Progress;
 public class InputSystem : MonoBehaviour
 {
     [SerializeField]
-    private float _r = .5f;
-    [SerializeField]
     float distance = 50f;
     [SerializeField]
     Vector2 _offset;
@@ -192,7 +190,7 @@ public class InputSystem : MonoBehaviour
             }
             else if (!_transportable)
             {
-                return;
+                //return;
             }
 
             _line.End(_cursor.transform);

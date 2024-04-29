@@ -1,4 +1,5 @@
 
+using Localization;
 using Solver;
 using System;
 using System.Collections;
@@ -81,6 +82,8 @@ public class GameManager : MonoBehaviour
         {
             LoadLevel(levels[_currentLevel]);
         }
+
+        LocalizationManager.Update();
     }
 
     private void Update()
@@ -109,6 +112,18 @@ public class GameManager : MonoBehaviour
         {
             ScreenCapture.CaptureScreenshot("screen.png");
         }
+        
+        if (Input.GetKeyDown(KeyCode.Keypad0))
+        {
+            LocalizationManager.SetLanguage(Language.En);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Keypad1))
+        {
+            LocalizationManager.SetLanguage(Language.Es);
+        }
+
+
 #endif
 
 
