@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 
 
@@ -162,6 +163,22 @@ public class GameLogic
             _fail = false;
             _win = false;
             //Debug.Log("Undone: " + _commands[_currentCommand]);
+        }
+    }
+
+    public void Undo(out float animationDuration)
+    {
+        animationDuration = 0;
+
+        if (_currentCommand > 0 && _commands.Count > 0)
+        {
+            _undone = true;
+            _currentCommand--;
+            _commands[_currentCommand].Undo(out animationDuration, false);
+
+            _nextTime = Time.time + (0.5f * animationDuration);
+            _fail = false;
+            _win = false;
         }
     }
 

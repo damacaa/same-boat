@@ -27,6 +27,7 @@ public class BoatTravelCommand : BoatCommand
             return;
         }
         _boat.GoTo(_previousIsland, out animationDuration, skipAnimation, true);
+        animationDuration *= 1.5f;
     }
 
     public override string ToString()

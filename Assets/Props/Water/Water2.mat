@@ -77,6 +77,7 @@ Material:
     - _QueueControl: 0
     - _QueueOffset: 0
     - _Strength: 0.85
+    - _T: 0
     - _WaveAlpha: 0.3
     - _WaveSpeed: 0.1
     - _WaveThickness: 12

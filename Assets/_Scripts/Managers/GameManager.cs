@@ -126,8 +126,16 @@ public class GameManager : MonoBehaviour
 
 #endif
 
+        if (Time.time > _timeToStopRewinding)
+            _timeIncrement = 1.0f;
 
+        _time += Time.deltaTime * _timeIncrement;
+        _water.material.SetFloat("_T", _time);
     }
+
+    float _time = 0;
+    float _timeIncrement = 1;
+    float _timeToStopRewinding = 0;
 
     // Show debug UI
     private void OnGUI()
@@ -249,11 +257,13 @@ public class GameManager : MonoBehaviour
             SoundController.Instace.PlaySong(1);
         }
 
-        _game.Undo();
+        _game.Undo(out float animationDuration);
+        _timeToStopRewinding = Time.time + animationDuration;
         _ui.SetGameState(_game.GetCurrentState());
 
-        //_water.material.SetVector("_WaveVelocity", new Vector2(0, 0));
+        _timeIncrement = -1;
     }
+
 
     public void RequestClue()
     {

@@ -110,7 +110,7 @@ public class Island
         if (_behaviour && !skipAnimation)
             data.GoTo(_behaviour.GetSpot(data.PositionIndexInIsland), out animationDuration, skipAnimation, backwards);
 
-        animationDuration = animationDuration / 4f;
+        //animationDuration = animationDuration / 4f;
     }
 
     public void Remove(Transportable data)
