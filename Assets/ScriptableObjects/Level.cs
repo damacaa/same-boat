@@ -27,7 +27,7 @@ public class Level : ScriptableObject
     public Rule[] Rules;
 
     [Space()]
-    public int OptimalCrossings;
+    public int OptimalCrossings = 100;
 
     public override string ToString()
     {

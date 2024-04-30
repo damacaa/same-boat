@@ -85,6 +85,7 @@ public class MapGenerator : MonoBehaviour
 
             g.name = "Island " + i;
             g.transform.parent = transform;
+            g.layer = gameObject.layer;
             IslandBehaviour behaviour = g.AddComponent<IslandBehaviour>();
             Outline outline = g.AddComponent<Outline>();
             outline.enabled = false;

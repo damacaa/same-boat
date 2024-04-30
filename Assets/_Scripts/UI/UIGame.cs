@@ -8,6 +8,8 @@ using UnityEngine.UI;
 
 public class UIGame : MonoBehaviour
 {
+    private const string NUMBER_VALUE = "{N}";
+
     public enum UIState
     {
         Playing,
@@ -105,6 +107,12 @@ public class UIGame : MonoBehaviour
                 _winScreen.SetActive(true);
                 _failScreen.SetActive(false);
                 InputSystem.InputEnabled = false;
+
+                string totalCrossingsString = _winCrossingsCounter.text;
+                totalCrossingsString = totalCrossingsString.Replace(NUMBER_VALUE, _crossingsCounterText.text);
+                _winCrossingsCounter.text = totalCrossingsString;
+
+                
                 break;
             case UIState.Fail:
                 _hud.SetActive(false);
@@ -120,9 +128,9 @@ public class UIGame : MonoBehaviour
         // Set level description text
         _descriptionText.text = $"{level.name}:\n{level}";
 
-        string optimalCrossingsText = _winOptimalCrossings.text;
-        optimalCrossingsText = optimalCrossingsText.Replace("{N}",level.OptimalCrossings.ToString());
-        _winOptimalCrossings.text = optimalCrossingsText;
+        string optimalCrossingsString = _winOptimalCrossings.text;
+        optimalCrossingsString = optimalCrossingsString.Replace(NUMBER_VALUE, level.OptimalCrossings.ToString());
+        _winOptimalCrossings.text = optimalCrossingsString;
 
         // Clear previous rules
         foreach (var g in _rules.Values)

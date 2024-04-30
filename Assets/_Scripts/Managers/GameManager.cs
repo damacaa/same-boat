@@ -16,6 +16,8 @@ public class GameManager : MonoBehaviour
 
     [SerializeField]
     private UIGame _ui;
+    [SerializeField]
+    private Renderer _water;
 
     // Debug stuff
     [SerializeField]
@@ -82,8 +84,6 @@ public class GameManager : MonoBehaviour
         {
             LoadLevel(levels[_currentLevel]);
         }
-
-        LocalizationManager.Update();
     }
 
     private void Update()
@@ -112,7 +112,7 @@ public class GameManager : MonoBehaviour
         {
             ScreenCapture.CaptureScreenshot("screen.png");
         }
-        
+
         if (Input.GetKeyDown(KeyCode.Keypad0))
         {
             LocalizationManager.SetLanguage(Language.En);
@@ -197,29 +197,10 @@ public class GameManager : MonoBehaviour
 
     public void LoadLevel(Level level)
     {
+        LocalizationManager.Update();
+
         // Clear previous game
         if (_game != null)
-        {
-            ClearPreviousGame();
-        }
-
-        _game = new GameLogic(level);
-        _game.GenerateGameObjects(level);
-
-        _game.OnWin += HandleWin;
-        _game.OnFail += HandleFail;
-
-        _ui.SetLevelDetails(level);
-        _ui.SetGameState(_game.GetCurrentState());
-        _ui.SetState(UIGame.UIState.Playing);
-
-        Debug.Log(level);
-
-        _loadedLevel = level;
-
-        OnLevelLoaded?.Invoke();
-
-        void ClearPreviousGame()
         {
             var transportables = FindObjectsOfType<TransportableBehaviour>();
             foreach (var t in transportables)
@@ -238,6 +219,22 @@ public class GameManager : MonoBehaviour
 
             _game = null;
         }
+
+        _game = new GameLogic(level);
+        _game.GenerateGameObjects(level);
+
+        _game.OnWin += HandleWin;
+        _game.OnFail += HandleFail;
+
+        _ui.SetLevelDetails(level);
+        _ui.SetGameState(_game.GetCurrentState());
+        _ui.SetState(UIGame.UIState.Playing);
+
+        Debug.Log(level);
+
+        _loadedLevel = level;
+
+        OnLevelLoaded?.Invoke();
     }
 
     public void Undo()
@@ -254,6 +251,8 @@ public class GameManager : MonoBehaviour
 
         _game.Undo();
         _ui.SetGameState(_game.GetCurrentState());
+
+        //_water.material.SetVector("_WaveVelocity", new Vector2(0, 0));
     }
 
     public void RequestClue()
@@ -321,7 +320,10 @@ public class GameManager : MonoBehaviour
 
         yield return _game.ExecuteAllMovesCoroutine();
 
-        _loadedLevel.OptimalCrossings = _game.GetCurrentState().Crossings;
+        if (_game.GetCurrentState().Crossings > 0 &&
+            _game.GetCurrentState().Crossings < _loadedLevel.OptimalCrossings)
+            _loadedLevel.OptimalCrossings = _game.GetCurrentState().Crossings;
+
 
         yield return null;
     }
