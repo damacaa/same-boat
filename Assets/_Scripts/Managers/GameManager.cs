@@ -126,8 +126,11 @@ public class GameManager : MonoBehaviour
 
 #endif
 
+
         if (Time.time > _timeToStopRewinding)
             _timeIncrement = 1.0f;
+
+        SoundController.Instace.SetSpeed(_timeIncrement);
 
         _time += Time.deltaTime * _timeIncrement;
         _water.material.SetFloat("_T", _time);
@@ -261,7 +264,7 @@ public class GameManager : MonoBehaviour
         _timeToStopRewinding = Time.time + animationDuration;
         _ui.SetGameState(_game.GetCurrentState());
 
-        _timeIncrement = -1;
+        _timeIncrement = -2.0f;
     }
 
 

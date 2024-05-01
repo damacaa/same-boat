@@ -77,7 +77,8 @@ public class BoatBehaviour : MonoBehaviour
         }
         else
         {
-            animationDuration = Vector2.Distance(transform.position, destination) / _speed;
+            float animationSpeed = backwards ? 2f * _speed : _speed;
+            animationDuration = Vector2.Distance(transform.position, destination) / animationSpeed;
             StartCoroutine(MovementCoroutine(destination, animationDuration, backwards));
         }
     }
@@ -108,7 +109,7 @@ public class BoatBehaviour : MonoBehaviour
                 transform.rotation = Quaternion.Lerp(startingRotation, targetRot, Mathf.Min(t, 1));
             _flag.rotation = Quaternion.Lerp(flagStartingRotation, flagTargetRot, tBezier);
 
-            t += Time.deltaTime / _rotationTime;
+            t += Time.deltaTime / (backwards ? 0.5f * _rotationTime : _rotationTime);
             yield return null;
         }
 

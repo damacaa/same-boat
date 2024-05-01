@@ -166,7 +166,8 @@ public class TransportableBehaviour : MonoBehaviour
                 transform.position = transform.parent.position;
             }
 
-            animationDuration = Vector2.Distance(transform.position, target.position) / _speed;
+            float animationSpeed = backwards ? 2f * _speed : _speed;
+            animationDuration = Vector2.Distance(transform.position, target.position) / animationSpeed;
             _movement = StartCoroutine(MovementCoroutine(target, animationDuration));
 
             if (Data.ScripatableObject.Sounds.Length > 0)

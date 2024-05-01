@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -35,7 +36,7 @@ public class SoundController : MonoBehaviour
     [SerializeField]
     private AudioClip menu_sng;
     [SerializeField]
-    private AudioClip ui_snd; 
+    private AudioClip ui_snd;
     [SerializeField]
     private AudioClip boat_snd;
     [SerializeField]
@@ -161,6 +162,16 @@ public class SoundController : MonoBehaviour
     {
         _sfxMixer.SetFloat("Volume", Mathf.Log10(Mathf.Max(0.0001f, volume)) * 20);
         //sfxSource.volume = volume;
+    }
+
+    float _bgmSpeed;
+    internal void SetSpeed(float speed)
+    {
+        if (speed == _bgmSpeed)
+            return;
+
+        _bgmSpeed = speed;
+        bgmSource.pitch = _bgmSpeed;
     }
     #endregion
 }
