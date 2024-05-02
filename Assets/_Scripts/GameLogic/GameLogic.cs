@@ -202,7 +202,7 @@ public class GameLogic
 
         _showingSolveAnimation = true;
 
-        while (_currentCommand < _commands.Count)
+        while (_currentCommand < _commands.Count && _showingSolveAnimation)
         {
             _commands[_currentCommand].Execute(out float waitTime);
             _currentCommand++;
@@ -215,6 +215,11 @@ public class GameLogic
         _showingSolveAnimation = false;
 
         yield return null;
+    }
+
+    public void CancelMoveCOrorutine()
+    {
+        _showingSolveAnimation = false;
     }
 
     #endregion

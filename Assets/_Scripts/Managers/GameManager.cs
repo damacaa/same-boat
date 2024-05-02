@@ -139,6 +139,7 @@ public class GameManager : MonoBehaviour
     float _time = 0;
     float _timeIncrement = 1;
     float _timeToStopRewinding = 0;
+    private Coroutine _c;
 
     // Show debug UI
     private void OnGUI()
@@ -250,6 +251,10 @@ public class GameManager : MonoBehaviour
 
     public void Undo()
     {
+        //StopAllCoroutines();
+        _game.CancelMoveCOrorutine();
+        
+
         if (_isWin)
             return;
 
@@ -335,7 +340,12 @@ public class GameManager : MonoBehaviour
 
         if (_game.GetCurrentState().Crossings > 0 &&
             _game.GetCurrentState().Crossings < _loadedLevel.OptimalCrossings)
+        {
             _loadedLevel.OptimalCrossings = _game.GetCurrentState().Crossings;
+#pragma warning disable CS0618 // Type or member is obsolete
+            _loadedLevel.SetDirty();
+#pragma warning restore CS0618 // Type or member is obsolete
+        }
 
 
         yield return null;
@@ -405,16 +415,21 @@ public class GameManager : MonoBehaviour
         if (island.Data != _game.Boat.Island)
         {
             if (!_game.MoveBoatToIsland(island.Data, true))
+            {
+                Debug.Log("Can't move boat");
                 return false;
+            }
 
             if (!_game.UnloadFromBoat(transportable.Data, true))
             {
+                Debug.Log("Can't unload boat");
                 _game.Undo(true);
                 return false;
             }
 
             _game.Undo(true);
             _game.Undo(true);
+
 
             StartCoroutine(_game.ExecuteAllMovesCoroutine());
 

@@ -36,4 +36,4 @@ MonoBehaviour:
   - A: {fileID: 11400000, guid: 8bb208a2f8e4d454ebc0ff9967aeed9c, type: 2}
     comparison: 0
     B: {fileID: 11400000, guid: c93da487864c90f4897ed27019024def, type: 2}
-  OptimalCrossings: 100
+  OptimalCrossings: 7

@@ -21,7 +21,7 @@ namespace Localization
             _text = GetComponent<TextMeshProUGUI>();
 
             LocalizationManager.OnLanguageChanged += HandleNewLanguage;
-            HandleNewLanguage(LocalizationManager.CurrentLanguage);
+            ForceUpdate();
         }
 
         private void HandleNewLanguage(Language language)
@@ -47,6 +47,11 @@ namespace Localization
         public string GetCurrentText()
         {
             return _texts[(int)LocalizationManager.CurrentLanguage];
+        }
+
+        public void ForceUpdate()
+        {
+            HandleNewLanguage(LocalizationManager.CurrentLanguage);
         }
 
 #if UNITY_EDITOR
@@ -75,6 +80,7 @@ namespace Localization
                 _text = GetComponent<TextMeshProUGUI>();
             _text.text = _texts[0];
         }
+
 #endif
     }
 }

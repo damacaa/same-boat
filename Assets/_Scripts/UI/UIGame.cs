@@ -1,3 +1,4 @@
+using Localization;
 using Solver;
 using System;
 using System.Collections;
@@ -43,7 +44,7 @@ public class UIGame : MonoBehaviour
     // Rules
     [Header("Rules")]
     [SerializeField]
-    GameObject _rulePrefab;  
+    GameObject _rulePrefab;
     [SerializeField]
     GameObject _ruleSeparatorPrefab;
     [SerializeField]
@@ -91,7 +92,7 @@ public class UIGame : MonoBehaviour
         yield return null;
     }
 
-    public void SetState(UIState state)
+    public void SetState(UIState state, State gameState = null)
     {
         _state = state;
         switch (state)
@@ -108,11 +109,11 @@ public class UIGame : MonoBehaviour
                 _failScreen.SetActive(false);
                 InputSystem.InputEnabled = false;
 
-                string totalCrossingsString = _winCrossingsCounter.text;
+                string totalCrossingsString = _winCrossingsCounter.GetComponent<LocalizedText>().GetCurrentText();
                 totalCrossingsString = totalCrossingsString.Replace(NUMBER_VALUE, _crossingsCounterText.text);
                 _winCrossingsCounter.text = totalCrossingsString;
 
-                
+
                 break;
             case UIState.Fail:
                 _hud.SetActive(false);
@@ -128,7 +129,8 @@ public class UIGame : MonoBehaviour
         // Set level description text
         _descriptionText.text = $"{level.name}:\n{level}";
 
-        string optimalCrossingsString = _winOptimalCrossings.text;
+        // Set optimal crossings text
+        string optimalCrossingsString = _winOptimalCrossings.GetComponent<LocalizedText>().GetCurrentText();
         optimalCrossingsString = optimalCrossingsString.Replace(NUMBER_VALUE, level.OptimalCrossings.ToString());
         _winOptimalCrossings.text = optimalCrossingsString;
 
@@ -144,6 +146,7 @@ public class UIGame : MonoBehaviour
         _ruleList.SetActive(level.Rules.Length > 0);
         foreach (var rule in level.Rules)
         {
+            // Add a separator between rules
             if (rule != level.Rules[0])
             {
                 GameObject line = GameObject.Instantiate(_ruleSeparatorPrefab);
@@ -153,54 +156,56 @@ public class UIGame : MonoBehaviour
                 _rules.Add(new Rule(), line);
             }
 
+            // Instantiate rule prefab
             GameObject g = GameObject.Instantiate(_rulePrefab);
             g.transform.SetParent(_ruleList.transform);
             g.transform.localScale = Vector3.one;
-            RuleIcon r = g.GetComponent<RuleIcon>();
+            RuleIcon ruleUI = g.GetComponent<RuleIcon>();
 
-            var imageB = r.B.GetComponent<Image>();
+            // Get image components
+            var imageA = ruleUI.A.GetComponent<Image>();
+            var imageA2 = ruleUI.A2.GetComponent<Image>();
+            var imageB = ruleUI.B.GetComponent<Image>();
+
+            // Set sprites
             imageB.sprite = rule.B.icon;
-            //imageB.SetNativeSize();
-
-            var imageA = r.A.GetComponent<Image>();
-            //imageA.preserveAspect = true;
             imageA.sprite = rule.A.icon;
-            //imageA.SetNativeSize();
+            imageA2.sprite = rule.A.icon;
 
-            var imageA2 = r.A2.GetComponent<Image>();
+            // Set rule icon
+            var icon = ruleUI.Icon.GetComponent<Image>();
 
-            var icon = r.Icon.GetComponent<Image>();
-
+            // Show correct icon based on rule
             switch (rule.comparison)
             {
+                // A x B
                 case Rule.RuleType.CantCoexist:
                     icon.sprite = _ruleSprites[0];
                     break;
+                // A > B
                 case Rule.RuleType.CountMustBeGreaterThan:
                     icon.sprite = _ruleSprites[1];
-
-                    imageA2.sprite = rule.A.icon;
                     imageA2.gameObject.SetActive(true);
-                    //imageA2.SetNativeSize();
                     break;
+                // A >= B
                 case Rule.RuleType.CountMustBeGreaterEqualThan:
                     icon.sprite = _ruleSprites[2];
-
-                    imageA2.sprite = rule.A.icon;
                     imageA2.gameObject.SetActive(true);
-                    //imageA2.SetNativeSize();
                     break;
+                // A <3 B
                 case Rule.RuleType.Requires:
                     icon.sprite = _ruleSprites[3];
                     break;
             }
 
+            // Set icon size???
             icon.SetNativeSize();
 
+            // Store gameobject
             _rules.Add(rule, g);
         }
 
-        // Clear old informations
+        // Clear old information
         foreach (var g in _infos.Values)
         {
             g.transform.SetParent(null);
@@ -299,7 +304,7 @@ public class UIGame : MonoBehaviour
 #if UNITY_EDITOR
     private void OnValidate()
     {
-        SetState(_state); 
+        SetState(_state);
     }
 
 #endif
