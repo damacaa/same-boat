@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class MapGenerator : MonoBehaviour
@@ -38,6 +39,13 @@ public class MapGenerator : MonoBehaviour
     [SerializeField]
     GameObject[] _floorDecorations;
 
+    private const int LAND = 1;
+    private const int WATER = 0;
+
+
+    [SerializeField]
+    GameObject _portPrefab;
+
     public void GenerateMap(Island[] islands, Level level)
     {
         //Random.InitState(42);
@@ -53,7 +61,7 @@ public class MapGenerator : MonoBehaviour
             {
                 var color = _map.GetPixelBilinear(((float)i) / tiles.GetLength(0), ((float)j) / tiles.GetLength(1));
                 float average = (color.r + color.b + color.b) / 3f;
-                tiles[i, j] = average > _threshold ? 1 : 0;
+                tiles[i, j] = average > _threshold ? LAND : WATER;
             }
         }
 
@@ -66,9 +74,12 @@ public class MapGenerator : MonoBehaviour
         List<Map> maps = new List<Map>();
         while (maps.Count < islands.Length)
         {
-            var islandMap = ExtractIslandMap(ref tiles);
+            Map islandMap = ExtractIslandMap(ref tiles);
             if (islandMap == null)
+            {
+                Debug.LogError("Map not valid");
                 break;
+            }
             maps.Add(islandMap);
         }
 
@@ -86,6 +97,7 @@ public class MapGenerator : MonoBehaviour
             g.name = "Island " + i;
             g.transform.parent = transform;
             g.layer = gameObject.layer;
+
             IslandBehaviour behaviour = g.AddComponent<IslandBehaviour>();
             Outline outline = g.AddComponent<Outline>();
             outline.enabled = false;
@@ -114,13 +126,11 @@ public class MapGenerator : MonoBehaviour
                 behaviour.AddSpot(s);
             }
 
-
-
             // Link data with behaviour
             islands[i].AssignGameObject(g);
         }
 
-        // Show unused islands ?
+        // Show unused islands
         var go = MeshGenerator.GenerateMesh(tiles, blockSize, worldMaterial);
         go.name = "Other";
         go.transform.parent = transform;
@@ -135,24 +145,23 @@ public class MapGenerator : MonoBehaviour
             List<Vector2Int> openList = new List<Vector2Int>();
             openList.Add(new Vector2Int(map.Width / 2, map.Height / 2));
 
-            Vector2Int port = new Vector2Int();
+            Vector2Int currentCell;
+
             int iter = 0;
             while (openList.Count > 0 && iter < 1000)
             {
                 iter++;
-                port = openList[0];
-                openList.Remove(port);
 
-                if (map[port.x, port.y] == 1)
-                    break;
+                currentCell = openList[0];
+                openList.Remove(currentCell);
 
                 bool done = false;
-                for (int i = -5; i <= 5; i++)
+                for (int i = -1; i <= 1; i++)
                 {
-                    for (int j = -5; j <= 5; j++)
+                    for (int j = -1; j <= 1; j++)
                     {
-                        int px = port.x + i;
-                        int py = port.y + j;
+                        int px = currentCell.x + i;
+                        int py = currentCell.y + j;
 
                         Vector2Int nv = new Vector2Int(px, py);
 
@@ -161,16 +170,18 @@ public class MapGenerator : MonoBehaviour
 
                         if (map[px, py] == 1)
                         {
-                            map.Port = nv;
+                            map.Port = currentCell;
                             done = true;
                             break;
                         }
 
                         openList.Add(nv);
                     }
+
                     if (done)
                         break;
                 }
+
                 if (done)
                     break;
             }
@@ -178,12 +189,18 @@ public class MapGenerator : MonoBehaviour
             float offsetX = (-blockSize * (map.Width) / 2f);
             float offsetY = (-blockSize * (map.Height) / 2f);
 
-            var t = new GameObject("Port").transform;
+            if (!_portPrefab)
+                return null;
+
+            var t = _portPrefab ? GameObject.Instantiate(_portPrefab).transform : new GameObject("Port").transform;
             t.position = new Vector3(offsetX + ((map.Port.x + 1) * blockSize), offsetY + ((map.Port.y + 1) * blockSize), 0f);
-            t.position -= t.position.normalized * 3f;
+            t.position -= t.position.normalized * 1f;
             t.position = new Vector3(t.position.x, t.position.y, 0f);
+
+
             return t;
         }
+
 
         Transform[] FindSpots(Map map)
         {

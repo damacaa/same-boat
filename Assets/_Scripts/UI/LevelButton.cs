@@ -40,7 +40,7 @@ namespace UI
             // For each level's island
             for (int i = 0; i < _level.Islands.Length; i++)
             {
-                Level.Island island = _level.Islands[i];
+                Level.IslandData island = _level.Islands[i];
             }
 
             _button.onClick.AddListener(ButtonAction);

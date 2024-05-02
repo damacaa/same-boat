@@ -71,7 +71,10 @@ public class GameManager : MonoBehaviour
 #endif
         InputSystem.InputEnabled = true;
 
-        Application.targetFrameRate = 60;
+
+#if UNITY_EDITOR
+        Application.targetFrameRate = 120;
+#endif
 
         SoundController.Instace.PlaySong(1);
 
@@ -253,7 +256,7 @@ public class GameManager : MonoBehaviour
     {
         //StopAllCoroutines();
         _game.CancelMoveCOrorutine();
-        
+
 
         if (_isWin)
             return;

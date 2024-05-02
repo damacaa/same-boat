@@ -23,7 +23,7 @@ public class Level : ScriptableObject
     public bool Unlocked = false;
     [Space()]
     public Texture2D Map;
-    public Island[] Islands;
+    public IslandData[] Islands;
     public Rule[] Rules;
 
     [Space()]
@@ -184,7 +184,7 @@ public class Level : ScriptableObject
     }
 
     [System.Serializable]
-    public class Island
+    public class IslandData
     {
         public TransportableSO[] transportables;
     }

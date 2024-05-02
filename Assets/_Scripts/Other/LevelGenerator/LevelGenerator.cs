@@ -42,7 +42,7 @@ public class LevelGenerator : MonoBehaviour
             level = ScriptableObject.CreateInstance<Level>();
             level.name = "Random";
             //level.Islands = new Level.Island[Random.Range(2, 5)];
-            level.Islands = new Level.Island[2];
+            level.Islands = new Level.IslandData[2];
 
             if (_desiredCapacity != level.BoatCapacity)
                 level.BoatCapacity = _desiredCapacity;
@@ -61,8 +61,8 @@ public class LevelGenerator : MonoBehaviour
 
             for (int i = 0; i < level.Islands.Length; i++)
             {
-                level.Islands[i] = new Level.Island();
-                Level.Island island = level.Islands[i];
+                level.Islands[i] = new Level.IslandData();
+                Level.IslandData island = level.Islands[i];
 
                 if (i >= level.Islands.Length - 1)
                 {

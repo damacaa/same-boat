@@ -40,6 +40,11 @@ public class BoatBehaviour : MonoBehaviour
         _outline = GetComponent<Outline>();
         _audioSource = GetComponent<AudioSource>();
         _boxCollider = GetComponent<BoxCollider>();
+
+        Vector3 flagScale = _flag.transform.localScale;
+        flagScale.y = _flagMinHeight;
+        flagScale.z = 0;
+        _flag.transform.localScale = flagScale;
     }
 
     // Update is called once per frame
