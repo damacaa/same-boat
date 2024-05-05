@@ -135,13 +135,6 @@ public class TransportableBehaviour : MonoBehaviour
         _unscaledCenterOffset = halfRes / ppu;
     }
 
-
-
-    public void OnMouseDown()
-    {
-        //GameManager.instance.TransportableInteraction(Data);
-    }
-
     Coroutine _movement;
 
 

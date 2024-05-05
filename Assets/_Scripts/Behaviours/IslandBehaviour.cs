@@ -34,10 +34,6 @@ public class IslandBehaviour : MonoBehaviour
         Data = island;
     }
 
-    private void OnMouseDown()
-    {
-        //GameManager.instance.IslandInteraction(Data);
-    }
 
     internal Transform GetSpot(int index)
     {

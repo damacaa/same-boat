@@ -189,9 +189,6 @@ public class MapGenerator : MonoBehaviour
             float offsetX = (-blockSize * (map.Width) / 2f);
             float offsetY = (-blockSize * (map.Height) / 2f);
 
-            if (!_portPrefab)
-                return null;
-
             var t = _portPrefab ? GameObject.Instantiate(_portPrefab).transform : new GameObject("Port").transform;
             t.position = new Vector3(offsetX + ((map.Port.x + 1) * blockSize), offsetY + ((map.Port.y + 1) * blockSize), 0f);
             t.position -= t.position.normalized * 1f;

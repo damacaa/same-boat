@@ -1,11 +1,10 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
 namespace Localization
 {
+#if UNITY_EDITOR
     [CustomEditor(typeof(LocalizedText))]
     public class LocalizedTextEditor : Editor
     {
@@ -35,4 +34,5 @@ namespace Localization
             }
         }
     }
+#endif
 }

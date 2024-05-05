@@ -130,6 +130,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 875127831234210937, guid: eaa3d2d88ea69464587e2c5b1a6c81c1, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 875127831234210937, guid: eaa3d2d88ea69464587e2c5b1a6c81c1, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2863308345573420292, guid: eaa3d2d88ea69464587e2c5b1a6c81c1, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -606,6 +614,7 @@ MonoBehaviour:
   - {fileID: 5100809846752158426, guid: 5c1f710ca9d63564898dffdf089fae00, type: 3}
   _floorDecorations:
   - {fileID: 8410071624898323670, guid: 0c832ba7e8bf878469aa0c0633c012f3, type: 3}
+  _portPrefab: {fileID: 0}
 --- !u!4 &1318211452
 Transform:
   m_ObjectHideFlags: 0

@@ -1,9 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.Burst.CompilerServices;
 using UnityEngine;
-using static UnityEditor.Progress;
 
 public class InputSystem : MonoBehaviour
 {
@@ -40,6 +37,7 @@ public class InputSystem : MonoBehaviour
     // Update is called once per frame
     void LateUpdate()
     {
+#if UNITY_EDITOR || UNITY_ANDROID || UNITY_IOS
         if (Input.GetMouseButtonDown(0))
         {
             OnClick();
@@ -52,6 +50,9 @@ public class InputSystem : MonoBehaviour
         {
             OnRelease();
         }
+#endif
+
+
     }
 
 

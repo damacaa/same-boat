@@ -70,4 +70,10 @@ public class ProgressManager : MonoBehaviour
         PlayerPrefs.SetInt(COMPLETED_LEVELS, _completedLevels);
         PlayerPrefs.Save();
     }
+
+    public void UnlockAll()
+    {
+        _completedLevels = _levels.Count;
+        SaveProgress();
+    }
 }
