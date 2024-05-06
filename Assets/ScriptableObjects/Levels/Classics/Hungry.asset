@@ -13,7 +13,20 @@ MonoBehaviour:
   m_Name: Hungry
   m_EditorClassIdentifier: 
   name: Missionaries and hungry cannibals
-  Description: 
+  Names:
+  - Missionaries and hungry cannibals
+  - Hambrientos
+  Descriptions:
+  - "Three foxes and three sheep want to get to the island in the north, but they
+    must cross a river first.\nThey have a boat with two seats.\nThe boat can\u2019t
+    be moved if there isn\u2019t someone driving it.\nEven though they all want everyone
+    to get to the other side in one piece, the animal instincts of some of them will
+    kick in if they are left unattended.\nKeep in mind that:\n   - The number of
+    sheep must be greater than or equal to the number of foxes.\n\nBe carefull, as
+    some animals are specially hugry today and won't be able to resist their urges,
+    even in the boat. You will see them because they have an especial icon over their
+    heads.\n"
+  - 
   Preview: {fileID: 21300000, guid: c887ed2a931c29040bc544cd8c546e9f, type: 3}
   BoatCapacity: 2
   BoatMaxWeightAllowed: 0

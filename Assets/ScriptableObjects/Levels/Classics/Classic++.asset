@@ -13,7 +13,20 @@ MonoBehaviour:
   m_Name: Classic++
   m_EditorClassIdentifier: 
   name: Classic extended
-  Description: 
+  Names:
+  - Classic extended
+  - "El cl\xE1sico extendido"
+  Descriptions:
+  - "A wolf, two foxes, a sack of corn and a chicken want to get to the island in
+    the north, but they must cross a river first.\nThey have a boat with two seats.\nThe
+    boat can\u2019t be moved if there isn\u2019t someone driving it.\nEven though
+    they all want everyone to get to the other side in one piece, the animal instincts
+    of some of them will kick in if they are left unattended.\nKeep in mind that:\n  
+    - You can't leave a sack of corn and a chicken together in the same island.\n  
+    - You can't leave a chicken and a fox together in the same island.\n   - You
+    can't leave a chicken and a wolf together in the same island.\n   - The number
+    of foxes must be greater than the number of wolves.\n"
+  - 
   Preview: {fileID: 21300000, guid: ec03f79379868c642b48ae5ddc821b6d, type: 3}
   BoatCapacity: 2
   BoatMaxWeightAllowed: 0

@@ -13,7 +13,22 @@ MonoBehaviour:
   m_Name: Torch
   m_EditorClassIdentifier: 
   name: Torch
-  Description: 
+  Names:
+  - Torch
+  - La antorcha
+  Descriptions:
+  - "A mouse, a chicken, a cat and a sheep want to get to the island in the north,
+    but they must cross a river first.\nThey have a boat with two seats but it can
+    only drive for 15 minutes.\n   - A mouse takes 1 minute to cross the river.\n  
+    - A chicken takes 2 minutes to cross the river.\n   - A cat takes 5 minutes to
+    cross the river.\n   - A sheep takes 8 minutes to cross the river.\nWhen two
+    or more characters are traveling together, the time they will take to cross the
+    river is equal to the time that the slowest one of them would take.\nThe boat
+    can\u2019t be moved if there isn\u2019t someone driving it.\nEven though they
+    all want everyone to get to the other side in one piece, the animal instincts
+    of some of them will kick in if they are left unattended.\nKeep in mind that:\n  
+    - You can't leave a mouse and a cat together in the same island.\n"
+  - 
   Preview: {fileID: 21300000, guid: fd098fb4cf57bad419701c802e442b7e, type: 3}
   BoatCapacity: 2
   BoatMaxWeightAllowed: 0

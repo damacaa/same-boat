@@ -13,7 +13,18 @@ MonoBehaviour:
   m_Name: Weight
   m_EditorClassIdentifier: 
   name: Understanding weight
-  Description: 
+  Names:
+  - Understanding weight
+  - Entendiendo el peso
+  Descriptions:
+  - "Two sheep and two chickens want to get to the island in the north, but they
+    must cross a river first.\nThey have a boat with two seats but it can only carry
+    up to 40 kilos.\n   - A sheep weighs 40 kilos.\n   - A chicken weighs 20 kilos.\nThe
+    boat can\u2019t be moved if there isn\u2019t someone driving it.\n"
+  - "Dos sheep y dos chickens quieren llegar a la isla del norte, pero primero deben
+    cruzar un r\xEDo.\nTienen un barco con dos asientos pero solo puede cargar hasta
+    40 kilos.\n   - Un sheep pesa 40 kilos.\n   - Un chicken pesa 20 kilos.\nEl barco
+    no se puede mover si no hay alguien conduci\xE9ndolo.\n"
   Preview: {fileID: 21300000, guid: 70632ddfe8e71b04b8f90ef7e29a9e98, type: 3}
   BoatCapacity: 2
   BoatMaxWeightAllowed: 4

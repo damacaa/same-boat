@@ -13,7 +13,28 @@ MonoBehaviour:
   m_Name: Weight2
   m_EditorClassIdentifier: 
   name: Understanding weight II
-  Description: 
+  Names:
+  - Understanding weight II
+  - Entendiendo el peso II
+  Descriptions:
+  - "A fox, a chicken and a sack of corn want to get to the island in the north,
+    but they must cross a river first.\nThey have a boat with two seats but it can
+    only carry up to 30 kilos.\n   - A fox weighs 30 kilos.\n   - A chicken weighs
+    20 kilos.\n   - A sack of corn weighs 10 kilos.\nThe boat can\u2019t be moved
+    if there isn\u2019t someone driving it.\nEven though they all want everyone to
+    get to the other side in one piece, the animal instincts of some of them will
+    kick in if they are left unattended.\nKeep in mind that:\n   - You can't leave
+    a fox and a chicken together in the same island.\n   - You can't leave a chicken
+    and a sack of corn together in the same island.\n"
+  - "Uno fox, uno chicken y uno sack of corn quieren llegar a la isla del norte,
+    pero primero deben cruzar un r\xEDo.\nTienen un barco con dos asientos pero solo
+    puede cargar hasta 30 kilos.\n   - Un fox pesa 30 kilos.\n   - Un chicken pesa
+    20 kilos.\n   - Un sack of corn pesa 10 kilos.\nEl barco no se puede mover si
+    no hay alguien conduci\xE9ndolo.\nAunque todos quieren llegar al otro lado sanos
+    y salvos, algunos actuar\xE1n seg\xFAn sus instintos animales si se les deja
+    sin supervisi\xF3n.\nTenga en cuenta que:\n   - You can't leave a fox and a chicken
+    together in the same island.\n   - You can't leave a chicken and a sack of corn
+    together in the same island.\n"
   Preview: {fileID: 21300000, guid: dae33700bd23f76409a80bf78fdb8a42, type: 3}
   BoatCapacity: 2
   BoatMaxWeightAllowed: 3
