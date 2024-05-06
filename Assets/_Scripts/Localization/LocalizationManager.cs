@@ -16,9 +16,13 @@ namespace Localization
     {
         public static Action<Language> OnLanguageChanged;
         public static Language CurrentLanguage { get; private set; }
+
+        public static string PREF_SELECTED_LANGUAGE_KEY = "language";
+
         public static void SetLanguage(Language language)
         {
             CurrentLanguage = language;
+            PlayerPrefs.SetInt(PREF_SELECTED_LANGUAGE_KEY, (int)CurrentLanguage);
             OnLanguageChanged?.Invoke(CurrentLanguage);
             //Debug.Log(language.ToString());
         }

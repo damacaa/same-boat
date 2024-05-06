@@ -75,6 +75,8 @@ public class UIGame : MonoBehaviour
     [SerializeField]
     TextMeshProUGUI _winOptimalCrossings;
 
+    private int _optimalCrossings = 0;
+
     [Space]
     [SerializeField]
     GameObject _failScreen;
@@ -113,6 +115,11 @@ public class UIGame : MonoBehaviour
                 totalCrossingsString = totalCrossingsString.Replace(NUMBER_VALUE, _crossingsCounterText.text);
                 _winCrossingsCounter.text = totalCrossingsString;
 
+                // Set optimal crossings text
+                string optimalCrossingsString = _winOptimalCrossings.GetComponent<LocalizedText>().GetCurrentText();
+                optimalCrossingsString = optimalCrossingsString.Replace(NUMBER_VALUE, _optimalCrossings.ToString());
+                _winOptimalCrossings.text = optimalCrossingsString;
+
 
                 break;
             case UIState.Fail:
@@ -124,15 +131,14 @@ public class UIGame : MonoBehaviour
         }
     }
 
+
+
     internal void SetLevelDetails(Level level)
     {
         // Set level description text
         _descriptionText.text = $"{level.name}:\n{level}";
 
-        // Set optimal crossings text
-        string optimalCrossingsString = _winOptimalCrossings.GetComponent<LocalizedText>().GetCurrentText();
-        optimalCrossingsString = optimalCrossingsString.Replace(NUMBER_VALUE, level.OptimalCrossings.ToString());
-        _winOptimalCrossings.text = optimalCrossingsString;
+        _optimalCrossings = level.OptimalCrossings;
 
         // Clear previous rules
         foreach (var g in _rules.Values)

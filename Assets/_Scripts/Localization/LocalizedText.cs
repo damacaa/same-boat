@@ -9,6 +9,8 @@ namespace Localization
     [RequireComponent(typeof(TextMeshProUGUI))]
     public class LocalizedText : MonoBehaviour
     {
+        public static Language DEFAULT_LANGUAGE = Language.En;
+
         [SerializeField]
         TextMeshProUGUI _text;
 
@@ -34,7 +36,7 @@ namespace Localization
             _texts[(int)language] = text;
 
 #if UNITY_EDITOR
-                OnValidate();
+            OnValidate();
 #endif
         }
 
@@ -53,11 +55,20 @@ namespace Localization
             HandleNewLanguage(LocalizationManager.CurrentLanguage);
         }
 
+        private void OnEnable()
+        {
+            ForceUpdate();
+        }
+
 #if UNITY_EDITOR
         private void OnValidate()
         {
             if (Application.isPlaying)
                 return;
+
+            if (!_text)
+                _text = GetComponent<TextMeshProUGUI>();
+
 
             int availableLanguages = Math.Max(System.Enum.GetValues(typeof(Language)).Length, 1);
             if (_texts == null || _texts.Length != availableLanguages)
@@ -75,11 +86,12 @@ namespace Localization
                 _texts = newTexts;
             }
 
-            if (!_text)
-                _text = GetComponent<TextMeshProUGUI>();
-            _text.text = _texts[0];
+            int id = (int)DEFAULT_LANGUAGE;
+            if (string.IsNullOrEmpty(_texts[id]))
+                _texts[id] = _text.text;
+            else
+                _text.text = _texts[id];
         }
-
 #endif
     }
 }

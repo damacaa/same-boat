@@ -66,6 +66,8 @@ public class GameManager : MonoBehaviour
     #region UnityEventFunctions
     private void Start()
     {
+        LocalizationManager.Update();
+
 #if !UNITY_EDITOR
         _showDebugUI = false;
 #endif
@@ -212,8 +214,6 @@ public class GameManager : MonoBehaviour
 
     public void LoadLevel(Level level)
     {
-        LocalizationManager.Update();
-
         // Clear previous game
         if (_game != null)
         {
