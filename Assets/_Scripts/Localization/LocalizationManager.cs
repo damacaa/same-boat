@@ -20,10 +20,12 @@ namespace Localization
         {
             CurrentLanguage = language;
             OnLanguageChanged?.Invoke(CurrentLanguage);
+            //Debug.Log(language.ToString());
         }
         public static void Update()
         {
             OnLanguageChanged?.Invoke(CurrentLanguage);
+            //Debug.Log("Update: " + CurrentLanguage.ToString());
         }
     }
 }

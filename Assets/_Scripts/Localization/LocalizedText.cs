@@ -20,7 +20,8 @@ namespace Localization
             _text = GetComponent<TextMeshProUGUI>();
 
             LocalizationManager.OnLanguageChanged += HandleNewLanguage;
-            ForceUpdate();
+            //ForceUpdate();
+            //Debug.Log(GetCurrentText());
         }
 
         private void HandleNewLanguage(Language language)
@@ -33,7 +34,6 @@ namespace Localization
             _texts[(int)language] = text;
 
 #if UNITY_EDITOR
-            if (!Application.isPlaying)
                 OnValidate();
 #endif
         }
