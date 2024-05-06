@@ -40,7 +40,8 @@ public class LanguageSelector : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         if (LocalizationManager.CurrentLanguage == Localization.Language.Es)
         {
             _language = Localization.Language.Es;
-            _animator.Play("Right");
+            _animator.Play("Right", -1, 1f);
+
         }
     }
 }

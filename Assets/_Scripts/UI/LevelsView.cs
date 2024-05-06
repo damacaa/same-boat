@@ -1,5 +1,8 @@
+using Localization;
+using System;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -89,9 +92,16 @@ namespace UI
 
                 if (go.TryGetComponent(out LevelButton levelButton))
                 {
-                    levelButton.Text = _levels[i].name;
                     levelButton.Init(_levels[i]);
                     levelButton.OnLevelSelected += SelectLevel;
+
+                    var localizedText = levelButton.GetComponentInChildren<LocalizedText>();
+
+                    foreach (Language language in Enum.GetValues(typeof(Language)))
+                    {
+                        localizedText.SetText(language, _levels[i].GetName(language));
+                    }
+                    localizedText.ForceUpdate();
 
                     _levelsButtons.Add(levelButton);
                 }
@@ -123,7 +133,7 @@ namespace UI
 
             ProgressManager.Instance.LevelToLoad = level;
 
-            _levelName.text = level.name;    
+            _levelName.text = level.Name;
 
             // Set image
             _levelPreview.sprite = level.Preview;

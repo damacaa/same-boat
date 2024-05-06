@@ -13,7 +13,12 @@ MonoBehaviour:
   m_Name: Menu
   m_EditorClassIdentifier: 
   name: Menu background
-  Description: 
+  Names:
+  - 
+  - 
+  Descriptions:
+  - 
+  - 
   Preview: {fileID: 0}
   BoatCapacity: 1
   BoatMaxWeightAllowed: 0
