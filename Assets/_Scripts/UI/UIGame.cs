@@ -136,13 +136,16 @@ public class UIGame : MonoBehaviour
     internal void SetLevelDetails(Level level)
     {
         // Set level description text
-        _descriptionText.text = $"{level.name}:\n{level}";
+        _descriptionText.text = $"{level.Name}:\n{level.Description}";
 
         _optimalCrossings = level.OptimalCrossings;
 
         // Clear previous rules
         foreach (var g in _rules.Values)
         {
+            if(!g)
+                continue;
+
             g.transform.SetParent(null);
             Destroy(g);
         }

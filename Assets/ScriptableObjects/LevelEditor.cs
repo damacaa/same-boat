@@ -1,3 +1,5 @@
+using Localization;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
@@ -10,20 +12,41 @@ public class LevelEditor : Editor
     public override void OnInspectorGUI()
     {
         // Cast target to your ScriptableObject type
-        Level yourScriptableObject = (Level)target;
+        Level levelSO = (Level)target;
 
         // Add a whimsical text area for extra charm
         EditorGUILayout.Space(); // Create some space for visual appeal
 
-        GUILayout.Label("Name", EditorStyles.boldLabel); // Label for the section
-        yourScriptableObject.name = EditorGUILayout.TextField(yourScriptableObject.name); // Text area for custom notes
+        
 
-        GUILayout.Label("Description", EditorStyles.boldLabel); // Label for the section
-        yourScriptableObject.Description = EditorGUILayout.TextArea(yourScriptableObject.Description); // Text area for custom notes
-        EditorGUILayout.Space();
+
+        foreach (Language language in Enum.GetValues(typeof(Language)))
+        {
+            GUILayout.Label($"Name({language})", EditorStyles.boldLabel);
+            levelSO.SetName(EditorGUILayout.TextField(levelSO.GetName(language)), language);
+
+            string title = $"Description";
+
+            GUILayout.Label(title, EditorStyles.boldLabel); // Label for the section
+            levelSO.SetDescription(EditorGUILayout.TextArea(levelSO.GetDescription(language)), language);
+
+            if (GUILayout.Button("Generate"))
+            {
+                levelSO.SetDescription(levelSO.GenerateDescription(language), language);
+            }
+
+            EditorGUILayout.Space(20);
+
+            // Store new value
+            //text.SetText(language, content);
+        }
+
+        EditorGUILayout.Space(100);
 
         // Display default inspector
         DrawDefaultInspector();
+
+        EditorUtility.SetDirty(levelSO);
     }
 }
 #endif

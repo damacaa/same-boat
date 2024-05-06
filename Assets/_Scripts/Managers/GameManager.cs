@@ -61,6 +61,25 @@ public class GameManager : MonoBehaviour
             Destroy(this);
         else
             Instance = this;
+
+        LocalizationManager.OnLanguageChanged += HandleLanguageChange;
+    }
+
+    private void OnDestroy()
+    {
+        LocalizationManager.OnLanguageChanged -= HandleLanguageChange;
+
+        if (_solverCancellationToken != null)
+            _solverCancellationToken.Cancel();
+    }
+
+    private void HandleLanguageChange(Language language)
+    {
+        if (_loadedLevel)
+            _ui.SetLevelDetails(_loadedLevel);
+
+        if (_game != null)
+            _ui.SetGameState(_game.GetCurrentState());
     }
 
     #region UnityEventFunctions
@@ -488,9 +507,4 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(1);
     }
 
-    private void OnDestroy()
-    {
-        if (_solverCancellationToken != null)
-            _solverCancellationToken.Cancel();
-    }
 }

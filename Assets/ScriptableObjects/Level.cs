@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Localization;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +9,13 @@ using UnityEngine;
 public class Level : ScriptableObject
 {
     public new string name;
-    public string Description;
+
+    [SerializeField]
+    private string[] Names;
+
+    [SerializeField]
+    private string[] Descriptions;
+
     public Sprite Preview;
     [Space]
     [Range(2, 4)]
@@ -29,15 +36,91 @@ public class Level : ScriptableObject
     [Space()]
     public int OptimalCrossings = 100;
 
-    public override string ToString()
-    {
-        if (!string.IsNullOrEmpty(Description))
-            return Description;
 
-        return GenerateDescription();
+    public string Name
+    {
+        get
+        {
+            return GetName(LocalizationManager.CurrentLanguage);
+        }
     }
 
-    private string GenerateDescription()
+    public string GetName(Language language)
+    {
+        int n = Enum.GetValues(typeof(Language)).Length;
+        if (Names == null)
+        {
+            Names = new string[n];
+            Names[0] = name;
+        }
+
+        if (Names.Length != n)
+        {
+            string[] newArray = new string[n];
+            for (int i = 0; i < Math.Min(Names.Length, n); i++)
+            {
+                newArray[i] = Names[i];
+            }
+            Names = newArray;
+        }
+
+        return Names[(int)language];
+    }
+
+    public void SetName(string n, Language language)
+    {
+        Names[(int)language] = n;
+    }
+
+    public string Description
+    {
+        get
+        {
+            return GetDescription(LocalizationManager.CurrentLanguage);
+        }
+    }
+
+    public string GetDescription(Language language)
+    {
+        int n = Enum.GetValues(typeof(Language)).Length;
+        if (Descriptions == null)
+        {
+            Descriptions = new string[n];
+        }
+
+        if (Descriptions.Length != n)
+        {
+            string[] newArray = new string[n];
+            for (int i = 0; i < Math.Min(Descriptions.Length, n); i++)
+            {
+                newArray[i] = Descriptions[i];
+            }
+            Descriptions = newArray;
+        }
+
+        return Descriptions[(int)language];
+    }
+
+    public void SetDescription(string d, Language language)
+    {
+        Descriptions[(int)language] = d;
+    }
+
+
+    public string GenerateDescription(Language language)
+    {
+        switch (language)
+        {
+            case Language.En:
+                return GenerateDescriptionEn();
+            case Language.Es:
+                return GenerateDescriptionEs();
+        }
+
+        return "";
+    }
+
+    public string GenerateDescriptionEn()
     {
         StringBuilder sb = new StringBuilder();
 
@@ -182,6 +265,157 @@ public class Level : ScriptableObject
 
         return sb.ToString();
     }
+
+    public string GenerateDescriptionEs()
+    {
+        StringBuilder sb = new StringBuilder();
+
+        Dictionary<TransportableSO, int> count = new Dictionary<TransportableSO, int>();
+
+        foreach (var island in Islands)
+        {
+            foreach (var t in island.transportables)
+            {
+                if (t == null)
+                    continue;
+
+                TransportableSO key = t;
+
+                if (count.TryGetValue(key, out int value))
+                {
+                    count[key] = value + 1;
+                }
+                else
+                {
+                    count.Add(key, 1);
+                }
+            }
+        }
+
+        string listOfTransportables = "";
+
+        var arrayOfAllKeys = count.Keys.ToArray();
+        string[] numbers = new string[] { "Cero", "Uno", "Dos", "Tres", "Cuatro", "Cinco", "Seis", "Siete", "Ocho", "Nueve", "Diez" };
+
+        for (int i = 0; i < arrayOfAllKeys.Length; i++)
+        {
+            TransportableSO t = arrayOfAllKeys[i];
+            int c = count[t];
+
+            listOfTransportables += (i == 0 ? numbers[c] : numbers[c].ToLower()) + " " + (c > 1 ? t.NamePlural.ToLower() : t.name.ToLower());
+
+            if (i == arrayOfAllKeys.Length - 1)
+            {
+                // Último elemento, no necesita coma ni "y"
+            }
+            else if (i == arrayOfAllKeys.Length - 2)
+            {
+                listOfTransportables += (" y ");
+            }
+            else
+            {
+                listOfTransportables += (", ");
+            }
+        }
+
+        sb.Append($"{listOfTransportables} quieren llegar a la isla del norte, pero primero deben cruzar un río.\n");
+
+        // Barco
+
+        bool hasMaxWeight = BoatMaxWeightAllowed > 0;
+        bool hasMaxTravelCost = BoatMaxTravelCost > 0;
+
+        sb.Append($"Tienen un barco con {numbers[BoatCapacity].ToLower()}{(BoatCapacity == 1 ? " asiento" : " asientos")}");
+
+        if (hasMaxWeight || hasMaxTravelCost)
+        {
+            sb.Append(" pero");
+
+            if (hasMaxWeight)
+            {
+                sb.Append($" solo puede cargar hasta {BoatMaxWeightAllowed * 10} kilos");
+                if (hasMaxTravelCost)
+                    sb.Append(" y");
+                else
+                    sb.Append(".\n");
+            }
+
+            if (hasMaxTravelCost)
+            {
+                sb.Append($" solo puede viajar por {BoatMaxTravelCost} minutos.\n");
+            }
+        }
+        else
+        {
+            sb.Append(".\n");
+        }
+
+        foreach (var t in arrayOfAllKeys)
+        {
+            if (hasMaxWeight || hasMaxTravelCost)
+            {
+                sb.Append($"   - Un {t.name.ToLower()}");
+
+                if (hasMaxWeight)
+                {
+                    sb.Append($" pesa {t.Weight * 10} kilos");
+
+                    if (hasMaxTravelCost)
+                        sb.Append(" y");
+                    else
+                        sb.Append(".\n");
+                }
+
+                if (hasMaxTravelCost)
+                {
+                    sb.Append($" tarda {t.TravelCost} {(t.TravelCost > 1 ? "minutos" : "minuto")} para cruzar el río.\n");
+                }
+            }
+        }
+
+        if (hasMaxTravelCost)
+        {
+            sb.Append($"Cuando dos o más personajes están viajando juntos," +
+                $" el tiempo que tomarán para cruzar el río es igual al tiempo que el más lento de ellos tomaría.\n");
+        }
+
+        sb.Append($"El barco no se puede mover si no hay alguien conduciéndolo.");
+
+        if (OnlyHumansCanDrive)
+        {
+            sb.Append($" Sin embargo, el hombre no permitirá que nadie más que él mismo navegue el barco.\n");
+        }
+        else
+        {
+            sb.Append("\n");
+        }
+
+        // Reglas
+
+        if (Rules.Length == 0)
+        {
+            return sb.ToString();
+        }
+
+        sb.Append($"Aunque todos quieren llegar al otro lado sanos y salvos," +
+            $" algunos actuarán según sus instintos animales si se les deja sin supervisión.\n" +
+            $"Tenga en cuenta que:\n");
+
+        foreach (var rule in Rules)
+        {
+            sb.Append("   - " + rule + "\n");
+        }
+
+        if (StrictMode)
+        {
+            sb.Append("\nTenga cuidado, ya que algunos animales están especialmente hambrientos hoy y no podrán " +
+                "resistir sus impulsos, incluso en el barco. " +
+                "Podrá reconocerlos porque tienen un ícono especial sobre sus cabezas.\n");
+        }
+
+        return sb.ToString();
+    }
+
 
     [System.Serializable]
     public class IslandData
