@@ -28,7 +28,17 @@ MonoBehaviour:
     all want everyone to get to the other side in one piece, the animal instincts
     of some of them will kick in if they are left unattended.\nKeep in mind that:\n  
     - You can't leave a mouse and a cat together in the same island.\n"
-  - 
+  - "Uno mouse, uno chicken, uno cat y uno sheep quieren llegar a la isla del norte,
+    pero primero deben cruzar un r\xEDo.\nTienen un barco con dos asientos pero solo
+    puede viajar por 15 minutos.\n   - Un mouse tarda 1 minuto para cruzar el r\xEDo.\n  
+    - Un chicken tarda 2 minutos para cruzar el r\xEDo.\n   - Un cat tarda 5 minutos
+    para cruzar el r\xEDo.\n   - Un sheep tarda 8 minutos para cruzar el r\xEDo.\nCuando
+    dos o m\xE1s personajes est\xE1n viajando juntos, el tiempo que tomar\xE1n para
+    cruzar el r\xEDo es igual al tiempo que el m\xE1s lento de ellos tomar\xEDa.\nEl
+    barco no se puede mover si no hay alguien conduci\xE9ndolo.\nAunque todos quieren
+    llegar al otro lado sanos y salvos, algunos actuar\xE1n seg\xFAn sus instintos
+    animales si se les deja sin supervisi\xF3n.\nTenga en cuenta que:\n   - You can't
+    leave a mouse and a cat together in the same island.\n"
   Preview: {fileID: 21300000, guid: fd098fb4cf57bad419701c802e442b7e, type: 3}
   BoatCapacity: 2
   BoatMaxWeightAllowed: 0

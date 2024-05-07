@@ -24,7 +24,13 @@ MonoBehaviour:
     kick in if they are left unattended.\nKeep in mind that:\n   - The number of
     cats must be greater than the number of wolves.\n   - The number of mice must
     be greater than the number of cats.\n"
-  - 
+  - "Uno wolf, dos cats y tres mice quieren llegar a la isla del norte, pero primero
+    deben cruzar un r\xEDo.\nTienen un barco con dos asientos.\nEl barco no se puede
+    mover si no hay alguien conduci\xE9ndolo.\nAunque todos quieren llegar al otro
+    lado sanos y salvos, algunos actuar\xE1n seg\xFAn sus instintos animales si se
+    les deja sin supervisi\xF3n.\nTenga en cuenta que:\n   - The number of cats must
+    be greater than the number of wolves.\n   - The number of mice must be greater
+    than the number of cats.\n"
   Preview: {fileID: 21300000, guid: 3a0c527d7f890d64a9b56b086e6e766a, type: 3}
   BoatCapacity: 2
   BoatMaxWeightAllowed: 0

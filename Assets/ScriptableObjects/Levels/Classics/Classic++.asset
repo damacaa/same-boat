@@ -26,7 +26,15 @@ MonoBehaviour:
     - You can't leave a chicken and a fox together in the same island.\n   - You
     can't leave a chicken and a wolf together in the same island.\n   - The number
     of foxes must be greater than the number of wolves.\n"
-  - 
+  - "Uno wolf, dos foxes, uno sack of corn y uno chicken quieren llegar a la isla
+    del norte, pero primero deben cruzar un r\xEDo.\nTienen un barco con dos asientos.\nEl
+    barco no se puede mover si no hay alguien conduci\xE9ndolo.\nAunque todos quieren
+    llegar al otro lado sanos y salvos, algunos actuar\xE1n seg\xFAn sus instintos
+    animales si se les deja sin supervisi\xF3n.\nTenga en cuenta que:\n   - You can't
+    leave a sack of corn and a chicken together in the same island.\n   - You can't
+    leave a chicken and a fox together in the same island.\n   - You can't leave
+    a chicken and a wolf together in the same island.\n   - The number of foxes must
+    be greater than the number of wolves.\n"
   Preview: {fileID: 21300000, guid: ec03f79379868c642b48ae5ddc821b6d, type: 3}
   BoatCapacity: 2
   BoatMaxWeightAllowed: 0

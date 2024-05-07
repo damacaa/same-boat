@@ -264,7 +264,7 @@ public class GameManager : MonoBehaviour
         _ui.SetGameState(_game.GetCurrentState());
         _ui.SetState(UIGame.UIState.Playing);
 
-        Debug.Log(level);
+        Debug.Log(level.Description);
 
         _loadedLevel = level;
 

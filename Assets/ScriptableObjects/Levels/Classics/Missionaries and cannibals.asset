@@ -23,7 +23,12 @@ MonoBehaviour:
     to get to the other side in one piece, the animal instincts of some of them will
     kick in if they are left unattended.\nKeep in mind that:\n   - The number of
     sheep must be greater than the number of foxes.\n"
-  - 
+  - "Tres foxes y tres sheep quieren llegar a la isla del norte, pero primero deben
+    cruzar un r\xEDo.\nTienen un barco con dos asientos.\nEl barco no se puede mover
+    si no hay alguien conduci\xE9ndolo.\nAunque todos quieren llegar al otro lado
+    sanos y salvos, algunos actuar\xE1n seg\xFAn sus instintos animales si se les
+    deja sin supervisi\xF3n.\nTenga en cuenta que:\n   - The number of sheep must
+    be greater than the number of foxes.\n"
   Preview: {fileID: 21300000, guid: 9c0d6ec706e01ce448aea81584af092b, type: 3}
   BoatCapacity: 2
   BoatMaxWeightAllowed: 0

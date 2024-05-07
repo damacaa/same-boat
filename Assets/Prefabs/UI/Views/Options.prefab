@@ -445,7 +445,7 @@ GameObject:
   - component: {fileID: 3544726581396339583}
   - component: {fileID: 7996578639267544568}
   m_Layer: 0
-  m_Name: Empty space
+  m_Name: Language
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -528,7 +528,7 @@ MonoBehaviour:
   m_PreferredWidth: -1
   m_PreferredHeight: -1
   m_FlexibleWidth: -1
-  m_FlexibleHeight: 1
+  m_FlexibleHeight: 1.75
   m_LayoutPriority: 1
 --- !u!1 &7695777936050981935
 GameObject:
@@ -632,7 +632,7 @@ GameObject:
   - component: {fileID: 2654535015159436797}
   - component: {fileID: 9002909528788174770}
   m_Layer: 0
-  m_Name: Button
+  m_Name: GoBack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
