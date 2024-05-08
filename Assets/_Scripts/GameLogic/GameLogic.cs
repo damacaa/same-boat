@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 
@@ -216,7 +217,7 @@ public class GameLogic
         yield return null;
     }
 
-    public void CancelMoveCOrorutine()
+    public void CancelMoveCoroutine()
     {
         _showingSolveAnimation = false;
     }
@@ -248,7 +249,16 @@ public class GameLogic
                 fail = true;
                 if (showMessage)
                     Debug.Log("Fail in island " + island.Name);
+
+                break;
             }
+        }
+
+        if (!CheckRules(Boat.Transportables))
+        {
+            //fail = true;
+            if (showMessage)
+                Debug.Log("Fail in boat");
         }
 
         /*if (_checkBoatForMistakes && !CheckRules(_boat.Transportables))
@@ -299,7 +309,7 @@ public class GameLogic
                         return false;
                     break;
                 case Rule.RuleType.Requires:
-                    if (aCount > 0 && aCount > bCount)
+                    if (aCount + bCount > 0 && (aCount == 0 || bCount == 0))
                         return false;
                     break;
                 default:

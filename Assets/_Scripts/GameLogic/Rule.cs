@@ -27,13 +27,13 @@ public class Rule
         switch (comparison)
         {
             case RuleType.CantCoexist:
-                s = $"You can't leave a {A.name.ToLower()} and a {B.name.ToLower()} together in the same island.";
+                s = $"A {A.name.ToLower()} and a {B.name.ToLower()} must never be left alone in the same island.";
                 break;
             case RuleType.CountMustBeGreaterThan:
-                s = $"The number of {A.NamePlural.ToLower()} must be greater than the number of {B.NamePlural.ToLower()}.";
+                s = $"The number of {A.NamePlural.ToLower()} on any island must always be greater than the number of {B.NamePlural.ToLower()}.";
                 break;
             case RuleType.CountMustBeGreaterEqualThan:
-                s = $"The number of {A.NamePlural.ToLower()} must be greater than or equal to the number of {B.NamePlural.ToLower()}.";
+                s = $"The number of {A.NamePlural.ToLower()} on any island must always be greater than or equal to the number of {B.NamePlural.ToLower()}.";
                 break;
             case RuleType.Requires:
                 s = $"A {A.name.ToLower()} must always be accompanied by a {B.name.ToLower()}.";
