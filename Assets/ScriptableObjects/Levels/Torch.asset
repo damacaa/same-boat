@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43576c3ff47158b4580a126f4cf8a5e2, type: 3}
+  m_Name: Torch
+  m_EditorClassIdentifier: 
+  Names:
+  - Torch
+  - La antorcha
+  Descriptions:
+  - "A mouse, a chicken, a cat and a sheep all need to cross a river to reach the
+    island in the north.\nHowever, they only have a small boat with two seats, and
+    the boat can't be moved without someone steering it. This, time any character
+    can drive the boat.\n Also, it can only drive for 15 minutes.\n   - A mouse takes
+    1 minute to cross the river.\n   - A chicken takes 2 minutes to cross the river.\n  
+    - A cat takes 5 minutes to cross the river.\n   - A sheep takes 8 minutes to
+    cross the river.\nWhen two or more characters are traveling together, the time
+    they will take to cross the river is equal to the time that the slowest one of
+    them would take.Although everyone wants to reach the island safely, their natural
+    instincts pose a risk when left alone. Keep in mind the following:\n   - A mouse
+    and a cat must never be left alone on the same island.\n"
+  - "Un rat\xF3n, una gallina, un gato y una oveja todos necesitan cruzar un r\xEDo
+    para llegar a la isla del norte.\nSin embargo, solo tienen un bote peque\xF1o
+    con dos asientos, y el bote no puede moverse sin que alguien lo dirija. Esta
+    vez cualquier personaje puede manejar el bote.\n Adem\xE1s, solo puede navegar
+    durante 15 minutos.\n   - Un rat\xF3n tarda 1 minuto en cruzar el r\xEDo.\n  
+    - Una gallina tarda 2 minutos en cruzar el r\xEDo.\n   - Un gato tarda 5 minutos
+    en cruzar el r\xEDo.\n   - Una oveja tarda 8 minutos en cruzar el r\xEDo.\nCuando
+    dos o m\xE1s personajes viajan juntos, el tiempo que tardar\xE1n en cruzar el
+    r\xEDo es igual al tiempo que tardar\xEDa el m\xE1s lento de ellos.Aunque todos
+    quieren llegar a la isla de manera segura, sus instintos naturales representan
+    un riesgo cuando se quedan solos. Ten en cuenta lo siguiente:\n   - No puedes
+    dejar un rat\xF3n y un gato solos en la misma isla.\n"
+  Preview: {fileID: 21300000, guid: fd098fb4cf57bad419701c802e442b7e, type: 3}
+  BoatCapacity: 2
+  BoatMaxWeightAllowed: 0
+  BoatMaxTravelCost: 15
+  StrictMode: 0
+  OnlyHumansCanDrive: 0
+  Map: {fileID: 2800000, guid: f944d0c065e6cf44fb2c6180bcf8d17a, type: 3}
+  Islands:
+  - transportables:
+    - {fileID: 11400000, guid: e404f737187f5584989fee925aad497c, type: 2}
+    - {fileID: 11400000, guid: 8bb208a2f8e4d454ebc0ff9967aeed9c, type: 2}
+    - {fileID: 11400000, guid: 715219d6dc8b18847890caab79708628, type: 2}
+    - {fileID: 11400000, guid: 9c173236f3b917043b185990f60b7614, type: 2}
+  - transportables: []
+  Rules:
+  - A: {fileID: 11400000, guid: e404f737187f5584989fee925aad497c, type: 2}
+    comparison: 0
+    B: {fileID: 11400000, guid: 715219d6dc8b18847890caab79708628, type: 2}
+  OptimalCrossings: 5

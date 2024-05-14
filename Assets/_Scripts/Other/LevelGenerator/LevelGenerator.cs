@@ -1,10 +1,14 @@
 using Solver;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
 
-public class LevelGenerator : MonoBehaviour
+[CreateAssetMenu(fileName = "LevelGenerator", menuName = "ScriptableObjects/LevelGenerator", order = 3)]
+
+public class LevelGenerator : ScriptableObject
 {
     [SerializeField]
     int _desiredCrossings = 10;
@@ -24,17 +28,41 @@ public class LevelGenerator : MonoBehaviour
     Texture2D[] maps;
 
 
+    [SerializeField]
+    private CancellationTokenSource _cancellationTokenSource;
+    [SerializeField]
+    private Task _task;
+
+    [SerializeField]
+    public bool IsGenerating { get; internal set; }
+
     public void Generate()
     {
 
 #if UNITY_EDITOR
+        IsGenerating = true;
+        _cancellationTokenSource = new CancellationTokenSource();
+        _task = Task.Run(() => { GenerateLevel(_cancellationTokenSource); });
+
+#endif
+
+    }
+
+    public void Cancel()
+    {
+        Debug.Log("Bye");
+        _cancellationTokenSource?.Cancel();
+    }
+
+    private void GenerateLevel(CancellationTokenSource cancellationToken) {
+
         int maxIter = 100;
         int iter = 0;
 
         GameLogic game = null;
         Level level = null;
 
-        while (iter < maxIter)
+        while (iter < maxIter && !cancellationToken.IsCancellationRequested)
         {
 
             Dictionary<TransportableSO, int> count = new Dictionary<TransportableSO, int>();
@@ -117,6 +145,14 @@ public class LevelGenerator : MonoBehaviour
 
         };
 
+        IsGenerating = false;
+
+        if (cancellationToken.IsCancellationRequested)
+        {
+            Debug.Log("Aborted");
+            return;
+        }
+
         Level levelWithSmallerWeightLimit = level;
         levelWithSmallerWeightLimit.BoatMaxWeightAllowed--;
 
@@ -134,7 +170,6 @@ public class LevelGenerator : MonoBehaviour
         AssetDatabase.CreateAsset(level, "Assets/ScriptableObjects/Levels/Random.asset");
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
-#endif
 
     }
 }

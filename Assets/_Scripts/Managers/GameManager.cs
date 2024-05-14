@@ -274,7 +274,7 @@ public class GameManager : MonoBehaviour
     public void Undo()
     {
         //StopAllCoroutines();
-        _game.CancelMoveCOrorutine();
+        _game.CancelMoveCoroutine();
 
 
         if (_isWin)
@@ -333,10 +333,11 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator SolveCoroutine()
     {
-        if (OnSolverStarted != null)
-            OnSolverStarted();
+        OnSolverStarted?.Invoke();
+        Debug.Log("Solving");
 
         float startTime = Time.realtimeSinceStartup;
+
 
         switch (_solverMethod)
         {
@@ -347,7 +348,9 @@ public class GameManager : MonoBehaviour
                 if (_solverCancellationToken != null)
                     _solverCancellationToken.Cancel();
                 _solverCancellationToken = new CancellationTokenSource();
+
                 yield return SolverTask.SolveCoroutine(_game, _solverCancellationToken, _useHeuristicForSolver);
+
                 break;
         }
 
@@ -355,10 +358,13 @@ public class GameManager : MonoBehaviour
 
         Debug.Log($"Elapsed {_solverMethod}: {elapsedTime}");
 
-        if (OnSolverEnded != null)
-            OnSolverEnded();
+        OnSolverEnded?.Invoke();
+
+        Time.timeScale = 10.0f;
 
         yield return _game.ExecuteAllMovesCoroutine();
+
+        Time.timeScale = 1.0f;
 
         if (_game.GetCurrentState().Crossings > 0 &&
             _game.GetCurrentState().Crossings < _loadedLevel.OptimalCrossings)
@@ -395,6 +401,7 @@ public class GameManager : MonoBehaviour
         }
 
         var timeEllapsed = Time.time - t0;
+        Debug.Log($"Clue found in {timeEllapsed}s");
 
         if (timeEllapsed < MIN_SOLVER_TIME)
         {

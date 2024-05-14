@@ -1,0 +1,62 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43576c3ff47158b4580a126f4cf8a5e2, type: 3}
+  m_Name: ChickenInvasion
+  m_EditorClassIdentifier: 
+  Names:
+  - Chicken invasion
+  - "La invasi\xF3n de las gallinas"
+  Descriptions:
+  - "A man wants to take six chickens, a fox and a sack of corn across the river
+    to reach the island in the north.\nHowever, he only has a small boat with three
+    seats, which only he is allowed to drive. The man is the only one allowed to
+    drive the boat, so he must be present for each crossing.\nAlthough everyone wants
+    to reach the island safely, their natural instincts pose a risk when left alone.
+    Keep in mind the following:\n   - A fox and a chicken must never be left alone
+    on the same island.\n   - A chicken and a sack of corn must never be left alone
+    on the same island.\n"
+  - "Un hombre quiere llevar seis gallinas, un zorro y un saco de ma\xEDz a trav\xE9s
+    del r\xEDo para llegar a la isla del norte.\nSin embargo, solo tiene un bote
+    peque\xF1o con tres asientos, y solo \xE9l tiene permitido manejarlo. El hombre
+    es el \xFAnico autorizado para manejar el bote, as\xED que debe estar presente
+    en cada cruce.\nAunque todos quieren llegar a la isla de manera segura, sus instintos
+    naturales representan un riesgo cuando se quedan solos. Ten en cuenta lo siguiente:\n  
+    - No puedes dejar un zorro y una gallina solos en la misma isla.\n   - No puedes
+    dejar una gallina y un saco de ma\xEDz solos en la misma isla.\n"
+  Preview: {fileID: 21300000, guid: a04ecc9d5e12d5d449077414eb86635e, type: 3}
+  BoatCapacity: 3
+  BoatMaxWeightAllowed: 0
+  BoatMaxTravelCost: 0
+  StrictMode: 0
+  OnlyHumansCanDrive: 1
+  Map: {fileID: 2800000, guid: 48ea27f58e9ed024489602fa0adfaa91, type: 3}
+  Islands:
+  - transportables:
+    - {fileID: 11400000, guid: 8bb208a2f8e4d454ebc0ff9967aeed9c, type: 2}
+    - {fileID: 11400000, guid: 8bb208a2f8e4d454ebc0ff9967aeed9c, type: 2}
+    - {fileID: 11400000, guid: 8bb208a2f8e4d454ebc0ff9967aeed9c, type: 2}
+    - {fileID: 11400000, guid: 8bb208a2f8e4d454ebc0ff9967aeed9c, type: 2}
+    - {fileID: 11400000, guid: eedba2dfd80b3a440950af3b4a393562, type: 2}
+    - {fileID: 11400000, guid: cec013bbd6b087046b857f5414739136, type: 2}
+    - {fileID: 11400000, guid: c93da487864c90f4897ed27019024def, type: 2}
+  - transportables:
+    - {fileID: 11400000, guid: 8bb208a2f8e4d454ebc0ff9967aeed9c, type: 2}
+    - {fileID: 11400000, guid: 8bb208a2f8e4d454ebc0ff9967aeed9c, type: 2}
+  - transportables: []
+  Rules:
+  - A: {fileID: 11400000, guid: cec013bbd6b087046b857f5414739136, type: 2}
+    comparison: 0
+    B: {fileID: 11400000, guid: 8bb208a2f8e4d454ebc0ff9967aeed9c, type: 2}
+  - A: {fileID: 11400000, guid: 8bb208a2f8e4d454ebc0ff9967aeed9c, type: 2}
+    comparison: 0
+    B: {fileID: 11400000, guid: c93da487864c90f4897ed27019024def, type: 2}
+  OptimalCrossings: 8

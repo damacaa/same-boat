@@ -26,7 +26,8 @@ public class UIGame : MonoBehaviour
     [Header("Game UI elements")]
     [SerializeField]
     TextMeshProUGUI _descriptionText;
-
+    [SerializeField]
+    TextMeshProUGUI _occupiedSeatsCounterText;
     [SerializeField]
     TextMeshProUGUI _crossingsCounterText;
 
@@ -136,14 +137,14 @@ public class UIGame : MonoBehaviour
     internal void SetLevelDetails(Level level)
     {
         // Set level description text
-        _descriptionText.text = $"{level.Name}:\n{level.Description}";
+        _descriptionText.text = $"<b>{level.Name}:</b>\n{level.Description}";
 
         _optimalCrossings = level.OptimalCrossings;
 
         // Clear previous rules
         foreach (var g in _rules.Values)
         {
-            if(!g)
+            if (!g)
                 continue;
 
             g.transform.SetParent(null);
@@ -281,6 +282,7 @@ public class UIGame : MonoBehaviour
 
     internal void SetGameState(State state)
     {
+        _occupiedSeatsCounterText.text = state.BoatOccupiedSeats + "/" + state.BoatCapacity;
         _crossingsCounterText.text = state.Crossings.ToString();
 
         _weigthText.text = $"{state.BoatCurrentWeight} / {_maxWeight}kg";

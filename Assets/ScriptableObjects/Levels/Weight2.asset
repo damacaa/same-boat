@@ -1,0 +1,58 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43576c3ff47158b4580a126f4cf8a5e2, type: 3}
+  m_Name: Weight2
+  m_EditorClassIdentifier: 
+  Names:
+  - Understanding weight II
+  - Entendiendo el peso II
+  Descriptions:
+  - "A fox, a chicken and a sack of corn all need to cross a river to reach the island
+    in the north.\nHowever, they only have a small boat with two seats, and the boat
+    can't be moved without someone steering it. This, time any character can drive
+    the boat.\n Also, it can only carry up to 30 kilos.\n   - A fox weighs 30 kilos.\n  
+    - A chicken weighs 20 kilos.\n   - A sack of corn weighs 10 kilos.\nAlthough
+    everyone wants to reach the island safely, their natural instincts pose a risk
+    when left alone. Keep in mind the following:\n   - A fox and a chicken must never
+    be left alone on the same island.\n   - A chicken and a sack of corn must never
+    be left alone on the same island.\n"
+  - "Un zorro, una gallina y un saco de ma\xEDz todos necesitan cruzar un r\xEDo
+    para llegar a la isla del norte.\nSin embargo, solo tienen un bote peque\xF1o
+    con dos asientos, y el bote no puede moverse sin que alguien lo dirija. Esta
+    vez cualquier personaje puede manejar el bote.\n Adem\xE1s, solo puede llevar
+    hasta 30 kilos.\n   - Un zorro pesa 30 kilos.\n   - Una gallina pesa 20 kilos.\n  
+    - Un saco de ma\xEDz pesa 10 kilos.\nAunque todos quieren llegar a la isla de
+    manera segura, sus instintos naturales representan un riesgo cuando se quedan
+    solos. Ten en cuenta lo siguiente:\n   - No puedes dejar un zorro y una gallina
+    solos en la misma isla.\n   - No puedes dejar una gallina y un saco de ma\xEDz
+    solos en la misma isla.\n"
+  Preview: {fileID: 21300000, guid: dae33700bd23f76409a80bf78fdb8a42, type: 3}
+  BoatCapacity: 2
+  BoatMaxWeightAllowed: 3
+  BoatMaxTravelCost: 0
+  StrictMode: 0
+  OnlyHumansCanDrive: 0
+  Map: {fileID: 2800000, guid: f944d0c065e6cf44fb2c6180bcf8d17a, type: 3}
+  Islands:
+  - transportables:
+    - {fileID: 11400000, guid: cec013bbd6b087046b857f5414739136, type: 2}
+    - {fileID: 11400000, guid: 8bb208a2f8e4d454ebc0ff9967aeed9c, type: 2}
+    - {fileID: 11400000, guid: c93da487864c90f4897ed27019024def, type: 2}
+  - transportables: []
+  Rules:
+  - A: {fileID: 11400000, guid: cec013bbd6b087046b857f5414739136, type: 2}
+    comparison: 0
+    B: {fileID: 11400000, guid: 8bb208a2f8e4d454ebc0ff9967aeed9c, type: 2}
+  - A: {fileID: 11400000, guid: 8bb208a2f8e4d454ebc0ff9967aeed9c, type: 2}
+    comparison: 0
+    B: {fileID: 11400000, guid: c93da487864c90f4897ed27019024def, type: 2}
+  OptimalCrossings: 5

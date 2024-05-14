@@ -13,9 +13,22 @@ public class LevelGeneratorEditor : Editor
 
         DrawDefaultInspector();
 
-        if (GUILayout.Button("Generate level"))
+        if (!generator.IsGenerating)
         {
-            generator.Generate();
+
+            if (GUILayout.Button("Generate level"))
+            {
+                generator.Generate();
+            }
+        }
+        else
+        {
+
+
+            if (GUILayout.Button("Cancel"))
+            {
+                generator.Cancel();
+            }
         }
     }
 }

@@ -20,6 +20,7 @@ namespace Solver
 
                 if (!game.Win)
                 {
+                    Debug.LogError("Couldn't find solution");
                     return;
                 }
 
@@ -43,6 +44,8 @@ namespace Solver
             {
                 yield return null;
             }
+
+            Debug.Log("Clue found!");
 
             yield return null;
         }

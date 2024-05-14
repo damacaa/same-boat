@@ -1,5 +1,8 @@
+using Localization;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 
@@ -16,4 +19,18 @@ public class LevelCollection : ScriptableObject
     }
 
     public int Count { get { return levels.Count; } }
+
+    public void UpdateDescriptions()
+    {
+        foreach (var level in levels)
+        {
+            foreach (Language language in Enum.GetValues(typeof(Language)))
+            {
+                level.UpdateDescription(language);
+            }
+
+            Debug.Log($"Updated {level.Name}");
+            EditorUtility.SetDirty(level);
+        }
+    }
 }

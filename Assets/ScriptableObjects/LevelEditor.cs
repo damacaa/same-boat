@@ -17,8 +17,9 @@ public class LevelEditor : Editor
         // Add a whimsical text area for extra charm
         EditorGUILayout.Space(); // Create some space for visual appeal
 
-        
 
+
+        EditorStyles.textField.wordWrap = true;
 
         foreach (Language language in Enum.GetValues(typeof(Language)))
         {

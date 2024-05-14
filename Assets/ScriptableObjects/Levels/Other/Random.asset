@@ -25,7 +25,6 @@ MonoBehaviour:
   BoatMaxTravelCost: 0
   StrictMode: 0
   OnlyHumansCanDrive: 0
-  Unlocked: 0
   Map: {fileID: 2800000, guid: 7c27b6935c20ed24bb8c48af6e63306c, type: 3}
   Islands:
   - transportables:

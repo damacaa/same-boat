@@ -2,7 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Text;
 using System.Threading;
+using Unity.VisualScripting;
 
 namespace Solver
 {
@@ -40,14 +43,15 @@ namespace Solver
                 closedList.Add(current);
 
                 // Checks win and brakes loop if true
-                if (game.Win) break;
+                if (game.Win)
+                    return current;
 
                 // Adds to the open list all of the new possible states derived from the current state
                 ExpandNeighbours(current, game, openList, closedList, nodeQueue, true);
 
             }
 
-            return current;
+            return null;
         }
 
         protected static State Initialize(GameLogic game, bool useHeuristic, out PriorityQueue<State> nodeQueue, out HashSet<State> openList, out HashSet<State> closedList)
@@ -202,7 +206,10 @@ namespace Solver
 
         public int GetHashCode(State obj)
         {
-            return obj.ToString().GetHashCode();
+            unchecked
+            {
+                return 23 * obj.ToString().GetHashCode();
+            }
         }
     }
 
@@ -275,7 +282,7 @@ namespace Solver
 
         public bool Equals(State other)
         {
-            return ToString() == other.ToString();
+            return ToString().Equals(other.ToString());
         }
 
         public override string ToString()
@@ -283,38 +290,51 @@ namespace Solver
             if (!string.IsNullOrEmpty(_text))
                 return _text;
 
-            string result = "";
+            StringBuilder sb = new StringBuilder();
+
             foreach (var island in Islands)
             {
-                result += "[ ";
-                foreach (var transportable in island.transportables)
+                sb.Append("[ ");
+                var sortedIslandTransportables = island.transportables.ToList();
+                sortedIslandTransportables = sortedIslandTransportables.OrderBy(x => x.ScripatableObject.name).ToList();
+                foreach (var transportable in sortedIslandTransportables)
                 {
-                    result += transportable + " ";
+                    sb.Append(transportable + " ");
                 }
-                result += "] ";
+                sb.Append("] ");
             }
 
-            result += "< ";
+            sb.Append("< ");
+
+            var sortedBoatTransportables = BoatTransportables.ToList();
+            sortedBoatTransportables = sortedBoatTransportables.OrderBy(x => x.ScripatableObject.name).ToList();
 
             for (int i = 0; i < BoatCapacity; i++)
             {
-                if (i < BoatTransportables.Length && BoatTransportables[i] != null)
+                if (i < BoatTransportables.Length)
                 {
-                    result += "[" + BoatTransportables[i] + "] ";
+                    var t = sortedBoatTransportables[i];
+                    if (t != null)
+                        sb.Append($"[{t}] ");
+                    else
+                        sb.Append($"[ ] ");
                 }
                 else
                 {
-                    result += "[ ] ";
+                    sb.Append("[ ] ");
                 }
             }
-            result += "> (" + CurrentIsland.Name + ")";
 
-            result += BoatMaxWeight != 0 ? " " + BoatCurrentWeight : "";
-            result += BoatMaxTravelCost != 0 ? " " + BoatTravelCost : "";
+            sb.Append("> (" + CurrentIsland.Name + ")");
+
+            sb.Append(BoatMaxWeight != 0 ? " " + BoatCurrentWeight : "");
+            sb.Append(BoatMaxTravelCost != 0 ? " " + BoatTravelCost : "");
 
             //result += Steps;
 
-            return result;
+            _text = sb.ToString();
+
+            return _text;
         }
     }
 }
