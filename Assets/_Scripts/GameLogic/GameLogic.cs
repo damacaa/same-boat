@@ -325,7 +325,8 @@ public class GameLogic
             if (!valid)
             {
                 failedRules++;
-                BrokenRules.Add(r);
+                if (BrokenRules.Find(rule => rule == r) == null)
+                    BrokenRules.Add(r);
             }
 
         }
