@@ -540,11 +540,6 @@ public class Level : ScriptableObject
             string solution = ce.solution;
             result = result.Replace(error, solution);
 
-            if (error.Equals("sheep"))
-            {
-                int a = 0;
-            }
-
             string errorCapital = ToCapital(error);
             string solutionCapital = ToCapital(solution);
             result = result.Replace(errorCapital, solutionCapital);

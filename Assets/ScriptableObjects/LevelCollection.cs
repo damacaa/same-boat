@@ -30,7 +30,9 @@ public class LevelCollection : ScriptableObject
             }
 
             Debug.Log($"Updated {level.Name}");
+#if UNITY_EDITOR
             EditorUtility.SetDirty(level);
+#endif
         }
     }
 }

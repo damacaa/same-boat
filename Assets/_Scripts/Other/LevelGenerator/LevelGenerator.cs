@@ -55,7 +55,7 @@ public class LevelGenerator : ScriptableObject
     }
 
     private void GenerateLevel(CancellationTokenSource cancellationToken) {
-
+#if UNITY_EDITOR
         int maxIter = 100;
         int iter = 0;
 
@@ -170,6 +170,6 @@ public class LevelGenerator : ScriptableObject
         AssetDatabase.CreateAsset(level, "Assets/ScriptableObjects/Levels/Random.asset");
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
-
+#endif
     }
 }
