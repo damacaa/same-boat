@@ -16,19 +16,18 @@ MonoBehaviour:
   - Missionaries and cannibals
   - "Misioneros y can\xEDbales"
   Descriptions:
-  - "Three foxes and three sheep all need to cross a river to reach the island in
+  - "Three foxes and three sheep all want to cross a river to reach the island in
     the north.\nHowever, they only have a small boat with two seats, and the boat
-    can't be moved without someone steering it. This, time any character can drive
-    the boat.\nAlthough everyone wants to reach the island safely, their natural
-    instincts pose a risk when left alone. Keep in mind the following:\n   - The
-    number of sheep on any island must always be greater than the number of foxes.\n"
-  - "Tres zorros y tres ovejas todos necesitan cruzar un r\xEDo para llegar a la
-    isla del norte.\nSin embargo, solo tienen un bote peque\xF1o con dos asientos,
-    y el bote no puede moverse sin que alguien lo dirija. Esta vez cualquier personaje
-    puede manejar el bote.\nAunque todos quieren llegar a la isla de manera segura,
-    sus instintos naturales representan un riesgo cuando se quedan solos. Ten en
-    cuenta lo siguiente:\n   - El n\xFAmero de ovejas en cada isla siempre debe ser
-    mayor al n\xFAmero de zorros.\n"
+    can't be moved without someone steering it.\nAlthough everyone wants to reach
+    the island safely, their natural instincts pose a risk when left alone. Keep
+    in mind the following:\n   - The number of sheep on any island must always be
+    greater than the number of foxes.\n"
+  - "Tres zorros y tres ovejas quieren cruzar un r\xEDo para llegar a la isla del
+    norte.\nSin embargo, solo tienen un peque\xF1o barco con dos asientos, y el barco
+    no se puede mover sin alguien que lo dirija.\nAunque todos quieren llegar a la
+    isla sanos y salvos, sus instintos representan un riesgo cuando se quedan solos.
+    Ten en cuenta lo siguiente:\n   - El n\xFAmero de ovejas en cada isla siempre
+    debe ser mayor al n\xFAmero de zorros.\n"
   Preview: {fileID: 21300000, guid: 9c0d6ec706e01ce448aea81584af092b, type: 3}
   BoatCapacity: 2
   BoatMaxWeightAllowed: 0

@@ -16,24 +16,22 @@ MonoBehaviour:
   - Cannibals extended
   - "Can\xEDbales extendido"
   Descriptions:
-  - "Four foxes and four sheep all need to cross a river to reach the island in the
+  - "Four foxes and four sheep all want to cross a river to reach the island in the
     north.\nHowever, they only have a small boat with two seats, and the boat can't
-    be moved without someone steering it. This, time any character can drive the
-    boat.\nAlthough everyone wants to reach the island safely, their natural instincts
-    pose a risk when left alone. Keep in mind the following:\n   - The number of
-    sheep on any island must always be greater than or equal to the number of foxes.\n\nBe
-    carefull, as some animals are specially hugry today and won't be able to resist
-    their urges, even in the boat. You will see them because they have a especial
-    icon over their heads.\n"
-  - "Cuatro zorros y cuatro ovejas todos necesitan cruzar un r\xEDo para llegar a
-    la isla del norte.\nSin embargo, solo tienen un bote peque\xF1o con dos asientos,
-    y el bote no puede moverse sin que alguien lo dirija. Esta vez cualquier personaje
-    puede manejar el bote.\nAunque todos quieren llegar a la isla de manera segura,
-    sus instintos naturales representan un riesgo cuando se quedan solos. Ten en
-    cuenta lo siguiente:\n   - El n\xFAmero de ovejas en cada isla siempre debe ser
-    mayor o igual al n\xFAmero de zorros.\nTen cuidado, ya que algunos animales tienen
-    mucha hambre hoy y no podr\xE1n resistir sus impulsos, incluso en el bote. Los
-    reconocer\xE1s porque tienen un icono especial sobre sus cabezas.\n"
+    be moved without someone steering it.\nAlthough everyone wants to reach the island
+    safely, their natural instincts pose a risk when left alone. Keep in mind the
+    following:\n   - The number of sheep on any island must always be greater than
+    or equal to the number of foxes.\nBe carefull, as some animals are specially
+    hugry today and won't be able to resist their urges, even in the boat. You will
+    see them because they have a especial icon over their heads.\n"
+  - "Cuatro zorros y cuatro ovejas quieren cruzar un r\xEDo para llegar a la isla
+    del norte.\nSin embargo, solo tienen un peque\xF1o barco con dos asientos, y
+    el barco no se puede mover sin alguien que lo dirija.\nAunque todos quieren llegar
+    a la isla sanos y salvos, sus instintos representan un riesgo cuando se quedan
+    solos. Ten en cuenta lo siguiente:\n   - El n\xFAmero de ovejas en cada isla
+    siempre debe ser mayor o igual al n\xFAmero de zorros.\nTen cuidado, ya que algunos
+    animales est\xE1n especialmente hambrientos hoy y no podr\xE1n resistir sus impulsos,
+    incluso en el barco. Los ver\xE1 porque tienen un icono especial sobre sus cabezas.\n"
   Preview: {fileID: 21300000, guid: a04ecc9d5e12d5d449077414eb86635e, type: 3}
   BoatCapacity: 2
   BoatMaxWeightAllowed: 0

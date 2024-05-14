@@ -18,20 +18,17 @@ MonoBehaviour:
   Descriptions:
   - "A man wants to take a fox, a chicken and a sack of corn across the river to
     reach the island in the north.\nHowever, he only has a small boat with two seats,
-    which only he is allowed to drive. The man is the only one allowed to drive the
-    boat, so he must be present for each crossing.\nAlthough everyone wants to reach
-    the island safely, their natural instincts pose a risk when left alone. Keep
-    in mind the following:\n   - A fox and a chicken must never be left alone on
-    the same island.\n   - A chicken and a sack of corn must never be left alone
-    on the same island.\n"
-  - "Un hombre quiere llevar un zorro, una gallina y un saco de ma\xEDz a trav\xE9s
-    del r\xEDo para llegar a la isla del norte.\nSin embargo, solo tiene un bote
-    peque\xF1o con dos asientos, y solo \xE9l tiene permitido manejarlo. El hombre
-    es el \xFAnico autorizado para manejar el bote, as\xED que debe estar presente
-    en cada cruce.\nAunque todos quieren llegar a la isla de manera segura, sus instintos
-    naturales representan un riesgo cuando se quedan solos. Ten en cuenta lo siguiente:\n  
-    - No puedes dejar un zorro y una gallina solos en la misma isla.\n   - No puedes
-    dejar una gallina y un saco de ma\xEDz solos en la misma isla.\n"
+    which only he is allowed to drive.\nAlthough everyone wants to reach the island
+    safely, their natural instincts pose a risk when left alone. Keep in mind the
+    following:\n   - A fox and a chicken must never be left alone on the same island.\n  
+    - A chicken and a sack of corn must never be left alone on the same island.\n"
+  - "Un hombre quiere llevar un zorro, una gallina y un saco de ma\xEDz al otro lado
+    del r\xEDo para llegar a la isla del norte.\nSin embargo, solo tiene un peque\xF1o
+    barco con dos asientos, que solo \xE9l puede conducir.\nAunque todos quieren
+    llegar a la isla sanos y salvos, sus instintos representan un riesgo cuando se
+    quedan solos. Ten en cuenta lo siguiente:\n   - No puedes dejar un zorro y una
+    gallina solos en la misma isla.\n   - No puedes dejar una gallina y un saco de
+    ma\xEDz solos en la misma isla.\n"
   Preview: {fileID: 21300000, guid: fa6647a8b7c33cb40afc5f1bbf69d330, type: 3}
   BoatCapacity: 2
   BoatMaxWeightAllowed: 0

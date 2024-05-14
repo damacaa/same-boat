@@ -25,7 +25,7 @@ public class Rule
         return true;
     }
 
-    public string ToString(Localization.Language language)
+    public string GetDescription(Localization.Language language)
     {
         switch (language)
         {

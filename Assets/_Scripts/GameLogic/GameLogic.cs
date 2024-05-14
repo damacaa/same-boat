@@ -37,6 +37,8 @@ public class GameLogic
     public event Action OnFail;
     public event Action OnWin;
 
+    public static List<Rule> BrokenRules { get; private set; } = new();
+
 
     public GameLogic(Level level)
     {
@@ -227,6 +229,7 @@ public class GameLogic
     #region Checks
     bool CheckFail(bool showMessage = true)
     {
+        BrokenRules.Clear();
         bool fail = false;
         foreach (var island in _islands)
         {
@@ -276,8 +279,8 @@ public class GameLogic
 
     public bool CheckRules(List<Transportable> transportables)
     {
+        int failedRules = 0;
         // Could be optimized by counting each only once, using a dictionary maybe
-
         foreach (var r in _level.Rules)
         {
             int aCount = 0, bCount = 0;
@@ -294,31 +297,40 @@ public class GameLogic
                     bCount++;
             }
 
+            bool valid = true;
+
             switch (r.comparison)
             {
                 case Rule.RuleType.CantCoexist:
                     if (aCount > 0 && bCount > 0)
-                        return false;
+                        valid = false;
                     break;
                 case Rule.RuleType.CountMustBeGreaterThan:
                     if (aCount > 0 && aCount <= bCount)
-                        return false;
+                        valid = false;
                     break;
                 case Rule.RuleType.CountMustBeGreaterEqualThan:
                     if (aCount > 0 && aCount < bCount)
-                        return false;
+                        valid = false;
                     break;
                 case Rule.RuleType.Requires:
                     if (aCount + bCount > 0 && (aCount == 0 || bCount == 0))
-                        return false;
+                        valid = false;
                     break;
                 default:
                     Debug.Log("Rule not implemented");
                     break;
             }
+
+            if (!valid)
+            {
+                failedRules++;
+                BrokenRules.Add(r);
+            }
+
         }
 
-        return true;
+        return failedRules == 0;
     }
 
     void CheckWin()

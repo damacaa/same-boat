@@ -305,7 +305,7 @@ public class Level : ScriptableObject
 
             foreach (var rule in Rules)
             {
-                sb.Append($"   - {rule.ToString(Language.En)}\n");
+                sb.Append($"   - {rule.GetDescription(Language.En)}\n");
             }
 
             if (StrictMode)
@@ -493,7 +493,7 @@ public class Level : ScriptableObject
 
             foreach (var rule in Rules)
             {
-                sb.Append($"   - {rule.ToString(Language.Es)}\n");
+                sb.Append($"   - {rule.GetDescription(Language.Es)}\n");
             }
 
             if (StrictMode)

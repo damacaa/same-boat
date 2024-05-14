@@ -16,22 +16,20 @@ MonoBehaviour:
   - Layton
   - Layton
   Descriptions:
-  - "A wolf, two cats and three mice all need to cross a river to reach the island
+  - "A wolf, two cats and three mice all want to cross a river to reach the island
     in the north.\nHowever, they only have a small boat with two seats, and the boat
-    can't be moved without someone steering it. This, time any character can drive
-    the boat.\nAlthough everyone wants to reach the island safely, their natural
-    instincts pose a risk when left alone. Keep in mind the following:\n   - The
-    number of cats on any island must always be greater than the number of wolves.\n  
-    - The number of mice on any island must always be greater than the number of
-    cats.\n"
-  - "Un lobo, dos gatos y tres ratones todos necesitan cruzar un r\xEDo para llegar
-    a la isla del norte.\nSin embargo, solo tienen un bote peque\xF1o con dos asientos,
-    y el bote no puede moverse sin que alguien lo dirija. Esta vez cualquier personaje
-    puede manejar el bote.\nAunque todos quieren llegar a la isla de manera segura,
-    sus instintos naturales representan un riesgo cuando se quedan solos. Ten en
-    cuenta lo siguiente:\n   - El n\xFAmero de gatos en cada isla siempre debe ser
-    mayor al n\xFAmero de lobos.\n   - El n\xFAmero de ratones en cada isla siempre
-    debe ser mayor al n\xFAmero de gatos.\n"
+    can't be moved without someone steering it.\nAlthough everyone wants to reach
+    the island safely, their natural instincts pose a risk when left alone. Keep
+    in mind the following:\n   - The number of cats on any island must always be
+    greater than the number of wolves.\n   - The number of mice on any island must
+    always be greater than the number of cats.\n"
+  - "Un lobo, dos gatos y tres ratones quieren cruzar un r\xEDo para llegar a la
+    isla del norte.\nSin embargo, solo tienen un peque\xF1o barco con dos asientos,
+    y el barco no se puede mover sin alguien que lo dirija.\nAunque todos quieren
+    llegar a la isla sanos y salvos, sus instintos representan un riesgo cuando se
+    quedan solos. Ten en cuenta lo siguiente:\n   - El n\xFAmero de gatos en cada
+    isla siempre debe ser mayor al n\xFAmero de lobos.\n   - El n\xFAmero de ratones
+    en cada isla siempre debe ser mayor al n\xFAmero de gatos.\n"
   Preview: {fileID: 21300000, guid: 3a0c527d7f890d64a9b56b086e6e766a, type: 3}
   BoatCapacity: 2
   BoatMaxWeightAllowed: 0

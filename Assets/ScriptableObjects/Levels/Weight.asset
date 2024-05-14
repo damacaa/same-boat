@@ -16,16 +16,15 @@ MonoBehaviour:
   - Understanding weight
   - Entendiendo el peso
   Descriptions:
-  - "Two sheep and two chickens all need to cross a river to reach the island in
+  - "Two sheep and two chickens all want to cross a river to reach the island in
     the north.\nHowever, they only have a small boat with two seats, and the boat
-    can't be moved without someone steering it. This, time any character can drive
-    the boat.\n Also, it can only carry up to 40 kilos.\n   - A sheep weighs 40 kilos.\n  
-    - A chicken weighs 20 kilos.\n"
-  - "Dos ovejas y dos gallinas todos necesitan cruzar un r\xEDo para llegar a la
-    isla del norte.\nSin embargo, solo tienen un bote peque\xF1o con dos asientos,
-    y el bote no puede moverse sin que alguien lo dirija. Esta vez cualquier personaje
-    puede manejar el bote.\n Adem\xE1s, solo puede llevar hasta 40 kilos.\n   - Una
-    oveja pesa 40 kilos.\n   - Una gallina pesa 20 kilos.\n"
+    can't be moved without someone steering it.\nAlso, the boat can only carry up
+    to 40 kilos.\n   - A sheep weighs 40 kilos.\n   - A chicken weighs 20 kilos.\n"
+  - "Dos ovejas y dos gallinas quieren cruzar un r\xEDo para llegar a la isla del
+    norte.\nSin embargo, solo tienen un peque\xF1o barco con dos asientos, y el barco
+    no se puede mover sin alguien que lo dirija.\nAdem\xE1s, el barco solo puede
+    llevar hasta 40 kilos.\n   - Una oveja pesa 40 kilos.\n   - Una gallina pesa
+    20 kilos.\n"
   Preview: {fileID: 21300000, guid: 70632ddfe8e71b04b8f90ef7e29a9e98, type: 3}
   BoatCapacity: 2
   BoatMaxWeightAllowed: 4

@@ -3,6 +3,7 @@ using Solver;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -47,9 +48,13 @@ public class UIGame : MonoBehaviour
     [SerializeField]
     GameObject _rulePrefab;
     [SerializeField]
+    GameObject _bigRulePrefab;
+    [SerializeField]
     GameObject _ruleSeparatorPrefab;
     [SerializeField]
     GameObject _ruleList;
+    [SerializeField]
+    GameObject _failedRuleList;
     [SerializeField]
     Sprite[] _ruleSprites;
 
@@ -128,9 +133,26 @@ public class UIGame : MonoBehaviour
                 _winScreen.SetActive(false);
                 _failScreen.SetActive(true);
                 InputSystem.InputEnabled = false;
+
+                if (Application.isPlaying)
+                {
+                   
+                    while (_spawnedFailedRules.Count > 0)
+                    {
+                        Destroy(_spawnedFailedRules.Dequeue());
+                    }
+
+                    foreach (var r in GameLogic.BrokenRules)
+                    {
+                        SpawnFailRule(r, _bigRulePrefab, _failedRuleList, _spawnedFailedRules);
+                    }
+                }
+
                 break;
         }
     }
+
+    Queue<GameObject> _spawnedFailedRules = new();
 
 
 
@@ -166,53 +188,7 @@ public class UIGame : MonoBehaviour
                 _rules.Add(new Rule(), line);
             }
 
-            // Instantiate rule prefab
-            GameObject g = GameObject.Instantiate(_rulePrefab);
-            g.transform.SetParent(_ruleList.transform);
-            g.transform.localScale = Vector3.one;
-            RuleIcon ruleUI = g.GetComponent<RuleIcon>();
-
-            // Get image components
-            var imageA = ruleUI.A.GetComponent<Image>();
-            var imageA2 = ruleUI.A2.GetComponent<Image>();
-            var imageB = ruleUI.B.GetComponent<Image>();
-
-            // Set sprites
-            imageB.sprite = rule.B.icon;
-            imageA.sprite = rule.A.icon;
-            imageA2.sprite = rule.A.icon;
-
-            // Set rule icon
-            var icon = ruleUI.Icon.GetComponent<Image>();
-
-            // Show correct icon based on rule
-            switch (rule.comparison)
-            {
-                // A x B
-                case Rule.RuleType.CantCoexist:
-                    icon.sprite = _ruleSprites[0];
-                    break;
-                // A > B
-                case Rule.RuleType.CountMustBeGreaterThan:
-                    icon.sprite = _ruleSprites[1];
-                    imageA2.gameObject.SetActive(true);
-                    break;
-                // A >= B
-                case Rule.RuleType.CountMustBeGreaterEqualThan:
-                    icon.sprite = _ruleSprites[2];
-                    imageA2.gameObject.SetActive(true);
-                    break;
-                // A <3 B
-                case Rule.RuleType.Requires:
-                    icon.sprite = _ruleSprites[3];
-                    break;
-            }
-
-            // Set icon size???
-            icon.SetNativeSize();
-
-            // Store gameobject
-            _rules.Add(rule, g);
+            SpawnRule(rule, _rulePrefab, _ruleList, _rules);
         }
 
         // Clear old information
@@ -279,6 +255,111 @@ public class UIGame : MonoBehaviour
         }
     }
 
+    private void SpawnRule(Rule rule, GameObject prefab, GameObject list, Dictionary<Rule, GameObject> dict = null)
+    {
+        // Instantiate rule prefab
+        GameObject g = GameObject.Instantiate(prefab);
+        g.transform.SetParent(list.transform);
+        g.transform.localScale = Vector3.one;
+        RuleIcon ruleUI = g.GetComponent<RuleIcon>();
+
+        // Get image components
+        var imageA = ruleUI.A.GetComponent<Image>();
+        var imageA2 = ruleUI.A2.GetComponent<Image>();
+        var imageB = ruleUI.B.GetComponent<Image>();
+
+        // Set sprites
+        imageB.sprite = rule.B.icon;
+        imageA.sprite = rule.A.icon;
+        imageA2.sprite = rule.A.icon;
+
+        // Set rule icon
+        var icon = ruleUI.Icon.GetComponent<Image>();
+
+        // Show correct icon based on rule
+        switch (rule.comparison)
+        {
+            // A x B
+            case Rule.RuleType.CantCoexist:
+                icon.sprite = _ruleSprites[0];
+                break;
+            // A > B
+            case Rule.RuleType.CountMustBeGreaterThan:
+                icon.sprite = _ruleSprites[1];
+                imageA2.gameObject.SetActive(true);
+                break;
+            // A >= B
+            case Rule.RuleType.CountMustBeGreaterEqualThan:
+                icon.sprite = _ruleSprites[2];
+                imageA2.gameObject.SetActive(true);
+                break;
+            // A <3 B
+            case Rule.RuleType.Requires:
+                icon.sprite = _ruleSprites[3];
+                break;
+        }
+
+        // Set icon size???
+        icon.SetNativeSize();
+
+        // Store gameobject
+        dict?.Add(rule, g);
+    }
+
+    private void SpawnFailRule(Rule rule, GameObject prefab, GameObject list, Queue<GameObject> dict = null)
+    {
+        // Instantiate rule prefab
+        GameObject g = GameObject.Instantiate(prefab);
+        g.transform.SetParent(list.transform);
+        g.transform.localScale = Vector3.one;
+        RuleIcon ruleUI = g.GetComponent<RuleIcon>();
+
+        ruleUI.Text.text = rule.GetDescription(LocalizationManager.CurrentLanguage);
+
+        // Get image components
+        var imageA = ruleUI.A.GetComponent<Image>();
+        var imageA2 = ruleUI.A2.GetComponent<Image>();
+        var imageB = ruleUI.B.GetComponent<Image>();
+
+        // Set sprites
+        imageB.sprite = rule.B.sprite;
+        imageA.sprite = rule.A.sprite;
+        imageA2.sprite = rule.A.sprite;
+
+        // Set rule icon
+        var icon = ruleUI.Icon.GetComponent<Image>();
+
+        // Show correct icon based on rule
+        switch (rule.comparison)
+        {
+            // A x B
+            case Rule.RuleType.CantCoexist:
+                icon.sprite = _ruleSprites[0];
+                imageA2.gameObject.SetActive(false);
+                break;
+            // A > B
+            case Rule.RuleType.CountMustBeGreaterThan:
+                icon.sprite = _ruleSprites[1];
+                imageA2.gameObject.SetActive(true);
+                break;
+            // A >= B
+            case Rule.RuleType.CountMustBeGreaterEqualThan:
+                icon.sprite = _ruleSprites[2];
+                imageA2.gameObject.SetActive(true);
+                break;
+            // A <3 B
+            case Rule.RuleType.Requires:
+                icon.sprite = _ruleSprites[3];
+                imageA2.gameObject.SetActive(false);
+                break;
+        }
+
+        // Set icon size???
+        icon.SetNativeSize();
+
+        // Store gameobject
+        dict?.Enqueue(g);
+    }
 
     internal void SetGameState(State state)
     {
