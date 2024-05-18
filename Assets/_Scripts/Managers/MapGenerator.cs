@@ -350,7 +350,7 @@ public class MapGenerator : MonoBehaviour
 
                     var g = GameObject.Instantiate(_floorDecorations[0]);
                     Vector2 variation = .25f * Random.insideUnitCircle;
-                    g.transform.position = new Vector3(variation.x + offsetX + ((x + 1) * blockSize), variation.y + offsetY + ((y + 1) * blockSize), 0);
+                    g.transform.position = new Vector3(variation.x + offsetX + ((x + 0) * blockSize), variation.y + offsetY + ((y + 1) * blockSize), -0.15f);
                     g.transform.parent = root.transform;
                 }
             }
