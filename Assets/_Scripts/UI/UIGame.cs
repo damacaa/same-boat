@@ -136,7 +136,7 @@ public class UIGame : MonoBehaviour
 
                 if (Application.isPlaying)
                 {
-                   
+
                     while (_spawnedFailedRules.Count > 0)
                     {
                         Destroy(_spawnedFailedRules.Dequeue());
@@ -314,7 +314,8 @@ public class UIGame : MonoBehaviour
         g.transform.localScale = Vector3.one;
         RuleIcon ruleUI = g.GetComponent<RuleIcon>();
 
-        ruleUI.Text.text = rule.GetDescription(LocalizationManager.CurrentLanguage);
+        if (ruleUI.Text)
+            ruleUI.Text.text = rule.GetDescription(LocalizationManager.CurrentLanguage);
 
         // Get image components
         var imageA = ruleUI.A.GetComponent<Image>();
