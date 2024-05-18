@@ -63,7 +63,7 @@ MonoBehaviour:
   _ruleSprites:
   - {fileID: 21300000, guid: 2a4a35c54751cfb4999365b2f78cf741, type: 3}
   - {fileID: 21300000, guid: 14a6365fb2247c048b50a66a1888cb60, type: 3}
-  - {fileID: 21300000, guid: 5d717b3121c1c10469248e14cec94373, type: 3}
+  - {fileID: 21300000, guid: 97176f9c6c67ed542a3e779afb82aaf4, type: 3}
   - {fileID: 21300000, guid: e838b6901649f564681bcacc216ff706, type: 3}
   _infoPrefab: {fileID: 4494265727400470687, guid: 9b71f18bc6916af4f9347ce7cf22260f, type: 3}
   _infoList: {fileID: 7067334354429754836}
@@ -9831,7 +9831,7 @@ MonoBehaviour:
   _text: {fileID: 2693538724575661060}
   _texts:
   - Oops! You made a mistake!
-  - "\xA1Vaya! Has cometido un error"
+  - "\xA1Vaya! Has cometido un error..."
 --- !u!1001 &6302865900355436479
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -498,9 +498,9 @@ public class Level : ScriptableObject
 
             if (StrictMode)
             {
-                sb.Append("Ten cuidado, ya que algunos animales están especialmente hambrientos hoy y no podrán " +
-                    "resistir sus impulsos, incluso en el barco. " +
-                    "Los verá porque tienen un icono especial sobre sus cabezas.\n");
+                sb.Append("Ten cuidado, ya que algunos animales están especialmente hambrientos y no podrán " +
+                    "resistir sus impulsos ni siquiera en el barco en el barco. " +
+                    "Fíjate, tienen un icono especial sobre sus cabezas.\n");
             }
         }
 
