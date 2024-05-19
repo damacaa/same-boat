@@ -348,10 +348,15 @@ public class MapGenerator : MonoBehaviour
                     if (Mathf.PerlinNoise(scale * (x / (float)map.Width), scale * (y / (float)map.Height)) < 0.5f)
                         continue;
 
+                    // Spawn flowers
                     var g = GameObject.Instantiate(_floorDecorations[0]);
                     Vector2 variation = .25f * Random.insideUnitCircle;
                     g.transform.position = new Vector3(variation.x + offsetX + ((x + 0) * blockSize), variation.y + offsetY + ((y + 1) * blockSize), -0.15f);
                     g.transform.parent = root.transform;
+
+                    var r = g.GetComponent<SpriteRenderer>();
+                    
+
                 }
             }
         }
