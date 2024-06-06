@@ -85,8 +85,6 @@ namespace UI
                 //    continue;
                 //}
 
-                if (i > ProgressManager.Instance.CurrentLevel)
-                    break;
 
                 GameObject go = Instantiate(_levelButtonPrefab, _levelsContainer.transform);
 
@@ -104,6 +102,10 @@ namespace UI
                     localizedText.ForceUpdate();
 
                     _levelsButtons.Add(levelButton);
+
+                    if (i > ProgressManager.Instance.CurrentLevel)
+                        go.GetComponentInChildren<Button>().interactable = false;
+
                 }
                 else
                 {
