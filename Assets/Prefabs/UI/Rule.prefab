@@ -132,6 +132,7 @@ MonoBehaviour:
   A2: {fileID: 5743930710233600169}
   B: {fileID: 576752241311712790}
   Icon: {fileID: 5018857319019891685}
+  Text: {fileID: 0}
 --- !u!1 &3563555241126731924
 GameObject:
   m_ObjectHideFlags: 0

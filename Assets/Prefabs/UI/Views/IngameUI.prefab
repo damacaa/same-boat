@@ -427,8 +427,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4286155677
+  m_fontColor: {r: 0.6156863, g: 0.54509807, b: 0.4745098, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -688,7 +688,7 @@ Canvas:
   m_GameObject: {fileID: 1169385809564207224}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
+  m_RenderMode: 1
   m_Camera: {fileID: 0}
   m_PlaneDistance: 100
   m_PixelPerfect: 1
@@ -3600,8 +3600,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4286155677
+  m_fontColor: {r: 0.6156863, g: 0.54509807, b: 0.4745098, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -4191,8 +4191,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4286155677
+  m_fontColor: {r: 0.6156863, g: 0.54509807, b: 0.4745098, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -4434,8 +4434,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4286155677
+  m_fontColor: {r: 0.6156863, g: 0.54509807, b: 0.4745098, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -5467,7 +5467,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.6156863, g: 0.54509807, b: 0.47450984, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -6456,7 +6456,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.6156863, g: 0.54509807, b: 0.47450984, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -6762,6 +6762,22 @@ PrefabInstance:
     - target: {fileID: 2493639468672771576, guid: 0255535579bf78c45976e0d10cb13085, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3456819362216426270, guid: 0255535579bf78c45976e0d10cb13085, type: 3}
+      propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3456819362216426270, guid: 0255535579bf78c45976e0d10cb13085, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3456819362216426270, guid: 0255535579bf78c45976e0d10cb13085, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3456819362216426270, guid: 0255535579bf78c45976e0d10cb13085, type: 3}
+      propertyPath: m_Color.r
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6232919200826970371, guid: 0255535579bf78c45976e0d10cb13085, type: 3}
       propertyPath: m_Name
@@ -8139,6 +8155,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3456819362216426270, guid: 0255535579bf78c45976e0d10cb13085, type: 3}
+      propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3456819362216426270, guid: 0255535579bf78c45976e0d10cb13085, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3456819362216426270, guid: 0255535579bf78c45976e0d10cb13085, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3456819362216426270, guid: 0255535579bf78c45976e0d10cb13085, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6232919200826970371, guid: 0255535579bf78c45976e0d10cb13085, type: 3}
       propertyPath: m_Name
       value: AltWindowBackground
@@ -8789,6 +8821,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3456819362216426270, guid: 0255535579bf78c45976e0d10cb13085, type: 3}
+      propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3456819362216426270, guid: 0255535579bf78c45976e0d10cb13085, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3456819362216426270, guid: 0255535579bf78c45976e0d10cb13085, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3456819362216426270, guid: 0255535579bf78c45976e0d10cb13085, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6232919200826970371, guid: 0255535579bf78c45976e0d10cb13085, type: 3}
       propertyPath: m_Name
       value: AltWindowBackground
@@ -8992,6 +9040,22 @@ PrefabInstance:
     - target: {fileID: 2493639468672771576, guid: 0255535579bf78c45976e0d10cb13085, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3456819362216426270, guid: 0255535579bf78c45976e0d10cb13085, type: 3}
+      propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3456819362216426270, guid: 0255535579bf78c45976e0d10cb13085, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3456819362216426270, guid: 0255535579bf78c45976e0d10cb13085, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3456819362216426270, guid: 0255535579bf78c45976e0d10cb13085, type: 3}
+      propertyPath: m_Color.r
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6232919200826970371, guid: 0255535579bf78c45976e0d10cb13085, type: 3}
       propertyPath: m_Name
@@ -9200,6 +9264,22 @@ PrefabInstance:
     - target: {fileID: 2493639468672771576, guid: 0255535579bf78c45976e0d10cb13085, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3456819362216426270, guid: 0255535579bf78c45976e0d10cb13085, type: 3}
+      propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3456819362216426270, guid: 0255535579bf78c45976e0d10cb13085, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3456819362216426270, guid: 0255535579bf78c45976e0d10cb13085, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3456819362216426270, guid: 0255535579bf78c45976e0d10cb13085, type: 3}
+      propertyPath: m_Color.r
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6232919200826970371, guid: 0255535579bf78c45976e0d10cb13085, type: 3}
       propertyPath: m_Name
@@ -9929,6 +10009,22 @@ PrefabInstance:
     - target: {fileID: 2493639468672771576, guid: 0255535579bf78c45976e0d10cb13085, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3456819362216426270, guid: 0255535579bf78c45976e0d10cb13085, type: 3}
+      propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3456819362216426270, guid: 0255535579bf78c45976e0d10cb13085, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3456819362216426270, guid: 0255535579bf78c45976e0d10cb13085, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3456819362216426270, guid: 0255535579bf78c45976e0d10cb13085, type: 3}
+      propertyPath: m_Color.r
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6232919200826970371, guid: 0255535579bf78c45976e0d10cb13085, type: 3}
       propertyPath: m_Name
