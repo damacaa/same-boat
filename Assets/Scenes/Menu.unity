@@ -154,10 +154,6 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3695148627298849594, guid: eaa3d2d88ea69464587e2c5b1a6c81c1, type: 3}
-      propertyPath: m_Camera
-      value: 
-      objectReference: {fileID: 1101542215}
     - target: {fileID: 3777716782879046119, guid: eaa3d2d88ea69464587e2c5b1a6c81c1, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -533,11 +529,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!20 &1101542215 stripped
-Camera:
-  m_CorrespondingSourceObject: {fileID: 130388820565298939, guid: 7c1de9eaf4d0013448b26dfaf11959ff, type: 3}
-  m_PrefabInstance: {fileID: 951143534}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1290316827
 GameObject:
   m_ObjectHideFlags: 0
