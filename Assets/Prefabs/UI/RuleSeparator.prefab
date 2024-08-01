@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1396745817962641196}
   - component: {fileID: 3227026937242880396}
   - component: {fileID: 2647554334604901388}
+  - component: {fileID: 294384499902908412}
   m_Layer: 0
   m_Name: RuleSeparator
   m_TagString: Untagged
@@ -59,7 +60,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.078431375}
+  m_Color: {r: 0.4509804, g: 0.38431373, b: 0.24705882, a: 0.14117648}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -76,3 +77,15 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &294384499902908412
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7294587455159326952}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e26bf1445a9bc34ea2585708554d38b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

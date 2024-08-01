@@ -261,6 +261,8 @@ public class UIGame : MonoBehaviour
         GameObject g = GameObject.Instantiate(prefab);
         g.transform.SetParent(list.transform);
         g.transform.localScale = Vector3.one;
+        g.transform.position = Vector3.zero;
+        g.transform.rotation = Quaternion.identity;
         RuleIcon ruleUI = g.GetComponent<RuleIcon>();
 
         // Get image components
@@ -311,7 +313,6 @@ public class UIGame : MonoBehaviour
         // Instantiate rule prefab
         GameObject g = GameObject.Instantiate(prefab);
         g.transform.SetParent(list.transform);
-        g.transform.localScale = Vector3.one;
         RuleIcon ruleUI = g.GetComponent<RuleIcon>();
 
         if (ruleUI.Text)

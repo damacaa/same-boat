@@ -90,6 +90,10 @@ public class GameManager : MonoBehaviour
 #if !UNITY_EDITOR
         _showDebugUI = false;
 #endif
+
+        if(Singleton.Instance)
+            _showDebugUI = false;
+
         InputSystem.InputEnabled = true;
 
 

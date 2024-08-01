@@ -57,6 +57,8 @@ public class SceneTransition : MonoBehaviour
 
     private async void FadeOutAsync(AsyncOperation a)
     {
+        await Task.Delay(500);
+
         float transcurredTime = 0;
 
         while (transcurredTime < fadeDuration)
