@@ -7,4 +7,11 @@ public class RuleIcon : MonoBehaviour
 {
     public GameObject A, A2, B, Icon;
     public TextMeshProUGUI Text;
+
+    private void Start()
+    {
+        transform.localScale = Vector3.one;
+        transform.localPosition = Vector3.zero;
+        transform.localRotation = Quaternion.identity;
+    }
 }

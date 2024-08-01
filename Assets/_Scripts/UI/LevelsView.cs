@@ -2,7 +2,6 @@ using Localization;
 using System;
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -28,7 +27,6 @@ namespace UI
         HorizontalLayoutGroup _characterList;
         [SerializeField]
         private GameObject _characterPrefab;
-
 
         [Header("Levels")]
         [SerializeField]
@@ -85,7 +83,6 @@ namespace UI
                 //    continue;
                 //}
 
-
                 GameObject go = Instantiate(_levelButtonPrefab, _levelsContainer.transform);
 
                 if (go.TryGetComponent(out LevelButton levelButton))
@@ -93,19 +90,21 @@ namespace UI
                     levelButton.Init(_levels[i]);
                     levelButton.OnLevelSelected += SelectLevel;
 
-                    var localizedText = levelButton.GetComponentInChildren<LocalizedText>();
+                    LocalizedText localizedText = levelButton.GetComponentInChildren<LocalizedText>();
 
                     foreach (Language language in Enum.GetValues(typeof(Language)))
                     {
                         localizedText.SetText(language, _levels[i].GetName(language));
                     }
+
                     localizedText.ForceUpdate();
 
                     _levelsButtons.Add(levelButton);
 
                     if (i > ProgressManager.Instance.CurrentLevel)
+                    {
                         go.GetComponentInChildren<Button>().interactable = false;
-
+                    }
                 }
                 else
                 {
@@ -127,12 +126,11 @@ namespace UI
 
         private void LoadLevel()
         {
-            SceneManager.LoadScene(1);
+            SceneTransition.Instance.InitTransition(SceneManager.LoadSceneAsync, 1);
         }
 
         private void SelectLevel(Level level)
         {
-
             ProgressManager.Instance.LevelToLoad = level;
 
             _levelName.text = level.Name;
@@ -146,18 +144,20 @@ namespace UI
                 Destroy(_characterList.transform.GetChild(i).gameObject);
             }
 
-            foreach (var island in level.Islands)
+            for (int i = 0; i < level.Islands.Length; i++)
             {
-                foreach (var transportable in island.transportables)
+                Level.IslandData island = level.Islands[i];
+
+                for (int j = 0; j < island.transportables.Length; j++)
                 {
-                    var go = GameObject.Instantiate(_characterPrefab);
+                    TransportableSO transportable = island.transportables[j];
+
+                    GameObject go = Instantiate(_characterPrefab);
                     go.transform.SetParent(_characterList.transform, false);
-                    var image = go.GetComponentInChildren<Image>();
+                    Image image = go.GetComponentInChildren<Image>();
                     image.sprite = transportable.sprite;
                 }
             }
         }
-
-
     }
 }
