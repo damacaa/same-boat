@@ -1,3 +1,4 @@
+using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -27,32 +28,38 @@ public class SceneTransition : MonoBehaviour
         Instance = this;
     }
 
+    CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
+    Task _t;
+
     public void InitTransition(LoadSceneDelegate loadSceneDelegate, int sceneId)
     {
         this.sceneId = sceneId;
         this.loadSceneDelegate = loadSceneDelegate;
 
-        Test();
+        _t = Test(_cancellationTokenSource.Token);
     }
 
-    private async Task Test()
+    private async Task Test(CancellationToken cancellationToken)
     {
-        await FadeInAsync();
+        await FadeInAsync(cancellationToken);
         AsyncOperation asyncHandler = loadSceneDelegate(sceneId);
         asyncHandler.completed += FadeOutAsync;
     }
 
-    private async Task FadeInAsync()
+    private async Task FadeInAsync(CancellationToken cancellationToken)
     {
         float transcurredTime = 0;
 
-        while (transcurredTime < fadeDuration)
+        while (transcurredTime < fadeDuration && !cancellationToken.IsCancellationRequested)
         {
             transcurredTime += Time.unscaledDeltaTime;
             canvasGroup.alpha += Time.unscaledDeltaTime;
 
             await Task.Yield();
         }
+
+        if(cancellationToken.IsCancellationRequested)
+            canvasGroup.alpha = 0;
     }
 
     private async void FadeOutAsync(AsyncOperation a)
@@ -61,12 +68,20 @@ public class SceneTransition : MonoBehaviour
 
         float transcurredTime = 0;
 
-        while (transcurredTime < fadeDuration)
+        while (transcurredTime < fadeDuration && !_cancellationTokenSource.IsCancellationRequested)
         {
             transcurredTime += Time.unscaledDeltaTime;
             canvasGroup.alpha -= Time.unscaledDeltaTime;
 
             await Task.Yield();
         }
+
+        if (_cancellationTokenSource.IsCancellationRequested)
+            canvasGroup.alpha = 0;
+    }
+
+    private void OnDestroy()
+    {
+        _cancellationTokenSource?.Cancel();
     }
 }
