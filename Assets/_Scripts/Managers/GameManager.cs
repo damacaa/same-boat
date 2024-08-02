@@ -432,6 +432,11 @@ public class GameManager : MonoBehaviour
         if (_isWin || _isFail)
             return false;
 
+        if(island.Data == _game.Boat.Island)
+        {
+            return false;
+        }
+
         bool success = _game.MoveBoatToIsland(island.Data);
         if (success)
             _ui.SetGameState(_game.GetCurrentState());
